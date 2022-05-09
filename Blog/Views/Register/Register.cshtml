@@ -1,0 +1,45 @@
+﻿@model Blog.ViewModels.RegisterViewModel
+
+@{
+    ViewData["Title"] = "Register";
+}
+
+@section Scripts {
+    @{
+        <partial name="_ValidationScriptsPartial" />
+    }
+}
+
+<div class="row">
+    <div class="col-md-4 offset-md-4">
+    <h3 class="center">Welcome to DevBlog</h3>
+    <form class="frm" method="post" asp-controller="Register" asp-action="Register">
+        <div asp-validation-summary="ModelOnly"></div>
+        <div>
+            <div class="mrgn">
+                <label asp-for="EmailReg">Email</label>
+                <input asp-for="EmailReg" class="form-control" />
+                <span asp-validation-for="EmailReg" class="text-danger"></span>
+            </div>
+        </div>
+        <div>
+            <div class="mrgn">
+                <label asp-for="PasswordReg">Password</label>
+                <input asp-for="PasswordReg" class="form-control" />
+                <span asp-validation-for="PasswordReg" class="text-danger"></span>
+            </div>
+        </div>
+        <div>
+            <div class="mrgn">
+                <label asp-for="PasswordConfirm">Confirm the password</label>
+                <input asp-for="PasswordConfirm" class="form-control" />
+                <span asp-validation-for="PasswordConfirm" class="text-danger"></span>
+            </div>
+        </div>
+        <div>
+            <input type="submit" value="Регистрация" class="btn btn-success" />
+        </div>
+    </form>
+    </div>
+</div>
+
