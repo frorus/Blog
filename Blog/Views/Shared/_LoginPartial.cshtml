@@ -14,7 +14,7 @@
 else
 {
     <li class="nav-item">
-        <a class="nav-link text-dark" asp-controller="Register" asp-action="Register">Register</a>
+        <input type="button" class="btn btn-outline-primary" value="Create account" onclick="location.href='@Url.Action("Register", "Register")'" />
     </li>
     <li class="nav-item">
         <a class="nav-link text-dark" asp-area="" asp-controller="Account" asp-action="Login">Login</a>
