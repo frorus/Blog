@@ -2,14 +2,10 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace Blog.Data
 {
-    public class BlogDbContext : IdentityDbContext<User>
+    public class BlogDbContext : IdentityDbContext<ApplicationUser>
     {
         public DbSet<Article> Articles { get; set; }
         public DbSet<Comment> Comments { get; set; }
@@ -24,7 +20,7 @@ namespace Blog.Data
         {
             base.OnModelCreating(builder);
 
-            builder.Entity<User>(entity =>
+            builder.Entity<ApplicationUser>(entity =>
             {
                 entity.ToTable(name: "User");
             });

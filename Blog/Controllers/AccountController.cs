@@ -7,9 +7,9 @@ namespace Blog.Controllers
 {
     public class AccountController : Controller
     {
-        private readonly SignInManager<User> _signInManager;
+        private readonly SignInManager<ApplicationUser> _signInManager;
 
-        public AccountController(SignInManager<User> signInManager)
+        public AccountController(SignInManager<ApplicationUser> signInManager)
         {
             _signInManager = signInManager;
         }

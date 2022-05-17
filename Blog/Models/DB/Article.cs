@@ -10,8 +10,9 @@ namespace Blog.Models.DB
         public string Title { get; set; } = null!;
         [Required]
         public string Text { get; set; } = null!;
+        public string AuthorUsername { get; set; } = null!;
         public Guid UserId { get; set; }
-        public User User { get; set; } = null!;
+        public ApplicationUser User { get; set; } = null!;
         public List<Comment> Comments { get; set; } = new List<Comment>();
         public List<Tag> Tags { get; set; } = new List<Tag>();
     }

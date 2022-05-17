@@ -9,9 +9,9 @@ namespace Blog.Data
     {
         public static async Task SeedAdmin(IServiceProvider serviceProvider)
         {
-            using (UserManager<User> _userManager = serviceProvider.GetRequiredService<UserManager<User>>())
+            using (UserManager<ApplicationUser> _userManager = serviceProvider.GetRequiredService<UserManager<ApplicationUser>>())
             {
-                var user = new User
+                var user = new ApplicationUser
                 {
                     UserName = "admin@email.com",
                     Email = "admin@email.com",

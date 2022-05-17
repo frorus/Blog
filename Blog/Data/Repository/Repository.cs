@@ -26,9 +26,9 @@ namespace Blog.Data.Repository
             return await Set.ToListAsync();
         }
 
-        public async Task<T> GetByIdAsync(Guid guid)
+        public async Task<T> GetByIdAsync(Guid id)
         {
-            return await Set.FindAsync(guid);
+            return await Set.FindAsync(id);
         }
 
         public async Task Create(T item)

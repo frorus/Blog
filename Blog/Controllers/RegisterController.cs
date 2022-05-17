@@ -7,10 +7,10 @@ namespace Blog.Controllers
 {
     public class RegisterController : Controller
     {
-        private readonly UserManager<User> _userManager;
-        private readonly SignInManager<User> _signInManager;
+        private readonly UserManager<ApplicationUser> _userManager;
+        private readonly SignInManager<ApplicationUser> _signInManager;
 
-        public RegisterController(UserManager<User> userManager, SignInManager<User> signInManager)
+        public RegisterController(UserManager<ApplicationUser> userManager, SignInManager<ApplicationUser> signInManager)
         {
             _userManager = userManager;
             _signInManager = signInManager;
@@ -32,7 +32,7 @@ namespace Blog.Controllers
         {
             if (ModelState.IsValid)
             {
-                var user = new User {
+                var user = new ApplicationUser {
                     UserName = model.EmailReg,
                     Email = model.EmailReg,
                 };

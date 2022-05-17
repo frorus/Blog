@@ -1,5 +1,6 @@
 using Blog.Data;
-using Blog.Data.UnitOfWork;
+using Blog.Data.Repository;
+using Blog.Extensions;
 using Blog.Models.DB;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -12,8 +13,9 @@ builder.Services.AddControllersWithViews();
 builder.Services.AddDbContext<BlogDbContext>(options => options.UseSqlServer(
     builder.Configuration.GetConnectionString("DefaultConnection")
     ))
-    .AddScoped<IUnitOfWork, UnitOfWork>()
-    .AddIdentity<User, IdentityRole>(options =>
+    .AddUnitOfWork()
+    .AddCustomRepository<Article, ArticleRepository>()
+    .AddIdentity<ApplicationUser, IdentityRole>(options =>
     {
         options.User.RequireUniqueEmail = true;
     })
