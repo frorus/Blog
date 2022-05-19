@@ -1,5 +1,4 @@
-﻿using Blog.Data.Repository;
-using Blog.Data.UnitOfWork;
+﻿using Blog.Data.UnitOfWork;
 using Blog.Models.DB;
 using Blog.ViewModels;
 using Microsoft.AspNetCore.Authorization;
@@ -78,22 +77,75 @@ namespace Blog.Controllers
                 return NotFound();
             }
 
-            return View(articleFromDb);
+            var articleModel = new ArticleViewModel
+            {
+                Title = articleFromDb.Title,
+                Text = articleFromDb.Text,
+            };
+
+            return View(articleModel);
         }
 
         //Edit article
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize]
-        public async Task<IActionResult> Edit(Article article)
+        public async Task<IActionResult> Edit(Guid id, ArticleViewModel model)
         {
+            var articleFromDb = await _unitOfWork.GetRepository<Article>().GetByIdAsync(id);
+
+            if (articleFromDb == null)
+            {
+                return NotFound();
+            }
+
             if (ModelState.IsValid)
             {
-                await _unitOfWork.GetRepository<Article>().Update(article);
+                articleFromDb.Text = model.Text;
+                articleFromDb.Title = model.Title;
+
+                await _unitOfWork.GetRepository<Article>().Update(articleFromDb);
                 //TempData["success"] = "Category updated successfully";
                 return RedirectToAction("Index");
             }
-            return View(article);
+
+            return View(model);
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> Delete(Guid id)
+        {
+            if (id == Guid.Empty)
+            {
+                return NotFound();
+            }
+
+            var articleFromDb = await _unitOfWork.GetRepository<Article>().GetByIdAsync(id);
+
+            if (articleFromDb == null)
+            {
+                return NotFound();
+            }
+
+            return View(articleFromDb);
+        }
+
+        //Delete article
+        [HttpPost, ActionName("Delete")]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> DeletePOST(Guid id)
+        {
+            var articleFromDb = await _unitOfWork.GetRepository<Article>().GetByIdAsync(id);
+
+            if (articleFromDb == null)
+            {
+                return NotFound();
+            }
+
+            await _unitOfWork.GetRepository<Article>().Delete(articleFromDb);
+
+            //TempData["success"] = "Category deleted successfully";
+            return RedirectToAction("Index");
         }
     }
 }
