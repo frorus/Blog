@@ -15,6 +15,7 @@ builder.Services.AddDbContext<BlogDbContext>(options => options.UseSqlServer(
     ))
     .AddUnitOfWork()
     .AddCustomRepository<Article, ArticleRepository>()
+    .AddCustomRepository<Tag, TagRepository>()
     .AddIdentity<ApplicationUser, IdentityRole>(options =>
     {
         options.User.RequireUniqueEmail = true;
