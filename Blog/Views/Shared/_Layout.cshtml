@@ -10,34 +10,31 @@
     <link rel="stylesheet" href="~/Blog.styles.css" asp-append-version="true" />
 </head>
 <body>
-    <header>
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
-            <div class="container-fluid">
-                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">Blog</a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
-                        aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
-                    <ul class="navbar-nav flex-grow-1">
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Article" asp-action="Index">Articles</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Tag" asp-action="Index">Tags</a>
-                        </li>
-                    </ul>
-                    <partial name="_LoginPartial" />
-                </div>
+    <header class="blog-header print-hidden">
+        <div class="blog-header__container">
+            <a class="site-logo" asp-controller="Home" asp-action="Index">
+                <img class="site-logo__img" src="~/img/logo.png">
+            </a>
+            <div class="blog-header--search">
+                <form asp-controller="AccountManager" asp-action="UserList">
+                    <div class="blog-fields blog-fields--horizontal">
+                        <div class="blog-field flex-1 relative">
+                            <input class="blog-textfield" type="text" name="search" placeholder="Search..." autocomplete="off">
+                            <button class="btn-icon">
+                                <svg class="blog-icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                                    <path d="m18.031 16.617 4.283 4.282-1.415 1.415-4.282-4.283A8.96 8.96 0 0 1 11 20c-4.968 0-9-4.032-9-9s4.032-9 9-9 9 4.032 9 9a8.96 8.96 0 0 1-1.969 5.617zm-2.006-.742A6.977 6.977 0 0 0 18 11c0-3.868-3.133-7-7-7-3.868 0-7 3.132-7 7 0 3.867 3.132 7 7 7a6.977 6.977 0 0 0 4.875-1.975l.15-.15z"></path>
+                                </svg>
+                            </button>
+                        </div>
+                    </div>
+                </form>
             </div>
-        </nav>
+            <div class="flex items-center h-100 ml-auto">
+                <partial name="_LoginPartial" />
+            </div>
+        </div>
     </header>
+
     <div class="container">
         <main role="main" class="pb-3">
             @RenderBody()

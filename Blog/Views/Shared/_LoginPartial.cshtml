@@ -4,20 +4,16 @@
 @inject SignInManager<ApplicationUser> SignInManager
 @inject UserManager<ApplicationUser> UserManager
 
-<ul class="navbar-nav">
 @if (SignInManager.IsSignedIn(User))
 {
-    <li class="nav-item">
-        <a class="nav-link text-dark" asp-area="" asp-controller="Account" asp-action="Logout">Logout</a>
-    </li>
+    <span class="m:block">
+        <a class="c-link c-link--block mr-2 whitespace-nowrap ml-auto" asp-controller="Account" asp-action="Logout">Log out</a>
+    </span>
 }
 else
 {
-    <li class="nav-item">
-        <input type="button" class="btn btn-outline-primary" value="Create account" onclick="location.href='@Url.Action("Register", "Register")'" />
-    </li>
-    <li class="nav-item">
-        <a class="nav-link text-dark" asp-area="" asp-controller="Account" asp-action="Login">Login</a>
-    </li>
+    <span class="m:block">
+        <a class="c-link c-link--block mr-2 whitespace-nowrap ml-auto" asp-controller="Account" asp-action="Login">Log in</a>
+    </span>
+    <a class="c-cta c-cta--branded whitespace-nowrap mr-2" asp-controller="Register" asp-action="Register">Create account</a>
 }
-</ul>
