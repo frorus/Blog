@@ -1,9 +1,11 @@
-﻿using Blog.Data.UnitOfWork;
+﻿using Blog.Data.Repository;
+using Blog.Data.UnitOfWork;
 using Blog.Models.DB;
 using Blog.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace Blog.Controllers
 {
@@ -20,15 +22,31 @@ namespace Blog.Controllers
 
         public async Task<IActionResult> Index()
         {
-            IEnumerable<Article> articleList = await _unitOfWork.GetRepository<Article>().GetAllAsync();
+            //IEnumerable<Article> articleList = await _unitOfWork.GetRepository<Article>().GetAllAsync();
+            var repository = _unitOfWork.GetRepository<Article>() as ArticleRepository;
+            IEnumerable<Article> articleList = await repository.GetAllArticles();
+
             return View(articleList);
         }
 
         [HttpGet]
         [Authorize]
-        public IActionResult Create()
+        public async Task<IActionResult> Create()
         {
-            return View();
+            var tagsFromDb = await _unitOfWork.GetRepository<Tag>().GetAllAsync();
+            var selectedTags = new List<SelectListItem>();
+
+            foreach (var tag in tagsFromDb)
+            {
+                selectedTags.Add(new SelectListItem(tag.Title, tag.Id.ToString()));
+            }
+
+            var articleModel = new ArticleViewModel
+            {
+                Tags = selectedTags
+            };
+
+            return View(articleModel);
         }
 
         //Create article
@@ -49,6 +67,15 @@ namespace Blog.Controllers
                     UserId = Guid.Parse(userId),
                     User = await _userManager.FindByIdAsync(userId)
                 };
+
+                var selectedTags = model.Tags.Where(t => t.Selected)
+                                       .Select(t => t);
+
+                foreach (var t in selectedTags)
+                {
+                    var tag = await _unitOfWork.GetRepository<Tag>().GetByIdAsync(Guid.Parse(t.Value));
+                    article.Tags.Add(tag);
+                }
 
                 await _unitOfWork.GetRepository<Article>().Create(article);
 
@@ -111,6 +138,52 @@ namespace Blog.Controllers
 
             return View(model);
         }
+
+        [HttpGet]
+        public async Task<IActionResult> Details(Guid id)
+        {
+            if (id == Guid.Empty)
+            {
+                return NotFound();
+            }
+
+            //var articleFromDb = await _unitOfWork.GetRepository<Article>().GetByIdAsync(id);
+            var repository = _unitOfWork.GetRepository<Article>() as ArticleRepository;
+            var articleFromDb = await repository.GetArticleById(id);
+
+            if (articleFromDb == null)
+            {
+                return NotFound();
+            }
+
+            return View(articleFromDb);
+        }
+
+        ////Edit article
+        //[HttpPost]
+        //[ValidateAntiForgeryToken]
+        //[Authorize]
+        //public async Task<IActionResult> Details(Guid id, ArticleViewModel model)
+        //{
+        //    var articleFromDb = await _unitOfWork.GetRepository<Article>().GetByIdAsync(id);
+
+        //    if (articleFromDb == null)
+        //    {
+        //        return NotFound();
+        //    }
+
+        //    if (ModelState.IsValid)
+        //    {
+        //        articleFromDb.Text = model.Text;
+        //        articleFromDb.Title = model.Title;
+
+        //        await _unitOfWork.GetRepository<Article>().Update(articleFromDb);
+        //        //TempData["success"] = "Category updated successfully";
+        //        return RedirectToAction("Index");
+        //    }
+
+        //    return View(model);
+        //}
 
         [HttpGet]
         public async Task<IActionResult> Delete(Guid id)

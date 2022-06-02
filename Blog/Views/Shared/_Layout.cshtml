@@ -35,10 +35,16 @@
         </div>
     </header>
 
-    <div class="container">
-        <main role="main" class="pb-3">
-            @RenderBody()
-        </main>
+    <div class="wrapper">
+        <div class="blog-layout blog-layout--3-cols blog-layout--3-cols--drop-right-left">
+            <div class="sidebar-wrapper sidebar-wrapper-left blog-layout__sidebar-left blog-layout__content">
+                <partial name="_LeftSidebarPartial" />
+            </div>
+            <main class="articles-list blog-layout__content">
+                @RenderBody()
+            </main>
+            <div>3</div>
+        </div>
     </div>
 
     <footer class="border-top footer text-muted">
