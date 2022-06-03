@@ -223,6 +223,93 @@
     --reaction-comment-bg: rgba(var(--yellow-500), 0.1);
 }
 
+:root {
+    --btn-bg: transparent;
+    --btn-bg-hover: rgba(var(--accent-brand-rgb), 0.1);
+    --btn-color: rgb(var(--grey-800));
+    --btn-color-hover: var(--accent-brand-darker);
+    --btn-current-bg: rgb(var(--grey-200));
+    --btn-current-color: rgb(var(--grey-900));
+    --btn-primary-bg: var(--accent-brand);
+    --btn-primary-bg-hover: var(--accent-brand-darker);
+    --btn-primary-color: rgb(var(--white));
+    --btn-primary-color-hover: rgb(var(--white));
+    --btn-secondary-bg: rgba(var(--accent-brand-rgb), 0.1);
+    --btn-secondary-bg-hover: var(--accent-brand);
+    --btn-secondary-color: var(--accent-brand);
+    --btn-secondary-color-hover: rgb(var(--white));
+    --btn-destructive-bg: transparent;
+    --btn-destructive-bg-hover: rgba(var(--red-600), 0.1);
+    --btn-destructive-color: rgb(var(--red-700));
+    --btn-destructive-color-hover: rgb(var(--red-800));
+    --btn-primary-destructive-bg: rgb(var(--red-600));
+    --btn-primary-destructive-bg-hover: rgb(var(--red-700));
+    --btn-primary-destructive-color: rgb(var(--white));
+    --btn-primary-destructive-color-hover: rgb(var(--white));
+    --link-bg: transparent;
+    --link-bg-hover: rgba(var(--accent-brand-rgb), 0.1);
+    --link-color: rgb(var(--grey-700));
+    --link-color-hover: var(--accent-brand-darker);
+    --link-current-bg: rgb(var(--grey-200));
+    --link-current-color: rgb(var(--grey-900));
+    --link-branded-bg: transparent;
+    --link-branded-bg-hover: rgba(var(--accent-brand-rgb), 0.1);
+    --link-branded-color: var(--accent-brand);
+    --link-branded-color-hover: var(--accent-brand-darker);
+    --cta-bg: transparent;
+    --cta-bg-hover: rgba(var(--accent-brand-rgb), 0.1);
+    --cta-color: rgb(var(--grey-800));
+    --cta-color-hover: var(--accent-brand-darker);
+    --cta-border: rgb(var(--grey-600));
+    --cta-border-hover: var(--accent-brand-darker);
+    --cta-branded-bg: transparent;
+    --cta-branded-bg-hover: var(--accent-brand);
+    --cta-branded-color: var(--accent-brand);
+    --cta-branded-color-hover: rgb(var(--white));
+    --cta-branded-border: var(--accent-brand);
+    --cta-branded-border-hover: var(--accent-brand-darker);
+    --tooltip-bg: rgba(var(--grey-900), 0.9);
+    --tooltip-color: rgb(var(--white));
+    --indicator-bg: rgb(var(--grey-300));
+    --indicator-color: rgb(var(--grey-700));
+    --indicator-success-bg: rgb(var(--green-400));
+    --indicator-success-color: rgb(var(--green-900));
+    --indicator-warning-bg: rgb(var(--yellow-300));
+    --indicator-warning-color: rgb(var(--yellow-900));
+    --indicator-danger-bg: rgb(var(--red-600));
+    --indicator-danger-color: rgb(var(--white));
+    --indicator-info-bg: var(--accent-brand);
+    --indicator-info-color: rgb(var(--white));
+    --list-item-bg-hover: rgb(var(--grey-50));
+    --modal-bg: rgb(var(--white));
+    --modal-backdrop: rgba(var(--black), 0.6);
+    --modal-danger-border-color: rgb(var(--red-500));
+    --color-primary: rgb(var(--grey-900));
+    --color-secondary: rgb(var(--grey-500));
+    --pill-bg: transparent;
+    --pill-bg-hover: rgb(var(--grey-50));
+    --pill-color: rgb(var(--grey-800));
+    --pill-color-hover: rgb(var(--grey-900));
+    --pill-border: rgb(var(--grey-200));
+    --pill-border-hover: rgb(var(--grey-600));
+    --swatch-border-color: rgb(var(--black), 0.2);
+    --toggle-rail-bg: rgb(var(--grey-200));
+    --toggle-rail-checked-bg: rgb(var(--green-500));
+    --toggle-knob-bg: rgb(var(--white));
+    --date-border-color: var( --base-10);
+    --hover-date-border-color: var(--accent-brand);
+    --selected-date-bg: var(--accent-brand);
+    --selected-range-bg: rgb(var(--indigo-50));
+    --selected-date-border: rgb(var(--indigo-100));
+    --selected-date-color: var(--base-0);
+    --selected-range-color: var(--body-color);
+    --current-date-color: var(--accent-brand);
+    --focus: var(--accent-brand);
+    --divider: rgb(var(--grey-200));
+    --shadow-1: 0 10px 15px -3px rgba(var(--black), 0.1), 0 4px 6px -2px rgba(var(--black), 0.05), 0 0 0 1px rgba(var(--black), 0.1);
+    --shadow-2: 0 20px 25px -5px rgba(var(--black), 0.1), 0 10px 10px -5px rgba(var(--black), 0.05), 0 0 0 1px rgba(var(--black), 0.1);
+}
+
 html {
   font-size: 14px;
 }
@@ -323,6 +410,10 @@ html {
 
     .blog-article__title {
         margin-bottom: 0.25rem;
+    }
+
+    .blog-footer {
+        --footer-padding: var(--su-8);
     }
 }
 
@@ -465,14 +556,22 @@ html {
 }
 
 body {
-    background: rgb(245, 245, 245);
-    color: rgb(23, 23, 23);
+    background: var(--body-bg);
+    color: var(--body-color);
+    font-family: var(--ff-sans-serif);
     padding: 0;
-    padding-top: 56px;
+    padding-top: var(--header-height);
+    margin: 0;
     overflow-y: scroll;
     display: flex;
     flex-direction: column;
-    min-height: calc(100vh - 56px);
+    min-height: 100vh;
+}
+
+#footer-container {
+    padding: var(--su-1) 0;
+    content-visibility: auto;
+    contain-intrinsic-size: 300px;
 }
 
 .blog-header {
@@ -501,6 +600,23 @@ body {
     display: block;
     max-width: 420px;
     flex: 1 auto;
+}
+
+.blog-footer {
+    --footer-padding: var(--su-5);
+    background: var(--footer-bg);
+    color: var(--footer-color);
+    padding: var(--footer-padding);
+    text-align: center;
+}
+
+.blog-footer__container {
+    /*margin-bottom: env(safe-area-inset-bottom);*/
+    max-width: var(--site-width);
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    gap: var(--su-2);
 }
 
 .blog-layout {
@@ -966,26 +1082,44 @@ a {
 .c-link {
     position: relative;
     display: inline-block;
-    border-radius: 0.375rem;
+    border-radius: var(--radius);
     font: inherit;
     cursor: pointer;
     outline: 0;
     text-decoration: none;
+    color: var(--color);
     max-width: 100%;
-    background: transparent;
-    color: rgb(64, 64, 64);
+}
+
+.c-link {
+    --bg: var(--link-bg);
+    --bg-hover: var(--link-bg-hover);
+    --color: var(--link-color);
+    --color-hover: var(--link-branded-color-hover);
 }
 
 .c-link:hover {
-    color: rgb(47, 58, 178);
-    background-color: rgba(59, 73, 223, 0.1);
+    color: var(--color-hover);
+    background-color: var(--bg-hover);
 }
 
 .c-link--block {
     display: flex;
-    padding: 0.5rem 1rem;
+    padding: var(--su-2) var(--su-4);
     overflow-wrap: normal;
-    background-color: transparent;
+    background-color: var(--bg);
+}
+
+.c-link--branded {
+    --bg: var(--link-branded-bg);
+    --bg-hover: var(--link-branded-bg-hover);
+    --color: var(--link-branded-color);
+    --color-hover: var(--link-branded-color-hover);
+}
+
+.c-link--branded:hover {
+    color: var(--color-hover);
+    background-color: var(--bg-hover);
 }
 
 .c-cta {
@@ -1043,10 +1177,22 @@ ul[class], ol[class] {
     font-weight: 500 !important;
 }
 
+.fs-s {
+    font-size: var(--fs-s) !important;
+}
+
 .fs-xs {
     font-size: 0.75rem !important;
 }
 
 .w-max {
     width: max-content !important;
+}
+
+body, h1, h2, h3, h4, p, ul[class], ol[class], li, figure, figcaption, blockquote, dl, dd, pre {
+    margin: 0;
+}
+
+.fw-medium {
+    font-weight: var(--fw-medium) !important;
 }
