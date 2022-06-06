@@ -9,5 +9,12 @@ namespace Blog.Data.Repository
         {
 
         }
+
+        public async Task<IEnumerable<Tag>> GetAllTags()
+        {
+            var tags = Set.Include(t => t.Articles);
+
+            return await tags.ToListAsync();
+        }
     }
 }

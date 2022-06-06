@@ -3,7 +3,7 @@
 @model IEnumerable<Article>
 
 @{
-    ViewData["Title"] = "Articles";
+    ViewData["Title"] = "Home";
 }
 
 
@@ -65,7 +65,92 @@
 </table>
 </div>*@
 
-<header class="p-2 px-3 m:p-0 m:px-0 m:mb-2 fs-l">
+<div class="wrapper">
+    <div class="blog-layout blog-layout--3-cols blog-layout--3-cols--drop-right-left">
+        <div class="sidebar-wrapper sidebar-wrapper-left blog-layout__sidebar-left blog-layout__content">
+            <partial name="_LeftSidebarPartial" />
+        </div>
+        <main class="articles-list blog-layout__content">
+            <header class="p-2 px-3 m:p-0 m:px-0 m:mb-2 fs-l">
+                    <nav class="-mx-3 m:mx-0 s:flex items-center justify-between">
+                        <ul class="blog-navigation blog-navigation--horizontal">
+                            <li>
+                                <a class="blog-navigation__item">Latest</a>
+                            </li>
+                        <li>
+                            <a class="blog-navigation__item">Top</a>
+                        </li>
+                        </ul>
+                    </nav>
+            </header>
+            <div>
+                    @foreach(var obj in Model)
+                    {
+                        <div class="blog-article">
+                            <div class="blog-article__body">
+                                <div class="blog-article__top">
+                                    <div class="blog-article__meta">
+                                        <div class="blog-article__author-pic">
+                                            <a class="blog-avatar blog-avatar--l" href="/">
+                                                <img class="blog-avatar__image" src="https://thispersondoesnotexist.com/image">
+                                                ::after
+                                            </a>
+                                        </div>
+                                        <div>
+                                            <div>
+                                                <div class="relative mb-4 s:mb-0 fw-medium @*hidden*@ m:inline-block">
+                                                    @obj.AuthorUsername
+                                                </div>
+                                            </div>
+                                            <div class="blog-article__tertiary fs-xs">
+                                                <time datetime="@obj.Date">@obj.Date.ToLongDateString()</time>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="blog-article__indention">
+                                    <h2 class="blog-article__title">
+                                        <a asp-controller="Article" asp-action="Details" asp-route-id="@obj.Id">@obj.Title</a>
+                                    </h2>
+                                    <div class="blog-article__tags">
+                                        @foreach(var tag in obj.Tags){
+                                            <a class="blog-tag blog-tag--monochrome" href="/">#@tag.Title</a>
+                                        }
+                                    </div>
+                                    <div class="blog-article__bottom">
+                                        <div class="blog-article__details">
+                                            <a class="blog-btn blog-btn--s blog-btn--ghost blog-btn--icon-left" asp-controller="Article" asp-action="Details" asp-route-id="@obj.Id">
+                                                <svg class="blog-icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24">
+                                                    <path d="M18.884 12.595l.01.011L12 19.5l-6.894-6.894.01-.01A4.875 4.875 0 0112 5.73a4.875 4.875 0 016.884 6.865zM6.431 7.037a3.375 3.375 0 000 4.773L12 17.38l5.569-5.569a3.375 3.375 0 10-4.773-4.773L9.613 10.22l-1.06-1.062 2.371-2.372a3.375 3.375 0 00-4.492.25v.001z"></path>
+                                                </svg>
+                                                12
+                                                <span class="s:inline"> reactions</span>
+                                            </a>
+                                             <a class="blog-btn blog-btn--s blog-btn--ghost blog-btn--icon-left">
+                                                 <svg class="blog-icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24">
+                                                     <path d="M10.5 5h3a6 6 0 110 12v2.625c-3.75-1.5-9-3.75-9-8.625a6 6 0 016-6zM12 15.5h1.5a4.501 4.501 0 001.722-8.657A4.5 4.5 0 0013.5 6.5h-3A4.5 4.5 0 006 11c0 2.707 1.846 4.475 6 6.36V15.5z"></path>
+                                                 </svg>
+                                                 <span class="s:inline"> Add comment</span>
+                                             </a>
+                                        </div>
+                                        <div class="blog-article__save">
+                                            <small class="blog-article__tertiary fs-xs mr-2">@Math.Ceiling((double)obj.Text.Length / 1500) min read</small>
+                                            <button class="blog-btn blog-btn--secondary blog-btn--s w-max bookmark-button" type="button">
+                                                <span class="bm-initial">Save</span>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    }
+            </div>
+        </main>
+        <div>3</div>
+    </div>
+</div>
+
+@*<header class="p-2 px-3 m:p-0 m:px-0 m:mb-2 fs-l">
     <nav class="-mx-3 m:mx-0 s:flex items-center justify-between">
         <ul class="blog-navigation blog-navigation--horizontal">
             <li>
@@ -76,73 +161,4 @@
             </li>
         </ul>
     </nav>
-</header>
-
-<div>
-    <div class="text-start">
-        <a asp-controller="Article" asp-action="Create" class="btn btn-primary">
-            <i class="bi bi-plus-circle"></i> &nbsp; Create New Article
-	    </a>
-	</div>
-
-    @foreach(var obj in Model)
-    {
-        <div class="blog-article">
-            <div class="blog-article__body">
-                <div class="blog-article__top">
-                    <div class="blog-article__meta">
-                        <div class="blog-article__author-pic">
-                            <a class="blog-avatar blog-avatar--l" href="/">
-                                <img class="blog-avatar__image" src="https://thispersondoesnotexist.com/image">
-                                ::after
-                            </a>
-                        </div>
-                        <div>
-                            <div>
-                                <div class="relative mb-4 s:mb-0 fw-medium @*hidden*@ m:inline-block">
-                                    @obj.AuthorUsername
-                                </div>
-                            </div>
-                            <div class="blog-article__tertiary fs-xs">
-                                <time datetime="@obj.Date">@obj.Date.ToLongDateString()</time>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="blog-article__indention">
-                    <h2 class="blog-article__title">
-                        <a asp-controller="Article" asp-action="Details" asp-route-id="@obj.Id">@obj.Title</a>
-                    </h2>
-                    <div class="blog-article__tags">
-                        @foreach(var tag in obj.Tags){
-                            <a class="blog-tag blog-tag--monochrome" href="/">#@tag.Title</a>
-                        }
-                    </div>
-                    <div class="blog-article__bottom">
-                        <div class="blog-article__details">
-                            <a class="blog-btn blog-btn--s blog-btn--ghost blog-btn--icon-left" asp-controller="Article" asp-action="Details" asp-route-id="@obj.Id">
-                                <svg class="blog-icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24">
-                                    <path d="M18.884 12.595l.01.011L12 19.5l-6.894-6.894.01-.01A4.875 4.875 0 0112 5.73a4.875 4.875 0 016.884 6.865zM6.431 7.037a3.375 3.375 0 000 4.773L12 17.38l5.569-5.569a3.375 3.375 0 10-4.773-4.773L9.613 10.22l-1.06-1.062 2.371-2.372a3.375 3.375 0 00-4.492.25v.001z"></path>
-                                </svg>
-                                12
-                                <span class="s:inline"> reactions</span>
-                            </a>
-                            <a class="blog-btn blog-btn--s blog-btn--ghost blog-btn--icon-left">
-                                <svg class="blog-icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24">
-                                    <path d="M10.5 5h3a6 6 0 110 12v2.625c-3.75-1.5-9-3.75-9-8.625a6 6 0 016-6zM12 15.5h1.5a4.501 4.501 0 001.722-8.657A4.5 4.5 0 0013.5 6.5h-3A4.5 4.5 0 006 11c0 2.707 1.846 4.475 6 6.36V15.5z"></path>
-                                </svg>
-                                <span class="s:inline"> Add comment</span>
-                            </a>
-                        </div>
-                        <div class="blog-article__save">
-                            <small class="blog-article__tertiary fs-xs mr-2">@Math.Ceiling((double)obj.Text.Length / 1500) min read</small>
-                            <button class="blog-btn blog-btn--secondary blog-btn--s w-max bookmark-button" type="button">
-                                <span class="bm-initial">Save</span>
-                            </button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    }
-</div>
+</header>*@

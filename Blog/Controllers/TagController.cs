@@ -21,7 +21,12 @@ namespace Blog.Controllers
 
         public async Task<IActionResult> Index()
         {
-            IEnumerable<Tag> tagList = await _unitOfWork.GetRepository<Tag>().GetAllAsync();
+            //IEnumerable<Tag> tagList = await _unitOfWork.GetRepository<Tag>().GetAllAsync();
+            //return View(tagList);
+
+            var repository = _unitOfWork.GetRepository<Tag>() as TagRepository;
+            IEnumerable<Tag> tagList = await repository.GetAllTags();
+
             return View(tagList);
         }
 

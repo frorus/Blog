@@ -6,6 +6,8 @@
 
 @if (SignInManager.IsSignedIn(User))
 {
+
+    <a class="c-cta c-cta--branded whitespace-nowrap mr-2" asp-controller="Article" asp-action="Create">Create Post</a>
     <span class="m:block">
         <a class="c-link c-link--block mr-2 whitespace-nowrap ml-auto" asp-controller="Account" asp-action="Logout">Log out</a>
     </span>

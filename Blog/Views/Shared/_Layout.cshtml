@@ -12,7 +12,7 @@
 <body>
     <header class="blog-header print-hidden">
         <div class="blog-header__container">
-            <a class="site-logo" asp-controller="Home" asp-action="Index">
+            <a class="site-logo" href="/">
                 <img class="site-logo__img" src="~/img/logo.png">
             </a>
             <div class="blog-header--search">
@@ -35,7 +35,7 @@
         </div>
     </header>
 
-    <div class="wrapper">
+    @*<div class="wrapper">
         <div class="blog-layout blog-layout--3-cols blog-layout--3-cols--drop-right-left">
             <div class="sidebar-wrapper sidebar-wrapper-left blog-layout__sidebar-left blog-layout__content">
                 <partial name="_LeftSidebarPartial" />
@@ -45,7 +45,8 @@
             </main>
             <div>3</div>
         </div>
-    </div>
+    </div>*@
+    @RenderBody()
 
     <footer class="blog-footer">
         <div id="footer-container" class="blog-footer__container">
