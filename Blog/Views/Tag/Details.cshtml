@@ -1,90 +1,58 @@
-﻿@using Microsoft.AspNetCore.Identity
-
-@model IEnumerable<Article>
+﻿@model Tag
 
 @{
-    ViewData["Title"] = "Home";
+    ViewData["Title"] = "Articles by tag";
 }
 
-
-@*<div class="container p-3">
-    <div class="row pt-4">
-        <div class="col-6">
-            <h2 class="text-primary">Articles List</h2>
-		</div>
-        <div class="col-6 text-end">
-            <a asp-controller="Article" asp-action="Create" class="btn btn-primary">
-               <i class="bi bi-plus-circle"></i> &nbsp; Create New Article
-			</a>
-		</div>
-	</div>
-    <br /><br />
-
-<table class="table table-bordered table-striped" style="width:100%">
-    <thead>
-        <tr>
-            <th>
-                Tags
-			</th>
-            <th>
-                Title
-			</th>
-            <th>
-                Text
-			</th>
-            <th>
-                Author
-			</th>
-            <th></th>
-		</tr>
-	</thead>
-    <tbody>
-        @foreach(var obj in Model)
-        {
-            <tr>
-                <td width="15%">
-                    @obj.Title
-				</td>
-                <td width="60%">
-                    @obj.Text
-				</td>
-                <td width="15%">
-                    @obj.AuthorUsername
-				</td>
-                <td>
-                    <div class="w-75 btn-group" role="group">
-                        <a asp-controller="Article" asp-action="Edit" asp-route-id="@obj.Id"
-                        class="btn btn-primary mx-2"> <i class="bi bi-pencil"></i> Edit</a>
-                        <a asp-controller="Article" asp-action="Delete" asp-route-id="@obj.Id"
-                        class="btn btn-danger mx-2"> <i class="bi bi-trash-fill"></i> Delete</a>
-					</div>
-				</td>
-			</tr>
-        }
-    </tbody>
-</table>
-</div>*@
-
 <div class="wrapper">
-    <div class="blog-layout blog-layout--3-cols blog-layout--3-cols--drop-right-left">
-        <div class="sidebar-wrapper sidebar-wrapper-left blog-layout__sidebar-left blog-layout__content">
-            <partial name="_LeftSidebarPartial" />
-        </div>
-        <main class="articles-list blog-layout__content">
-            <header class="p-2 px-3 m:p-0 m:px-0 m:mb-2 fs-l">
-                    <nav class="-mx-3 m:mx-0 s:flex items-center justify-between">
-                        <ul class="blog-navigation blog-navigation--horizontal">
-                            <li>
-                                <a class="blog-navigation__item">Latest</a>
-                            </li>
-                        <li>
-                            <a class="blog-navigation__item">Top</a>
-                        </li>
-                        </ul>
-                    </nav>
+    <div>
+        <div class="blog-layout">
+            <header class="blog-card branded-4 p-4 l:p-6" style="border-top-color: #562765 ">
+                <div class="flex">
+                    <div class="flex flex-col w-100 justify-center">
+                        <div class="flex justify-between items-center">
+                            <h1 class="blog-title">@Model.Title</h1>
+                        </div>
+                        <p class="max-w-100 m:max-w-75 pt-2 s:pt-4">@Model.Description</p>
+                    </div>
+                </div>
             </header>
-            <div>
-                    @foreach(var obj in Model)
+        </div>
+        <div class="home">
+            <div id="sidebar-wrapper-left" class="sidebar-wrapper sidebar-wrapper-left">
+                <aside class="side-bar">
+                    <div class="widget">
+                        <a class="blog-btn blog-btn--s" asp-controller="Article" asp-action="Create">Create Post</a>
+                    </div>
+                    <div class="sidebar-data">
+                        <div>
+                            @Model.Articles.Count() Posts Published
+                        </div>
+                        <div class="blog-btn-group mt-3">
+                            <a id="tag-edit-button" data-tag="webdev" class="blog-btn blog-btn--outlined fs-s">Edit</a>
+                            <a id="tag-admin-button" data-tag="webdev" class="blog-btn blog-btn--outlined fs-s" data-no-instant="">Admin</a>
+                            <a id="tag-mod-button" data-tag="webdev" class="blog-btn blog-btn--outlined fs-s">Moderate</a>
+                        </div>
+                    </div>
+                </aside>
+            </div>
+            <main id="main-content" class="articles-list">
+                <header id="on-page-nav-controls" class="flex items-center p-2 m:p-0 m:pb-2">
+                    <div class="flex-1 flex items-center justify-between">
+                        <nav class="-mx-3 m:mx-0 s:flex items-center justify-between w-100">
+                            <ul class="blog-navigation blog-navigation--horizontal">
+                                <li>
+                                    <a class="blog-navigation__item">Latest</a>
+                                </li>
+                                <li>
+                                    <a class="blog-navigation__item">Top</a>
+                                </li>
+                            </ul>
+                        </nav>
+                    </div>
+                </header>
+                <div>
+                    @foreach(var obj in Model.Articles)
                     {
                         <div class="blog-article">
                             <div class="blog-article__body">
@@ -144,21 +112,18 @@
                             </div>
                         </div>
                     }
+                </div>
+            </main>
+            <div id="sidebar-wrapper-right" class="sidebar-wrapper sidebar-wrapper-right">
+                <aside id="sidebar-additional" class="side-bar sidebar-additional showing">
+                    <div class="widget">
+                        <header>
+                            <h4>Widget header</h4>
+                        </header>
+                        <div class="widget-body">3</div>
+                    </div>
+                </aside>
             </div>
-        </main>
-        <div>3</div>
+        </div>
     </div>
 </div>
-
-@*<header class="p-2 px-3 m:p-0 m:px-0 m:mb-2 fs-l">
-    <nav class="-mx-3 m:mx-0 s:flex items-center justify-between">
-        <ul class="blog-navigation blog-navigation--horizontal">
-            <li>
-                <a class="blog-navigation__item">Latest</a>
-            </li>
-            <li>
-                <a class="blog-navigation__item">Top</a>
-            </li>
-        </ul>
-    </nav>
-</header>*@

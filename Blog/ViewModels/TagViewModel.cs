@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
+using System.ComponentModel.DataAnnotations;
 
 namespace Blog.ViewModels
 {
@@ -6,5 +7,7 @@ namespace Blog.ViewModels
     {
         [Required]
         public string? Title { get; set; }
+        //[ValidateNever]
+        public string? Description { get; set; }
     }
 }

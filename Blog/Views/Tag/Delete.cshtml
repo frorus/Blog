@@ -4,30 +4,33 @@
     ViewData["Title"] = "Delete";
 }
 
-<h1>Delete</h1>
-
-<h3>Are you sure you want to delete this?</h3>
-
-<form method="post" asp-action="Delete">
-	@*<input asp-for="Id" hidden />*@
-	<div class="border p-3 mt-4">
-		<div class="row pb-2">
-			<h2 class="text-primary">Delete Category</h2>
-			<hr />
-		</div>
-		<div class="mb-3">
-			<label asp-for="Title"></label>
-			<input asp-for="Title" disabled class="form-control" />
-		</div>
-		<button type="submit" class="btn btn-danger" style="width:150px">Delete</button>
-		<a asp-controller="Article" asp-action="Index" class="btn btn-secondary" style="width:150px">
-			Back to List
-		</a>
-	</div>
-</form>
-
-@*@section Scripts{
-	@{
-		<partial name="_ValidationScriptsPartial" />
-	}
-}*@
+<div class="wrapper">
+	<main id="main-content">
+		<form id="article-form" class="blog-article-form" method="post">
+			<div class="delete-tag--header mb-4">
+				<h3>Are you sure you want to delete this tag?</h3>
+			</div>
+			<div class="blog-article-form__content blog-card">
+				<div class="blog-article-form__top text-padding drop-area">
+					<div class="blog-article-form__title">
+						<textarea class="blog-textfield-textarea fs-3xl m:fs-4xl l:fs-5xl fw-bold s:fw-heavy lh-tight"
+								  type="text" id="article-form-title" placeholder="Update title #@Model.Title here..." autocomplete="off"
+								  data-gramm_editor="false" aria-label="Tag Title" autofocus="" style="min-height: 62px; max-height: 62px; color: gray;"
+								  asp-for="Title" disabled></textarea>
+					</div>
+				</div>
+				<div class="blog-article-form__body drop-area text-padding">
+					<div id="combobox-container" class="h-100" style="min-height: 108px;">
+						<textarea class="blog-textfield-textarea ff-monospace fs-l h-100"
+								  type="text" id="article_body_markdown" placeholder="Update description here..." autocomplete="off"
+								  data-gramm_editor="false" style="min-height: 27px; color: gray;" asp-for="Description" disabled></textarea>
+					</div>
+				</div>
+			</div>
+			<div class="blog-article-form__footer">
+				<button class="c-btn blog-btn--danger mr-2 whitespace-nowrap" type="submit">Yes, delete</button>
+				<a class="c-link c-link--block mr-2 whitespace-nowrap" asp-controller="Tag" asp-action="Index">Back to tag list</a>
+			</div>
+		</form>
+	</main>
+</div>

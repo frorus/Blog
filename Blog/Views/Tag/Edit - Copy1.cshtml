@@ -1,0 +1,59 @@
+﻿@model TagViewModel
+
+@{
+    ViewData["Title"] = "Edit";
+}
+
+<div class="wrapper">
+	<form method="post">
+	<div asp-validation-summary="ModelOnly"></div>
+	<div class="border p-3 mt-4">
+		<div class="row pb-2">
+			<h2 class="text-primary">Edit Tag</h2>
+			<hr />
+		</div>
+		<div class="mb-3">
+			<label asp-for="Title"></label>
+			<input asp-for="Title" class="form-control" />
+			<span asp-validation-for="Title" class="text-danger"></span>
+		</div>
+		<div>
+            <input type="submit" value="Save changes" class="btn btn-success" />
+        </div>
+
+		<a asp-controller="Tag" asp-action="Index" class="btn btn-secondary" style="width:150px">
+			Back to List
+		</a>
+	</div>
+	</form>
+</div>
+
+<div class="wrapper">
+	<main id="main-content">
+		<form id="article-form" class="blog-article-form" method="post">
+			<div class="blog-article-form__content blog-card">
+				<div class="blog-article-form__body drop-area text-padding">
+					<div id="combobox-container" class="h-100" style="min-height: 27px;" data-state="suggesting" data-expanded="true">
+						<textarea id="article_body_markdown" class="blog-textfield blog-textfield--ghost blog-article-form__body__field ff-monospace fs-l h-100"></textarea>
+					</div>
+				</div>
+			</div>
+			<div class="blog-article-form__footer">
+				<button class="c-btn c-btn--primary mr-2 whitespace-nowrap" type="button">Save changes</button>
+				<button class="c-btn mr-2 whitespace-nowrap" type="button" asp-controller="Tag" asp-action="Index">Back to list</button>
+			</div>
+		</form>
+	</main>
+</div>
+
+
+@*<div>
+    <a asp-action="Index">Back to List</a>
+</div>*@
+
+@section Scripts{
+	@{
+		<partial name="_ValidationScriptsPartial" />
+	}
+}
+

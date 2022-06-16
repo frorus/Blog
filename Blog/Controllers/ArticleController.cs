@@ -69,7 +69,7 @@ namespace Blog.Controllers
                 };
 
                 var selectedTags = model.Tags.Where(t => t.Selected)
-                                       .Select(t => t);
+                                             .Select(t => t);
 
                 foreach (var t in selectedTags)
                 {
@@ -158,6 +158,7 @@ namespace Blog.Controllers
 
             return View(articleFromDb);
         }
+
 
         ////Edit article
         //[HttpPost]

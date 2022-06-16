@@ -47,7 +47,8 @@ namespace Blog.Controllers
             {
                 var tag = new Tag
                 {
-                    Title = model.Title
+                    Title = model.Title,
+                    Description = model.Description
                 };
 
                 await _unitOfWork.GetRepository<Tag>().Create(tag);
@@ -80,6 +81,7 @@ namespace Blog.Controllers
             var tagModel = new TagViewModel
             {
                 Title = tagFromDb.Title,
+                Description = tagFromDb.Description
             };
 
             return View(tagModel);
@@ -89,7 +91,7 @@ namespace Blog.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize]
-        public async Task<IActionResult> Edit(Guid id, Tag model)
+        public async Task<IActionResult> Edit(Guid id, TagViewModel model)
         {
             var tagFromDb = await _unitOfWork.GetRepository<Tag>().GetByIdAsync(id);
 
@@ -101,6 +103,7 @@ namespace Blog.Controllers
             if (ModelState.IsValid)
             {
                 tagFromDb.Title = model.Title;
+                tagFromDb.Description = model.Description;
 
                 await _unitOfWork.GetRepository<Tag>().Update(tagFromDb);
 
@@ -109,6 +112,25 @@ namespace Blog.Controllers
             }
 
             return View(model);
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> Details(Guid id)
+        {
+            if (id == Guid.Empty)
+            {
+                return NotFound();
+            }
+
+            var repository = _unitOfWork.GetRepository<Tag>() as TagRepository;
+            var tagFromDb = await repository.GetTagById(id);
+
+            if (tagFromDb == null)
+            {
+                return NotFound();
+            }
+
+            return View(tagFromDb);
         }
 
         [HttpGet]

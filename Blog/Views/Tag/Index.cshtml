@@ -29,9 +29,9 @@
                 {
                     <div class="tag-card blog-card branded-4 p-3 pt-2 m:p-6 m:pt-4 relative" style="border-top-color: rgb(59, 73, 223); ">
                         <h3 class="mb-1 -ml-2">
-                            <a class="blog-tag">#@obj.Title</a>
+                            <a class="blog-tag" asp-controller="Tag" asp-action="Details" asp-route-id="@obj.Id">#@obj.Title</a>
                         </h3>
-                        <p class="mb-2 color-base-70 truncate-at-3">Tag description</p>
+                        <p class="mb-2 color-base-70 truncate-at-3">@obj.Description</p>
                         <p class="mb-3 fs-s color-base-60">@obj.Articles.Count posts published</p>
                         <div class="mt-auto">
                             <a asp-controller="Tag" asp-action="Edit" asp-route-id="@obj.Id"

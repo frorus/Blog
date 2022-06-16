@@ -1,0 +1,32 @@
+{
+  "version": "1.0",
+  "defaultProvider": "cdnjs",
+  "libraries": [
+    {
+      "library": "jquery@3.6.0",
+      "destination": "wwwroot/lib/jquery/"
+    },
+    {
+      "library": "popper.js@2.11.5",
+      "destination": "wwwroot/lib/popper.js/",
+      "files": [
+        "cjs/enums.js",
+        "cjs/enums.js.map",
+        "cjs/enums.min.js",
+        "cjs/popper-base.js",
+        "cjs/popper-base.js.map",
+        "cjs/popper-base.min.js",
+        "cjs/popper-lite.js",
+        "cjs/popper-lite.js.map",
+        "cjs/popper-lite.min.js",
+        "cjs/popper.js",
+        "cjs/popper.js.map",
+        "cjs/popper.min.js"
+      ]
+    },
+    {
+      "library": "bootstrap@5.1.3",
+      "destination": "wwwroot/lib/bootstrap/"
+    }
+  ]
+}

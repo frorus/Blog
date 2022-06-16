@@ -4,7 +4,7 @@
     ViewData["Title"] = "Create";
 }
 
-<form method="post">
+@*<form method="post">
 	<div asp-validation-summary="ModelOnly"></div>
 	<div class="border p-3 mt-4">
 		<div class="row pb-2">
@@ -16,6 +16,11 @@
 			<input asp-for="Title" class="form-control" />
 			<span asp-validation-for="Title" class="text-danger"></span>
 		</div>
+		<div class="mb-3">
+			<label asp-for="Description"></label>
+			<input asp-for="Description" class="form-control" />
+			<span asp-validation-for="Description" class="text-danger"></span>
+		</div>
 		<div>
             <input type="submit" value="Create" class="btn btn-success" />
         </div>
@@ -24,7 +29,38 @@
 			Back to List
 		</a>
 	</div>
-</form>
+</form>*@
+
+<div class="wrapper">
+	<main id="main-content">
+		<form id="article-form" class="blog-article-form" method="post">
+			<div asp-validation-summary="ModelOnly"></div>
+			@*<input asp-for="Description" hidden />*@
+			<div class="blog-article-form__content blog-card">
+				<div class="blog-article-form__top text-padding drop-area">
+					<div class="blog-article-form__title">
+						<textarea class="blog-textfield-textarea fs-3xl m:fs-4xl l:fs-5xl fw-bold s:fw-heavy lh-tight"
+								  type="text" id="article-form-title" placeholder="New tag title here..." autocomplete="off"
+								  aria-label="Tag Title" autofocus="" style="min-height: 62px; max-height: 62px;"
+								  asp-for="Title"></textarea>
+								  <span asp-validation-for="Title" class="text-danger"></span>
+					</div>
+				</div>
+				<div class="blog-article-form__body drop-area text-padding">
+					<div id="combobox-container" class="h-100" style="min-height: 108px;">
+						<textarea class="blog-textfield-textarea ff-monospace fs-l h-100"
+								  type="text" id="article_body_markdown" placeholder="Write your tag description here..." autocomplete="off"
+								  style="min-height: 27px;" name="Description" @*asp-for="Description"*@></textarea>
+					</div>
+				</div>
+			</div>
+			<div class="blog-article-form__footer">
+				<button class="c-btn c-btn--primary mr-2 whitespace-nowrap" type="submit">Create tag</button>
+				<a class="c-link c-link--block mr-2 whitespace-nowrap" asp-controller="Tag" asp-action="Index">Back to tag list</a>
+			</div>
+		</form>
+	</main>
+</div>
 
 @section Scripts{
 	@{

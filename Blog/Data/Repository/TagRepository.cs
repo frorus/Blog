@@ -16,5 +16,12 @@ namespace Blog.Data.Repository
 
             return await tags.ToListAsync();
         }
+
+        public async Task<Tag> GetTagById(Guid id)
+        {
+            var tags = Set.Include(t => t.Articles).ThenInclude(a => a.Tags);
+
+            return await tags.FirstOrDefaultAsync(t => t.Id == id); ;
+        }
     }
 }

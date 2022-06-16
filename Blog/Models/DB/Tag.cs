@@ -6,7 +6,8 @@ namespace Blog.Models.DB
     {
         public Guid Id { get; set; }
         [Required]
-        public string Title { get; set; }
+        public string? Title { get; set; }
+        public string? Description { get; set; }
         public List<Article> Articles { get; set; } = new List<Article>();
     }
 }
