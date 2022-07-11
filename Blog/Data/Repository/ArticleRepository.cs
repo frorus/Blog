@@ -12,16 +12,19 @@ namespace Blog.Data.Repository
 
         public async Task<IEnumerable<Article>> GetAllArticles()
         {
-            var articles = Set.Include(a => a.Tags);
+            var articles = Set.Include(a => a.Tags)
+                              .Include(c => c.Comments);
 
             return await articles.ToListAsync();
         }
 
         public async Task<Article> GetArticleById(Guid id)
         {
-            var articles = Set.Include(a => a.Tags);
+            var articles = Set.Include(a => a.Tags)
+                              .Include(c => c.Comments)
+                              .ThenInclude(u => u.User);
 
-            return await articles.FirstOrDefaultAsync(a => a.Id == id); ;
+            return await articles.FirstOrDefaultAsync(a => a.Id == id);
         }
     }
 }

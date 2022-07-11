@@ -1,0 +1,41 @@
+﻿@model ArticleViewModel
+
+@{
+    ViewData["Title"] = "Edit";
+	Layout = null;
+}
+
+<div class="wrapper">
+	<main id="main-content">
+		<form id="article-form" class="blog-article-form" method="post">
+			<div class="blog-article-form__content blog-card">
+				<div class="blog-article-form__top text-padding drop-area">
+					<div class="blog-article-form__title">
+						<textarea class="blog-textfield-textarea fs-3xl m:fs-4xl l:fs-5xl fw-bold s:fw-heavy lh-tight"
+								  type="text" id="article-form-title" placeholder="Update title #@Model.Title here..." autocomplete="off"
+								  data-gramm_editor="false" aria-label="Tag Title" autofocus=""
+								  asp-for="Title"></textarea>
+					</div>
+				</div>
+				<div class="blog-article-form__body drop-area text-padding">
+					<div id="combobox-container" class="h-100">
+						<textarea class="blog-textfield-textarea ff-monospace fs-l h-100"
+								  type="text" id="article_body_markdown" placeholder="Update description here..." autocomplete="off"
+								  data-gramm_editor="false" asp-for="Text"></textarea>
+					</div>
+				</div>
+			</div>
+			<div class="blog-article-form__footer">
+				<button class="c-btn c-btn--primary mr-2 whitespace-nowrap" type="submit">Save changes</button>
+				<a class="c-link c-link--block mr-2 whitespace-nowrap" href='javascript:history.go(-1)'>Back to article</a>
+			</div>
+		</form>
+	</main>
+</div>
+
+@section Scripts{
+	@{
+		<partial name="_ValidationScriptsPartial" />
+	}
+}
+

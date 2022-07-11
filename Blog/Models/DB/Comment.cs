@@ -3,7 +3,7 @@
     public class Comment
     {
         public Guid Id { get; set; }
-        public DateTime Date { get; set; }
+        public DateTime Date { get; set; } = DateTime.Now;
         public string Content { get; set; } = null!;
         public Guid UserId { get; set; }
         public Guid ArticleId { get; set; }

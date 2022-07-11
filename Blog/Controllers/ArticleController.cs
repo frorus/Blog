@@ -68,8 +68,7 @@ namespace Blog.Controllers
                     User = await _userManager.FindByIdAsync(userId)
                 };
 
-                var selectedTags = model.Tags.Where(t => t.Selected)
-                                             .Select(t => t);
+                var selectedTags = model.Tags.Where(t => t.Selected).Select(t => t);
 
                 foreach (var t in selectedTags)
                 {
@@ -97,7 +96,27 @@ namespace Blog.Controllers
                 return NotFound();
             }
 
-            var articleFromDb = await _unitOfWork.GetRepository<Article>().GetByIdAsync(id);
+            var repository = _unitOfWork.GetRepository<Article>() as ArticleRepository;
+            var articleFromDb = await repository.GetArticleById(id);
+
+            var tagsFromDb = await _unitOfWork.GetRepository<Tag>().GetAllAsync();
+            var selectedTags = new List<SelectListItem>();
+
+            foreach (var tag in tagsFromDb)
+            {
+                selectedTags.Add(new SelectListItem(tag.Title, tag.Id.ToString()));
+            }
+
+            foreach (var tag in selectedTags)
+            {
+                foreach (var articleTag in articleFromDb.Tags)
+                {
+                    if(articleTag.Title == tag.Text)
+                    {
+                        tag.Selected = true;
+                    }
+                }
+            }
 
             if (articleFromDb == null)
             {
@@ -108,6 +127,7 @@ namespace Blog.Controllers
             {
                 Title = articleFromDb.Title,
                 Text = articleFromDb.Text,
+                Tags = selectedTags
             };
 
             return View(articleModel);
@@ -119,24 +139,42 @@ namespace Blog.Controllers
         [Authorize]
         public async Task<IActionResult> Edit(Guid id, ArticleViewModel model)
         {
-            var articleFromDb = await _unitOfWork.GetRepository<Article>().GetByIdAsync(id);
+            //var articleFromDb = await _unitOfWork.GetRepository<Article>().GetByIdAsync(id);
+
+            var repository = _unitOfWork.GetRepository<Article>() as ArticleRepository;
+            var articleFromDb = await repository.GetArticleById(id);
 
             if (articleFromDb == null)
             {
                 return NotFound();
             }
 
-            if (ModelState.IsValid)
-            {
-                articleFromDb.Text = model.Text;
-                articleFromDb.Title = model.Title;
+            //if (ModelState.IsValid)
+            //{
+            //    articleFromDb.Text = model.Text;
+            //    articleFromDb.Title = model.Title;
 
-                await _unitOfWork.GetRepository<Article>().Update(articleFromDb);
-                //TempData["success"] = "Category updated successfully";
-                return RedirectToAction("Index");
+            //    await _unitOfWork.GetRepository<Article>().Update(articleFromDb);
+            //    //TempData["success"] = "Category updated successfully";
+            //    return RedirectToAction("Index");
+            //}
+
+            articleFromDb.Text = model.Text;
+            articleFromDb.Title = model.Title;
+            articleFromDb.Tags.Clear();
+
+            var selectedTags = model.Tags.Where(t => t.Selected).Select(t => t);
+
+            foreach (var t in selectedTags)
+            {
+                var tag = await _unitOfWork.GetRepository<Tag>().GetByIdAsync(Guid.Parse(t.Value));
+                articleFromDb.Tags.Add(tag);
             }
 
-            return View(model);
+            await _unitOfWork.GetRepository<Article>().Update(articleFromDb);
+
+            //return View(model);
+            return RedirectToAction("Index");
         }
 
         [HttpGet]

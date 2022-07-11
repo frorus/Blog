@@ -1,0 +1,19 @@
+﻿@model CommentViewModel
+
+<form class="comment-form" accept-charset="UTF-8" method="post" asp-controller="Comment" asp-action="Create">
+    <span class="blog-avatar m:blog-avatar--l mr-2 shrink-0">
+        <img class="blog-avatar__image overflow-hidden" src="https://thispersondoesnotexist.com/image" width="32" height="32">
+        ::after
+    </span>
+    <div class="comment-form__inner">
+        <input asp-for="ArticleId" type="hidden" />
+        <div class="comment-form__field">
+            <div>
+                <textarea class="blog-textfield comment-textarea blog-textfield--ghost" placeholder="Add to the discussion" required="required" aria-label="Add a comment to the discussion" name="Content" style="transition: none 0s ease 0s; height: 128px;"></textarea>
+            </div>
+        </div>
+        <div class="comment-form__buttons mb-4">
+            <button class="blog-btn mr-2" type="submit">Submit</button>
+        </div>
+    </div>
+</form>
