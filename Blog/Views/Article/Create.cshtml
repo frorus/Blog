@@ -2,46 +2,84 @@
 
 @{
     ViewData["Title"] = "Create";
+	Layout = null;
 }
 
-<form method="post">
-	<div asp-validation-summary="ModelOnly"></div>
-	<div class="border p-3 mt-4">
-		<div class="row pb-2">
-			<h2 class="text-primary">Create Article</h2>
-			<hr />
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.2/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/Blog.styles.css" asp-append-version="true" />
+</head>
+	<body style="padding-top: 0">
+	    <div class="wrapper">
+			<main id="main-content">
+				<form id="article-form" class="blog-article-form" method="post">
+					<div class="blog-article-form__content blog-card">
+					<div class="blog-article__header__meta text-padding drop-area">
+						<div class="blog-article-form__title">
+							<textarea class="blog-textfield-textarea fs-3xl m:fs-4xl l:fs-5xl fw-bold s:fw-heavy lh-tight"
+									  type="text" id="article-form-title" placeholder="Write title @Model.Title here..." autocomplete="off"
+									  data-gramm_editor="false" aria-label="Tag Title" autofocus=""
+									  asp-for="Title"></textarea>
+						</div>
+					</div>
+					<div class="blog-article-form__body drop-area text-padding h-100">
+						<div id="combobox-container" class="h-100">
+							<textarea class="blog-textfield-textarea ff-monospace fs-l h-100"
+									  type="text" id="article_body_markdown" placeholder="Write description here..." autocomplete="off"
+									  data-gramm_editor="false" asp-for="Text"></textarea>
+						</div>
+					</div>
+					</div>
+					<div class="blog-article-form__aside">
+						<div class="sticky">
+							<div class="blog-article-form__help blog-article-form__help--body">
+							<h4 class="mb-2 fs-l">Editor help</h4>
+							<ul class="list-disc pl-6 color-base-70">
+								<li>
+									Use
+									<a href="https://www.markdownguide.org/basic-syntax/">Markdown</a>
+									to write and format posts.
+								</li>
+								<li>
+									To insert an empty line, use <code>&lt;br&gt;</code>
+								</li>
+							</ul>
+							</div>
+						</div>
+						<div class="sticky mt-4">
+							<div>
+								<h4 class="mb-2 fs-l">Choose tags:</h4>
+								<ul class="pl-2 color-base-70" style="list-style: none;">
+									@for (int i = 0; i < @Model.Tags.Count; i++)
+									{
+										<li class="mb-1">
+											<input type="hidden" asp-for="@Model.Tags[i].Value">
+											<input asp-for="@Model.Tags[i].Selected">
+											<label asp-for="@Model.Tags[i].Selected">@Model.Tags[i].Text</label>
+										</li>
+									}
+								</ul>
+							</div>
+							
+						</div>
+					</div>
+					<div class="blog-article-form__footer">
+					<button class="c-btn c-btn--primary mr-2 whitespace-nowrap" type="submit">Publish</button>
+					<a class="c-link c-link--block mr-2 whitespace-nowrap" href='javascript:history.go(-1)'>Back to previous page</a>
+					</div>
+				</form>
+			</main>
 		</div>
-
-		<div class="form-group">
-			@for (int i = 0; i < @Model.Tags.Count; i++)
-			{
-				<input type="hidden" asp-for="@Model.Tags[i].Value">
-				<input asp-for="@Model.Tags[i].Selected">@Model.Tags[i].Text
-			}
-		</div>
-
-		<div class="mb-3">
-			<label asp-for="Title"></label>
-			<input asp-for="Title" class="form-control" />
-			<span asp-validation-for="Title" class="text-danger"></span>
-		</div>
-		<div class="mb-3">
-			<label asp-for="Text"></label>
-			<input asp-for="Text" class="form-control" />
-			<span asp-validation-for="Text" class="text-danger"></span>
-		</div>
-		<div>
-            <input type="submit" value="Create" class="btn btn-success" />
-        </div>
-
-		<a asp-controller="Article" asp-action="Index" class="btn btn-secondary" style="width:150px">
-			Back to List
-		</a>
-	</div>
-</form>
-
-@section Scripts{
-	@{
-		<partial name="_ValidationScriptsPartial" />
-	}
-}
+	
+	    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+	    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+	    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+	    <script src="~/js/site.js" asp-append-version="true"></script>
+	</body>
+</html>

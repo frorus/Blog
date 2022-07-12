@@ -2289,3 +2289,23 @@ label,
 label::before {
     transition: 0.25s all ease;
 }
+
+.border-none {
+    border-style: none !important;
+}
+
+.p-0 {
+    padding: 0 !important;
+}
+
+.cursor-text {
+    cursor: text !important;
+}
+
+.list-none {
+    list-style-type: none !important;
+}
+
+.w-max {
+    width: max-content !important;
+}

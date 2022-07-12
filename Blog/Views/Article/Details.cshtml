@@ -65,7 +65,10 @@
                             <div class="flex flex-wrap">
                                 @foreach(var tag in Model.Tags)
                                 {
-                                    <a class="blog-tag" asp-controller="Tag" asp-action="Details" asp-route-id="@tag.Id">#@tag.Title</a>
+                                    <a class="blog-tag" asp-controller="Tag" asp-action="Details" asp-route-id="@tag.Id">
+                                        <span style="color: rgb(59, 73, 223)">#</span>
+                                        @tag.Title
+                                    </a>
                                 }
                             </div>
                         </div>

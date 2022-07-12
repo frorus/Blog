@@ -114,7 +114,10 @@
                                     </h3>
                                     <div class="blog-article__tags">
                                         @foreach(var tag in obj.Tags){
-                                            <a class="blog-tag blog-tag--monochrome" asp-controller="Tag" asp-action="Details" asp-route-id="@tag.Id">#@tag.Title</a>
+                                            <a class="blog-tag blog-tag--monochrome" asp-controller="Tag" asp-action="Details" asp-route-id="@tag.Id">
+                                                <span style="color: rgb(59, 73, 223)">#</span>
+                                                @tag.Title
+                                            </a>
                                         }
                                     </div>
                                     <div class="blog-article__bottom">

@@ -173,8 +173,7 @@ namespace Blog.Controllers
 
             await _unitOfWork.GetRepository<Article>().Update(articleFromDb);
 
-            //return View(model);
-            return RedirectToAction("Index");
+            return RedirectToAction("Details", new { id });
         }
 
         [HttpGet]
@@ -232,7 +231,8 @@ namespace Blog.Controllers
                 return NotFound();
             }
 
-            var articleFromDb = await _unitOfWork.GetRepository<Article>().GetByIdAsync(id);
+            var repository = _unitOfWork.GetRepository<Article>() as ArticleRepository;
+            var articleFromDb = await repository.GetArticleById(id);
 
             if (articleFromDb == null)
             {
