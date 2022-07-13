@@ -2,13 +2,14 @@
 
 @{
     ViewData["Title"] = "Edit";
+	Layout = "_LayoutNoHeaderNoFooter";
 }
 
 <div class="wrapper">
 	<main id="main-content">
 		<form id="article-form" class="blog-article-form" method="post">
 			<div class="blog-article-form__content blog-card">
-				<div class="blog-article-form__top text-padding drop-area">
+				<div class="blog-article__header__meta text-padding drop-area">
 					<div class="blog-article-form__title">
 						<textarea class="blog-textfield-textarea fs-3xl m:fs-4xl l:fs-5xl fw-bold s:fw-heavy lh-tight"
 								  type="text" id="article-form-title" placeholder="Update title #@Model.Title here..." autocomplete="off"
