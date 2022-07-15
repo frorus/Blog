@@ -2309,3 +2309,14 @@ label::before {
 .w-max {
     width: max-content !important;
 }
+
+.c-btn--icon-alone {
+    padding: var(--su-2);
+}
+
+.blog-article-form__edit {
+    position: absolute;
+    right: var(--su-2);
+    /*top: var(--su-2);*/
+    margin-left: 0;
+}

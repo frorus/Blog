@@ -106,6 +106,15 @@
                                                             <p class="fs-s">
                                                                 <time>@comment.Date.ToLongDateString()</time>
                                                             </p>
+                                                            <div class="blog-article-form__edit">
+                                                                <button type="button" class="c-btn c-btn--icon-alone" data-toggle="myModal" data-target="#ModalCenter" data-url="@Url.Action("Edit", "Comment", new {id = comment.Id})">
+                                                                    <i class="bi bi-pencil"></i>
+                                                                </button>
+                                                                <button type="button" class="c-btn c-btn--icon-alone" data-toggle="myModal" data-target="#ModalCenterDelete" data-url="@Url.Action("Delete", "Comment", new {id = comment.Id})">
+                                                                    <i class="bi bi-x-lg"></i>
+                                                                </button>
+                                                            </div>
+                                                            <div id="EditCommentModalWindow"></div>
                                                         </div>
                                                         <div class="comment__body text-styles text-styles--secondary">
                                                             <p>@comment.Content</p>

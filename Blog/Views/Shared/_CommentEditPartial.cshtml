@@ -1,0 +1,29 @@
+﻿@model CommentEditViewModel
+
+<form accept-charset="UTF-8" method="post" asp-controller="Comment" asp-action="Edit">
+<div class="modal fade" id="ModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                    <h5 class="modal-title" style="font-weight: var(--fw-bold);" id="exampleModalTitle">Edit comment</h5>
+                    <button class="c-btn c-btn--icon-alone" type="button" data-dismiss="modal" aria-label="Close">
+                        <i class="bi bi-x-lg"></i>
+                    </button>
+            </div>
+            <div class="modal-body">
+                <input asp-for="Id" type="hidden" />
+                <div>
+                    <textarea id="edit-textarea" class="w-100 blog-textfield-textarea" asp-for="Content">@Model.Content</textarea>
+                    <div class="pt-4">
+                        <button class="blog-btn mr-1" type="submit">Save changes</button>
+                        <button class="blog-btn blog-btn--secondary" type="button" data-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</form>
+
+<script src="~/js/site.js" asp-append-version="true"></script>
+
