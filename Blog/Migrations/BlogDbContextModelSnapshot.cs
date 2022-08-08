@@ -121,6 +121,9 @@ namespace Blog.Migrations
                     b.Property<DateTime>("Date")
                         .HasColumnType("datetime2");
 
+                    b.Property<Guid?>("FavouriteId")
+                        .HasColumnType("uniqueidentifier");
+
                     b.Property<string>("Text")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -136,6 +139,8 @@ namespace Blog.Migrations
                         .HasColumnType("nvarchar(450)");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("FavouriteId");
 
                     b.HasIndex("UserId1");
 
@@ -171,6 +176,49 @@ namespace Blog.Migrations
                     b.HasIndex("UserId1");
 
                     b.ToTable("Comments");
+                });
+
+            modelBuilder.Entity("Blog.Models.DB.Favourite", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("UserId1")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId1");
+
+                    b.ToTable("FavouriteArticles");
+                });
+
+            modelBuilder.Entity("Blog.Models.DB.Like", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("ArticleId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("UserId1")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ArticleId");
+
+                    b.HasIndex("UserId1");
+
+                    b.ToTable("Likes");
                 });
 
             modelBuilder.Entity("Blog.Models.DB.Tag", b =>
@@ -341,6 +389,10 @@ namespace Blog.Migrations
 
             modelBuilder.Entity("Blog.Models.DB.Article", b =>
                 {
+                    b.HasOne("Blog.Models.DB.Favourite", null)
+                        .WithMany("FavouriteArticles")
+                        .HasForeignKey("FavouriteId");
+
                     b.HasOne("Blog.Models.DB.ApplicationUser", "User")
                         .WithMany("Articles")
                         .HasForeignKey("UserId1");
@@ -358,6 +410,32 @@ namespace Blog.Migrations
 
                     b.HasOne("Blog.Models.DB.ApplicationUser", "User")
                         .WithMany("Comments")
+                        .HasForeignKey("UserId1");
+
+                    b.Navigation("Article");
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("Blog.Models.DB.Favourite", b =>
+                {
+                    b.HasOne("Blog.Models.DB.ApplicationUser", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId1");
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("Blog.Models.DB.Like", b =>
+                {
+                    b.HasOne("Blog.Models.DB.Article", "Article")
+                        .WithMany("Likes")
+                        .HasForeignKey("ArticleId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Blog.Models.DB.ApplicationUser", "User")
+                        .WithMany()
                         .HasForeignKey("UserId1");
 
                     b.Navigation("Article");
@@ -426,6 +504,13 @@ namespace Blog.Migrations
             modelBuilder.Entity("Blog.Models.DB.Article", b =>
                 {
                     b.Navigation("Comments");
+
+                    b.Navigation("Likes");
+                });
+
+            modelBuilder.Entity("Blog.Models.DB.Favourite", b =>
+                {
+                    b.Navigation("FavouriteArticles");
                 });
 #pragma warning restore 612, 618
         }

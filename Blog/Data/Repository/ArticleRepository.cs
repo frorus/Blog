@@ -20,9 +20,10 @@ namespace Blog.Data.Repository
 
         public async Task<Article> GetArticleById(Guid id)
         {
-            var articles = Set.Include(a => a.Tags)
-                              .Include(c => c.Comments)
-                              .ThenInclude(u => u.User);
+            var articles = Set.Include(article => article.Tags)
+                              .Include(article => article.Comments)
+                              .ThenInclude(comments => comments.User);
+            
 
             return await articles.FirstOrDefaultAsync(a => a.Id == id);
         }

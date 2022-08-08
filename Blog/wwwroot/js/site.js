@@ -1,38 +1,20 @@
-﻿// Please see documentation at https://docs.microsoft.com/aspnet/core/client-side/bundling-and-minification
-// for details on configuring this project to bundle and minify static web assets.
-
-// Write your JavaScript code.
-
+﻿//Automatically increase textarea field during typing the text
 function fixTextareaSize(textarea) {
     textarea.style.height = 'auto'
     textarea.style.height = textarea.scrollHeight + 2 + "px"
 }
 
+//Resize textarea by content
 ~function () {
-    /*---var textarea = document.querySelector('textarea')*/
-    //---textarea.addEventListener('input', function (e) { fixTextareaSize(e.target) })
-    //---fixTextareaSize(textarea)
-
     var tx = document.getElementsByTagName('textarea');
 
     for (var i = 0; i < tx.length; i++) {
-
-        /*---tx[i].setAttribute('style', 'height:' + (tx[i].scrollHeight) + 'px;overflow-y:hidden;');*/
-
         tx[i].addEventListener("input", function (e) { fixTextareaSize(e.target) });
         fixTextareaSize(tx[i])
-
     }
 }()
 
-//let setHeight = (input) => {
-
-//    input.style.overflow = 'hidden';
-//    input.style.height = 0;
-
-//    input.style.height = `${input.scrollHeight + 2}px`;
-//};
-
+//Resize textarea for modal windows
 $('.modal').on('shown.bs.modal', function () {
     $(this).find('textarea').each(function () {
         this.addEventListener("input", function (e) { fixTextareaSize(e.target) });
@@ -40,11 +22,13 @@ $('.modal').on('shown.bs.modal', function () {
     });
 })
 
+//Move the cursor to the end of the text in modal windows
 $('.modal').on('shown.bs.modal', function () {
     var data = $('#edit-textarea').val();
     $('#edit-textarea').focus().val('').val(data);
 })
 
+//Edit modal windows
 $(function () {
     var Elem = $('#EditCommentModalWindow');
     $('button[data-toggle="myModal"]').click(function (event) {
@@ -67,3 +51,69 @@ $(function () {
         })
     })
 })
+
+//Add like to article
+$(function () {
+    $(document).on("click", ".like", function (event) { 
+        event.preventDefault();
+        var id = $(this).val();
+        $.ajax({
+            type: "POST",
+            url: "/Like/AddLike",
+            data: { "id": id },
+            context: this,
+            success: function () {
+                $(this).removeClass("like");
+                $(this).addClass("unlike");
+                $(this).addClass("user-activated");
+                incrementCounter();
+            },
+            error: function (error) {
+                console.log(error);
+            }
+        });
+    });
+})
+
+//Remove like from article
+$(function () {
+    $(document).on("click", ".unlike", function (event) {
+        event.preventDefault();
+        var id = $(this).val();
+        $.ajax({
+            type: "POST",
+            url: "/Like/Delete",
+            data: { "id": id },
+            context: this,
+            success: function () {
+                $(this).removeClass("unlike");
+                $(this).addClass("like");
+                $(this).removeClass("user-activated");
+                decrementCounter();
+            },
+            error: function (error) {
+                //if (error.response.status == 401) {
+                //    //throw new Error(error);
+                //    console.log("Error!");
+                //}
+                console.log(error);
+                //console.log(error);
+            }
+        });
+    });
+})
+
+function incrementCounter() {
+    document.getElementById('reaction-number-like').textContent++;
+}
+
+function decrementCounter() {
+    document.getElementById('reaction-number-like').textContent--;
+}
+
+//Errors handler
+$(document).ajaxError(function (event, request, settings) {
+    let status = request.status;
+    if (status == 401)
+        location.replace("/Account/Login");
+});

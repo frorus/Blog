@@ -1,4 +1,4 @@
-﻿@model Blog.Models.DB.Article
+﻿@model Article
 @using Microsoft.AspNetCore.Identity
 
 @inject UserManager<ApplicationUser> UserManager
@@ -12,15 +12,36 @@
         <aside class="blog-layout__sidebar-left">
             <div class="blog-article-actions">
                 <div class="blog-article-actions__inner">
-                    <button id="reaction-butt-like" class="blog-reaction blog-reaction--like activated" aria-pressed="false" title="Heart">
-                        <span class="blog-reaction__icon blog-reaction__icon--inactive">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" role="img" aria-hidden="true" class="blog-icon">
-                                <path d="M21.179 12.794l.013.014L12 22l-9.192-9.192.013-.014A6.5 6.5 0 0112 3.64a6.5 6.5 0 019.179 9.154zM4.575 5.383a4.5 4.5 0 000 6.364L12 19.172l7.425-7.425a4.5 4.5 0 10-6.364-6.364L8.818 9.626 7.404 8.21l3.162-3.162a4.5 4.5 0 00-5.99.334l-.001.001z"></path>
-                            </svg>
-                        </span>
-                        <span class="blog-reaction__icon blog-reaction__icon--active" hidden></span>
-                        <span class="blog-reaction__count" id="reaction-number-like">53</span>
-                    </button>
+                    @if(Model.Likes.Any(x => x.ArticleId == Model.Id && x.UserId.ToString() == UserManager.GetUserId(User))){
+                        <button id="reaction-button-like" class="blog-reaction blog-reaction--like relative unlike user-activated" value="@Model.Id">
+                            <span class="blog-reaction__icon blog-reaction__icon--inactive">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" role="img" aria-hidden="true" class="blog-icon">
+                                    <path d="M21.179 12.794l.013.014L12 22l-9.192-9.192.013-.014A6.5 6.5 0 0112 3.64a6.5 6.5 0 019.179 9.154zM4.575 5.383a4.5 4.5 0 000 6.364L12 19.172l7.425-7.425a4.5 4.5 0 10-6.364-6.364L8.818 9.626 7.404 8.21l3.162-3.162a4.5 4.5 0 00-5.99.334l-.001.001z"></path>
+                                </svg>
+                            </span>
+                            <span class="blog-reaction__icon blog-reaction__icon--active">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" role="img" aria-hidden="true" class="blog-icon">
+                                    <path d="M2.821 12.794a6.5 6.5 0 017.413-10.24h-.002L5.99 6.798l1.414 1.414 4.242-4.242a6.5 6.5 0 019.193 9.192L12 22l-9.192-9.192.013-.014z"></path>
+                                </svg>
+                            </span>
+                            <span class="blog-reaction__count" id="reaction-number-like">@Model.Likes.Count()</span>
+                        </button>
+                    }
+                    else{
+                        <button id="reaction-button-like" class="blog-reaction blog-reaction--like relative like" value="@Model.Id">
+                            <span class="blog-reaction__icon blog-reaction__icon--inactive">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" role="img" aria-hidden="true" class="blog-icon">
+                                    <path d="M21.179 12.794l.013.014L12 22l-9.192-9.192.013-.014A6.5 6.5 0 0112 3.64a6.5 6.5 0 019.179 9.154zM4.575 5.383a4.5 4.5 0 000 6.364L12 19.172l7.425-7.425a4.5 4.5 0 10-6.364-6.364L8.818 9.626 7.404 8.21l3.162-3.162a4.5 4.5 0 00-5.99.334l-.001.001z"></path>
+                                </svg>
+                            </span>
+                            <span class="blog-reaction__icon blog-reaction__icon--active">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" role="img" aria-hidden="true" class="blog-icon">
+                                    <path d="M2.821 12.794a6.5 6.5 0 017.413-10.24h-.002L5.99 6.798l1.414 1.414 4.242-4.242a6.5 6.5 0 019.193 9.192L12 22l-9.192-9.192.013-.014z"></path>
+                                </svg>
+                            </span>
+                            <span class="blog-reaction__count" id="reaction-number-like">@Model.Likes.Count()</span>
+                        </button>
+                    }       
                     <button id="reaction-butt-readinglist" class="blog-reaction blog-reaction--readinglist activated" title="Save">
                         <span class="blog-reaction__icon blog-reaction__icon--inactive">
                             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" role="img" aria-hidden="true" class="blog-icon">
@@ -142,3 +163,26 @@
         </main>
     </div>
 </div>
+
+@*@section scripts {
+    <script type="text/javascript">
+        $(document).ready(function () {
+        $("#reaction-button-like").click(function () {
+        var id = $(this).data("id");
+        var link = "/Like/AddLike/" + id;
+        alert(id);
+        $.ajax({
+            type: "POST",
+            url: link,
+            /*data: { id: id },*/
+            success: function () {
+                alert("success");// Hide Like Button & Show Dislike Button
+            },
+            error: function (error) {
+                alert("error = " + error);
+            }
+        });
+    });
+})
+    </script>
+}*@

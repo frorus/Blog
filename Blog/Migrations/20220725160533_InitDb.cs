@@ -85,22 +85,18 @@ namespace Blog.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Articles",
+                name: "FavouriteArticles",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    Date = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    Title = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Text = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    AuthorUsername = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     UserId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     UserId1 = table.Column<string>(type: "nvarchar(450)", nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Articles", x => x.Id);
+                    table.PrimaryKey("PK_FavouriteArticles", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Articles_User_UserId1",
+                        name: "FK_FavouriteArticles_User_UserId1",
                         column: x => x.UserId1,
                         principalTable: "User",
                         principalColumn: "Id");
@@ -192,6 +188,34 @@ namespace Blog.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Articles",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Date = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    Title = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Text = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    AuthorUsername = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    UserId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    UserId1 = table.Column<string>(type: "nvarchar(450)", nullable: true),
+                    FavouriteId = table.Column<Guid>(type: "uniqueidentifier", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Articles", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Articles_FavouriteArticles_FavouriteId",
+                        column: x => x.FavouriteId,
+                        principalTable: "FavouriteArticles",
+                        principalColumn: "Id");
+                    table.ForeignKey(
+                        name: "FK_Articles_User_UserId1",
+                        column: x => x.UserId1,
+                        principalTable: "User",
+                        principalColumn: "Id");
+                });
+
+            migrationBuilder.CreateTable(
                 name: "ArticleTag",
                 columns: table => new
                 {
@@ -242,6 +266,36 @@ namespace Blog.Migrations
                         principalColumn: "Id");
                 });
 
+            migrationBuilder.CreateTable(
+                name: "Likes",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    UserId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    UserId1 = table.Column<string>(type: "nvarchar(450)", nullable: true),
+                    ArticleId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Likes", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Likes_Articles_ArticleId",
+                        column: x => x.ArticleId,
+                        principalTable: "Articles",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Likes_User_UserId1",
+                        column: x => x.UserId1,
+                        principalTable: "User",
+                        principalColumn: "Id");
+                });
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Articles_FavouriteId",
+                table: "Articles",
+                column: "FavouriteId");
+
             migrationBuilder.CreateIndex(
                 name: "IX_Articles_UserId1",
                 table: "Articles",
@@ -260,6 +314,21 @@ namespace Blog.Migrations
             migrationBuilder.CreateIndex(
                 name: "IX_Comments_UserId1",
                 table: "Comments",
+                column: "UserId1");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_FavouriteArticles_UserId1",
+                table: "FavouriteArticles",
+                column: "UserId1");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Likes_ArticleId",
+                table: "Likes",
+                column: "ArticleId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Likes_UserId1",
+                table: "Likes",
                 column: "UserId1");
 
             migrationBuilder.CreateIndex(
@@ -311,6 +380,9 @@ namespace Blog.Migrations
                 name: "Comments");
 
             migrationBuilder.DropTable(
+                name: "Likes");
+
+            migrationBuilder.DropTable(
                 name: "RoleClaims");
 
             migrationBuilder.DropTable(
@@ -333,6 +405,9 @@ namespace Blog.Migrations
 
             migrationBuilder.DropTable(
                 name: "Role");
+
+            migrationBuilder.DropTable(
+                name: "FavouriteArticles");
 
             migrationBuilder.DropTable(
                 name: "User");

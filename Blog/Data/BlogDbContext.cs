@@ -10,6 +10,8 @@ namespace Blog.Data
         public DbSet<Article> Articles { get; set; }
         public DbSet<Comment> Comments { get; set; }
         public DbSet<Tag> Tags { get; set; }
+        public DbSet<Like> Likes { get; set; }
+        public DbSet<Favourite> FavouriteArticles { get; set; }
 
         public BlogDbContext(DbContextOptions<BlogDbContext> options) : base(options)
         {
@@ -54,6 +56,8 @@ namespace Blog.Data
             {
                 entity.ToTable("UserTokens");
             });
+
+            builder.Entity<Article>().Navigation(e => e.Likes).AutoInclude();
         }
     }
 }
