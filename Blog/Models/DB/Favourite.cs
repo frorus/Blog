@@ -7,6 +7,7 @@ namespace Blog.Models.DB
         public Guid Id { get; set; }
         public Guid UserId { get; set; }
         public ApplicationUser User { get; set; } = null!;
-        public List<Article> FavouriteArticles { get; set; } = new List<Article>();
+        public Guid ArticleId { get; set; }
+        public Article Article { get; set; } = null!;
     }
 }

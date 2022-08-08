@@ -58,6 +58,7 @@ namespace Blog.Data
             });
 
             builder.Entity<Article>().Navigation(e => e.Likes).AutoInclude();
+            builder.Entity<Article>().Navigation(e => e.Favourites).AutoInclude();
         }
     }
 }

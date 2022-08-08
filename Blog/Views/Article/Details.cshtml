@@ -27,7 +27,8 @@
                             <span class="blog-reaction__count" id="reaction-number-like">@Model.Likes.Count()</span>
                         </button>
                     }
-                    else{
+                    else
+                    {
                         <button id="reaction-button-like" class="blog-reaction blog-reaction--like relative like" value="@Model.Id">
                             <span class="blog-reaction__icon blog-reaction__icon--inactive">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" role="img" aria-hidden="true" class="blog-icon">
@@ -41,20 +42,40 @@
                             </span>
                             <span class="blog-reaction__count" id="reaction-number-like">@Model.Likes.Count()</span>
                         </button>
-                    }       
-                    <button id="reaction-butt-readinglist" class="blog-reaction blog-reaction--readinglist activated" title="Save">
-                        <span class="blog-reaction__icon blog-reaction__icon--inactive">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" role="img" aria-hidden="true" class="blog-icon">
-                                <path d="M5 2h14a1 1 0 011 1v19.143a.5.5 0 01-.766.424L12 18.03l-7.234 4.536A.5.5 0 014 22.143V3a1 1 0 011-1zm13 2H6v15.432l6-3.761 6 3.761V4z"></path>
-                            </svg>
-                        </span>
-                        <span class="blog-reaction__icon blog-reaction__icon--active" hidden>
-                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" role="img" aria-hidden="true" class="blog-icon">
-                                <path d="M5 2h14a1 1 0 011 1v19.143a.5.5 0 01-.766.424L12 18.03l-7.234 4.536A.5.5 0 014 22.143V3a1 1 0 011-1z"></path>
-                            </svg>
-                        </span>
-                        <span class="blog-reaction__count" id="reaction-number-readinglist">53</span>
-                    </button>
+                    }
+                    @if(Model.Favourites.Any(x => x.ArticleId == Model.Id && x.UserId.ToString() == UserManager.GetUserId(User)))
+                    {
+                        <button @*id="reaction-button-readinglist"*@ class="blog-reaction blog-reaction--readinglist relative unfavourite user-activated" title="Save" value="@Model.Id">
+                            <span class="blog-reaction__icon blog-reaction__icon--inactive">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" role="img" aria-hidden="true" class="blog-icon">
+                                    <path d="M5 2h14a1 1 0 011 1v19.143a.5.5 0 01-.766.424L12 18.03l-7.234 4.536A.5.5 0 014 22.143V3a1 1 0 011-1zm13 2H6v15.432l6-3.761 6 3.761V4z"></path>
+                                </svg>
+                            </span>
+                            <span class="blog-reaction__icon blog-reaction__icon--active">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" role="img" aria-hidden="true" class="blog-icon">
+                                    <path d="M5 2h14a1 1 0 011 1v19.143a.5.5 0 01-.766.424L12 18.03l-7.234 4.536A.5.5 0 014 22.143V3a1 1 0 011-1z"></path>
+                                </svg>
+                            </span>
+                            <span class="blog-reaction__count" id="reaction-number-readinglist">@Model.Favourites.Count()</span>
+                        </button>
+                    }
+                    else
+                    {
+                        <button @*id="reaction-button-readinglist"*@ class="blog-reaction blog-reaction--readinglist relative favourite" title="Save" value="@Model.Id">
+                            <span class="blog-reaction__icon blog-reaction__icon--inactive">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" role="img" aria-hidden="true" class="blog-icon">
+                                    <path d="M5 2h14a1 1 0 011 1v19.143a.5.5 0 01-.766.424L12 18.03l-7.234 4.536A.5.5 0 014 22.143V3a1 1 0 011-1zm13 2H6v15.432l6-3.761 6 3.761V4z"></path>
+                                </svg>
+                            </span>
+                            <span class="blog-reaction__icon blog-reaction__icon--active">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" role="img" aria-hidden="true" class="blog-icon">
+                                    <path d="M5 2h14a1 1 0 011 1v19.143a.5.5 0 01-.766.424L12 18.03l-7.234 4.536A.5.5 0 014 22.143V3a1 1 0 011-1z"></path>
+                                </svg>
+                            </span>
+                            <span class="blog-reaction__count" id="reaction-number-readinglist">@Model.Favourites.Count()</span>
+                        </button>
+                    
+                    }
                 </div>
             </div>
         </aside>

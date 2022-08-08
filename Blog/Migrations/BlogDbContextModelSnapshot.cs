@@ -121,9 +121,6 @@ namespace Blog.Migrations
                     b.Property<DateTime>("Date")
                         .HasColumnType("datetime2");
 
-                    b.Property<Guid?>("FavouriteId")
-                        .HasColumnType("uniqueidentifier");
-
                     b.Property<string>("Text")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -139,8 +136,6 @@ namespace Blog.Migrations
                         .HasColumnType("nvarchar(450)");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("FavouriteId");
 
                     b.HasIndex("UserId1");
 
@@ -184,6 +179,9 @@ namespace Blog.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<Guid>("ArticleId")
+                        .HasColumnType("uniqueidentifier");
+
                     b.Property<Guid>("UserId")
                         .HasColumnType("uniqueidentifier");
 
@@ -191,6 +189,8 @@ namespace Blog.Migrations
                         .HasColumnType("nvarchar(450)");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("ArticleId");
 
                     b.HasIndex("UserId1");
 
@@ -389,10 +389,6 @@ namespace Blog.Migrations
 
             modelBuilder.Entity("Blog.Models.DB.Article", b =>
                 {
-                    b.HasOne("Blog.Models.DB.Favourite", null)
-                        .WithMany("FavouriteArticles")
-                        .HasForeignKey("FavouriteId");
-
                     b.HasOne("Blog.Models.DB.ApplicationUser", "User")
                         .WithMany("Articles")
                         .HasForeignKey("UserId1");
@@ -419,9 +415,17 @@ namespace Blog.Migrations
 
             modelBuilder.Entity("Blog.Models.DB.Favourite", b =>
                 {
+                    b.HasOne("Blog.Models.DB.Article", "Article")
+                        .WithMany("Favourites")
+                        .HasForeignKey("ArticleId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("Blog.Models.DB.ApplicationUser", "User")
                         .WithMany()
                         .HasForeignKey("UserId1");
+
+                    b.Navigation("Article");
 
                     b.Navigation("User");
                 });
@@ -505,12 +509,9 @@ namespace Blog.Migrations
                 {
                     b.Navigation("Comments");
 
-                    b.Navigation("Likes");
-                });
+                    b.Navigation("Favourites");
 
-            modelBuilder.Entity("Blog.Models.DB.Favourite", b =>
-                {
-                    b.Navigation("FavouriteArticles");
+                    b.Navigation("Likes");
                 });
 #pragma warning restore 612, 618
         }

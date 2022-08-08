@@ -59,14 +59,14 @@ $(function () {
         var id = $(this).val();
         $.ajax({
             type: "POST",
-            url: "/Like/AddLike",
+            url: "/Like/Add",
             data: { "id": id },
             context: this,
             success: function () {
                 $(this).removeClass("like");
                 $(this).addClass("unlike");
                 $(this).addClass("user-activated");
-                incrementCounter();
+                incrementCounterOfLikes();
             },
             error: function (error) {
                 console.log(error);
@@ -89,7 +89,61 @@ $(function () {
                 $(this).removeClass("unlike");
                 $(this).addClass("like");
                 $(this).removeClass("user-activated");
-                decrementCounter();
+                decrementCounterOfLikes();
+            },
+            error: function (error) {
+                console.log(error);
+            }
+        });
+    });
+})
+
+function incrementCounterOfLikes() {
+    document.getElementById('reaction-number-like').textContent++;
+}
+
+function decrementCounterOfLikes() {
+    document.getElementById('reaction-number-like').textContent--;
+}
+
+//Add article to favourite
+$(function () {
+    $(document).on("click", ".favourite", function (event) {
+        event.preventDefault();
+        var id = $(this).val();
+        $.ajax({
+            type: "POST",
+            url: "/Favourite/Add",
+            data: { "id": id },
+            context: this,
+            success: function () {
+                $(this).removeClass("favourite");
+                $(this).addClass("unfavourite");
+                $(this).addClass("user-activated");
+                incrementCounterOfFavourites();
+            },
+            error: function (error) {
+                console.log(error);
+            }
+        });
+    });
+})
+
+//Remove article from favourite
+$(function () {
+    $(document).on("click", ".unfavourite", function (event) {
+        event.preventDefault();
+        var id = $(this).val();
+        $.ajax({
+            type: "POST",
+            url: "/Favourite/Delete",
+            data: { "id": id },
+            context: this,
+            success: function () {
+                $(this).removeClass("unfavourite");
+                $(this).addClass("favourite");
+                $(this).removeClass("user-activated");
+                decrementCounterOfFavourites();
             },
             error: function (error) {
                 //if (error.response.status == 401) {
@@ -103,12 +157,12 @@ $(function () {
     });
 })
 
-function incrementCounter() {
-    document.getElementById('reaction-number-like').textContent++;
+function incrementCounterOfFavourites() {
+    document.getElementById('reaction-number-readinglist').textContent++;
 }
 
-function decrementCounter() {
-    document.getElementById('reaction-number-like').textContent--;
+function decrementCounterOfFavourites() {
+    document.getElementById('reaction-number-readinglist').textContent--;
 }
 
 //Errors handler
