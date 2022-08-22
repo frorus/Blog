@@ -1,6 +1,6 @@
 ﻿namespace Blog.Models.DB
 {
-    public class Like
+    public class ArticleLike
     {
         public Guid Id { get; set; }
         public Guid UserId { get; set; }

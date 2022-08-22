@@ -12,8 +12,8 @@
         <aside class="blog-layout__sidebar-left">
             <div class="blog-article-actions">
                 <div class="blog-article-actions__inner">
-                    @if(Model.Likes.Any(x => x.ArticleId == Model.Id && x.UserId.ToString() == UserManager.GetUserId(User))){
-                        <button id="reaction-button-like" class="blog-reaction blog-reaction--like relative unlike user-activated" value="@Model.Id">
+                    @if(Model.ArticleLikes.Any(x => x.ArticleId == Model.Id && x.UserId.ToString() == UserManager.GetUserId(User))){
+                        <button @*id="reaction-button-like"*@ class="blog-reaction blog-reaction--like relative unlike user-activated" value="@Model.Id">
                             <span class="blog-reaction__icon blog-reaction__icon--inactive">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" role="img" aria-hidden="true" class="blog-icon">
                                     <path d="M21.179 12.794l.013.014L12 22l-9.192-9.192.013-.014A6.5 6.5 0 0112 3.64a6.5 6.5 0 019.179 9.154zM4.575 5.383a4.5 4.5 0 000 6.364L12 19.172l7.425-7.425a4.5 4.5 0 10-6.364-6.364L8.818 9.626 7.404 8.21l3.162-3.162a4.5 4.5 0 00-5.99.334l-.001.001z"></path>
@@ -24,12 +24,12 @@
                                     <path d="M2.821 12.794a6.5 6.5 0 017.413-10.24h-.002L5.99 6.798l1.414 1.414 4.242-4.242a6.5 6.5 0 019.193 9.192L12 22l-9.192-9.192.013-.014z"></path>
                                 </svg>
                             </span>
-                            <span class="blog-reaction__count" id="reaction-number-like">@Model.Likes.Count()</span>
+                            <span class="blog-reaction__count" id="reaction-number-like">@Model.ArticleLikes.Count()</span>
                         </button>
                     }
                     else
                     {
-                        <button id="reaction-button-like" class="blog-reaction blog-reaction--like relative like" value="@Model.Id">
+                        <button @*id="reaction-button-like"*@ class="blog-reaction blog-reaction--like relative like" value="@Model.Id">
                             <span class="blog-reaction__icon blog-reaction__icon--inactive">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" role="img" aria-hidden="true" class="blog-icon">
                                     <path d="M21.179 12.794l.013.014L12 22l-9.192-9.192.013-.014A6.5 6.5 0 0112 3.64a6.5 6.5 0 019.179 9.154zM4.575 5.383a4.5 4.5 0 000 6.364L12 19.172l7.425-7.425a4.5 4.5 0 10-6.364-6.364L8.818 9.626 7.404 8.21l3.162-3.162a4.5 4.5 0 00-5.99.334l-.001.001z"></path>
@@ -40,7 +40,7 @@
                                     <path d="M2.821 12.794a6.5 6.5 0 017.413-10.24h-.002L5.99 6.798l1.414 1.414 4.242-4.242a6.5 6.5 0 019.193 9.192L12 22l-9.192-9.192.013-.014z"></path>
                                 </svg>
                             </span>
-                            <span class="blog-reaction__count" id="reaction-number-like">@Model.Likes.Count()</span>
+                            <span class="blog-reaction__count" id="reaction-number-like">@Model.ArticleLikes.Count()</span>
                         </button>
                     }
                     @if(Model.Favourites.Any(x => x.ArticleId == Model.Id && x.UserId.ToString() == UserManager.GetUserId(User)))
@@ -163,13 +163,32 @@
                                                         </div>
                                                     </div>
                                                     <footer class="comment__footer">
-                                                        <button class="blog-btn blog-btn--ghost blog-btn--icon-left blog-btn--s mr-1 reaction-like inline-flex reaction-button">
-                                                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" role="img" class="blog-icon reaction-icon not-reacted">
-                                                                <path d="M18.884 12.595l.01.011L12 19.5l-6.894-6.894.01-.01A4.875 4.875 0 0112 5.73a4.875 4.875 0 016.884 6.865zM6.431 7.037a3.375 3.375 0 000 4.773L12 17.38l5.569-5.569a3.375 3.375 0 10-4.773-4.773L9.613 10.22l-1.06-1.062 2.371-2.372a3.375 3.375 0 00-4.492.25v.001z"></path>
-                                                            </svg>
-                                                            <span class="reactions-count" id="reactions-count-906887">2</span>
-                                                            <span class="reactions-label hidden m:inline-block">&nbsp;likes</span>
-                                                        </button>
+                                                        @if (comment.CommentLikes.Any(x => x.CommentId == comment.Id && x.UserId.ToString() == UserManager.GetUserId(User)))
+                                                        {
+                                                            <button id="thisdiv" class="blog-btn blog-btn--ghost blog-btn--icon-left blog-btn--s reaction-like inline-flex reaction-button unlike-comment reacted" value="@comment.Id">
+                                                                <svg class="blog-icon reaction-icon not-reacted" xmlns="http://www.w3.org/2000/svg" width="24" height="24" role="img">
+                                                                    <path d="M18.884 12.595l.01.011L12 19.5l-6.894-6.894.01-.01A4.875 4.875 0 0112 5.73a4.875 4.875 0 016.884 6.865zM6.431 7.037a3.375 3.375 0 000 4.773L12 17.38l5.569-5.569a3.375 3.375 0 10-4.773-4.773L9.613 10.22l-1.06-1.062 2.371-2.372a3.375 3.375 0 00-4.492.25v.001z"></path>
+                                                                </svg>
+                                                                <svg class="blog-icon reaction-icon--like reaction-icon reacted" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" role="img">
+                                                                    <path d="M5.116 12.595a4.875 4.875 0 015.56-7.68h-.002L7.493 8.098l1.06 1.061 3.181-3.182a4.875 4.875 0 016.895 6.894L12 19.5l-6.894-6.894.01-.01z"></path>
+                                                                </svg>
+                                                                <span id="reaction-number-comments" class="reactions-count">@comment.CommentLikes.Count()</span>
+                                                                <span class="reactions-label m:inline-block">&nbsp;likes</span>
+                                                            </button>
+                                                        }
+                                                        else
+                                                        {
+                                                            <button id="thisdiv" class="blog-btn blog-btn--ghost blog-btn--icon-left blog-btn--s reaction-like inline-flex reaction-button like-comment" value="@comment.Id">
+                                                                <svg class="blog-icon reaction-icon not-reacted" xmlns="http://www.w3.org/2000/svg" width="24" height="24" role="img">
+                                                                    <path d="M18.884 12.595l.01.011L12 19.5l-6.894-6.894.01-.01A4.875 4.875 0 0112 5.73a4.875 4.875 0 016.884 6.865zM6.431 7.037a3.375 3.375 0 000 4.773L12 17.38l5.569-5.569a3.375 3.375 0 10-4.773-4.773L9.613 10.22l-1.06-1.062 2.371-2.372a3.375 3.375 0 00-4.492.25v.001z"></path>
+                                                                </svg>
+                                                                <svg class="blog-icon reaction-icon--like reaction-icon reacted" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" role="img">
+                                                                    <path d="M5.116 12.595a4.875 4.875 0 015.56-7.68h-.002L7.493 8.098l1.06 1.061 3.181-3.182a4.875 4.875 0 016.895 6.894L12 19.5l-6.894-6.894.01-.01z"></path>
+                                                                </svg>
+                                                                <span id="reaction-number-comments" class="reactions-count">@comment.CommentLikes.Count()</span>
+                                                                <span class="reactions-label m:inline-block">&nbsp;likes</span>
+                                                            </button>
+                                                        }
                                                     </footer>
                                                 </div>
                                             </div>
@@ -184,26 +203,3 @@
         </main>
     </div>
 </div>
-
-@*@section scripts {
-    <script type="text/javascript">
-        $(document).ready(function () {
-        $("#reaction-button-like").click(function () {
-        var id = $(this).data("id");
-        var link = "/Like/AddLike/" + id;
-        alert(id);
-        $.ajax({
-            type: "POST",
-            url: link,
-            /*data: { id: id },*/
-            success: function () {
-                alert("success");// Hide Like Button & Show Dislike Button
-            },
-            error: function (error) {
-                alert("error = " + error);
-            }
-        });
-    });
-})
-    </script>
-}*@

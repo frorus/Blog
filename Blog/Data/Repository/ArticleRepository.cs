@@ -22,8 +22,7 @@ namespace Blog.Data.Repository
         {
             var articles = Set.Include(article => article.Tags)
                               .Include(article => article.Comments)
-                              .ThenInclude(comments => comments.User);
-            
+                                .ThenInclude(comments => comments.User);
 
             return await articles.FirstOrDefaultAsync(a => a.Id == id);
         }

@@ -9,5 +9,6 @@
         public Guid ArticleId { get; set; }
         public ApplicationUser User { get; set; } = null!;
         public Article Article { get; set; } = null!;
+        public List<CommentLike> CommentLikes { get; set; } = new List<CommentLike>();
     }
 }

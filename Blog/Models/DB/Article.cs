@@ -15,7 +15,7 @@ namespace Blog.Models.DB
         public ApplicationUser User { get; set; } = null!;
         public List<Comment> Comments { get; set; } = new List<Comment>();
         public List<Tag> Tags { get; set; } = new List<Tag>();
-        public List<Like> Likes { get; set; } = new List<Like>();
+        public List<ArticleLike> ArticleLikes { get; set; } = new List<ArticleLike>();
         public List<Favourite> Favourites { get; set; } = new List<Favourite>();
     }
 }

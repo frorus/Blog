@@ -1061,17 +1061,17 @@ body #main-content {
     --color-inverted-hover: var(--button-ghost-inverted-color-hover);
 }
 
-.blog-btn--s {
+/*.blog-btn--s {
     --vertical-padding: 0.25rem;
     --horizontal-padding: 0.75rem;
     --font-size: 0.875rem;
     --with-icon-padding: 0.5rem;
     --icon-margin: 0.25rem;
     font-weight: normal;
-}
+}*/
 
 .blog-btn--icon-left {
-    padding-left: calc(bar(--with-icon-padding) - var(--border-width));
+    padding-left: calc(var(--su-2) - var(--border-width));
 }
 
 .blog-btn--icon-left .blog-icon {
@@ -2349,4 +2349,44 @@ label::before {
 
 .blog-reaction.user-activated .blog-reaction__count {
     color: var(--reaction-color);
+}
+
+.blog-btn--ghost .blog-icon.not-reacted {
+    display: inline-block;
+}
+
+.blog-icon:not(.blog-icon--default), .blog-icon:not(.blog-icon--default) * {
+    fill: currentColor;
+}
+
+.blog-btn--ghost .blog-icon {
+    --not-reacted-display: inline-block;
+    --reacted-display: none;
+    filter: grayscale(1);
+}
+
+.blog-btn > * {
+    pointer-events: none;
+}
+
+.blog-btn--ghost .blog-icon.reacted {
+    display: none;
+}
+
+.reaction-icon--like {
+    color: var(--reaction-like-color);
+}
+
+.blog-btn--ghost.reacted .reaction-icon {
+    filter: grayscale(0);
+    --not-reacted-display: none;
+    --reacted-display: inline-block;
+}
+
+.blog-btn--ghost .reaction-icon.not-reacted {
+    display: var(--not-reacted-display);
+}
+
+.blog-btn--ghost .reaction-icon.reacted {
+    display: var(--reacted-display);
 }

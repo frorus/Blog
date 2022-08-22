@@ -17,7 +17,8 @@ builder.Services.AddDbContext<BlogDbContext>(options => options.UseSqlServer(
     .AddCustomRepository<Article, ArticleRepository>()
     .AddCustomRepository<Tag, TagRepository>()
     .AddCustomRepository<Comment, CommentRepository>()
-    .AddCustomRepository<Like, LikeRepository>()
+    .AddCustomRepository<ArticleLike, ArticleLikeRepository>()
+    .AddCustomRepository<CommentLike, CommentLikeRepository>()
     .AddCustomRepository<Favourite, FavouriteRepository>()
     .AddIdentity<ApplicationUser, IdentityRole>(options =>
     {

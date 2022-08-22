@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Blog.Migrations
 {
     [DbContext(typeof(BlogDbContext))]
-    [Migration("20220808155112_InitDb")]
+    [Migration("20220811155312_InitDb")]
     partial class InitDb
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -144,6 +144,30 @@ namespace Blog.Migrations
                     b.ToTable("Articles");
                 });
 
+            modelBuilder.Entity("Blog.Models.DB.ArticleLike", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("ArticleId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("UserId1")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ArticleId");
+
+                    b.HasIndex("UserId1");
+
+                    b.ToTable("Likes");
+                });
+
             modelBuilder.Entity("Blog.Models.DB.Comment", b =>
                 {
                     b.Property<Guid>("Id")
@@ -175,6 +199,25 @@ namespace Blog.Migrations
                     b.ToTable("Comments");
                 });
 
+            modelBuilder.Entity("Blog.Models.DB.CommentLike", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("CommentId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CommentId");
+
+                    b.ToTable("CommentLike");
+                });
+
             modelBuilder.Entity("Blog.Models.DB.Favourite", b =>
                 {
                     b.Property<Guid>("Id")
@@ -197,30 +240,6 @@ namespace Blog.Migrations
                     b.HasIndex("UserId1");
 
                     b.ToTable("FavouriteArticles");
-                });
-
-            modelBuilder.Entity("Blog.Models.DB.Like", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid>("ArticleId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid>("UserId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<string>("UserId1")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("ArticleId");
-
-                    b.HasIndex("UserId1");
-
-                    b.ToTable("Likes");
                 });
 
             modelBuilder.Entity("Blog.Models.DB.Tag", b =>
@@ -398,6 +417,23 @@ namespace Blog.Migrations
                     b.Navigation("User");
                 });
 
+            modelBuilder.Entity("Blog.Models.DB.ArticleLike", b =>
+                {
+                    b.HasOne("Blog.Models.DB.Article", "Article")
+                        .WithMany("ArticleLikes")
+                        .HasForeignKey("ArticleId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Blog.Models.DB.ApplicationUser", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId1");
+
+                    b.Navigation("Article");
+
+                    b.Navigation("User");
+                });
+
             modelBuilder.Entity("Blog.Models.DB.Comment", b =>
                 {
                     b.HasOne("Blog.Models.DB.Article", "Article")
@@ -415,27 +451,21 @@ namespace Blog.Migrations
                     b.Navigation("User");
                 });
 
+            modelBuilder.Entity("Blog.Models.DB.CommentLike", b =>
+                {
+                    b.HasOne("Blog.Models.DB.Comment", "Comment")
+                        .WithMany("CommentLikes")
+                        .HasForeignKey("CommentId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Comment");
+                });
+
             modelBuilder.Entity("Blog.Models.DB.Favourite", b =>
                 {
                     b.HasOne("Blog.Models.DB.Article", "Article")
                         .WithMany("Favourites")
-                        .HasForeignKey("ArticleId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Blog.Models.DB.ApplicationUser", "User")
-                        .WithMany()
-                        .HasForeignKey("UserId1");
-
-                    b.Navigation("Article");
-
-                    b.Navigation("User");
-                });
-
-            modelBuilder.Entity("Blog.Models.DB.Like", b =>
-                {
-                    b.HasOne("Blog.Models.DB.Article", "Article")
-                        .WithMany("Likes")
                         .HasForeignKey("ArticleId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -509,11 +539,16 @@ namespace Blog.Migrations
 
             modelBuilder.Entity("Blog.Models.DB.Article", b =>
                 {
+                    b.Navigation("ArticleLikes");
+
                     b.Navigation("Comments");
 
                     b.Navigation("Favourites");
+                });
 
-                    b.Navigation("Likes");
+            modelBuilder.Entity("Blog.Models.DB.Comment", b =>
+                {
+                    b.Navigation("CommentLikes");
                 });
 #pragma warning restore 612, 618
         }

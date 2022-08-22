@@ -3,9 +3,9 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Blog.Data.Repository
 {
-    public class LikeRepository : Repository<Like>
+    public class CommentLikeRepository : Repository<CommentLike>
     {
-        public LikeRepository(BlogDbContext db) : base(db)
+        public CommentLikeRepository(BlogDbContext db) : base(db)
         {
 
         }

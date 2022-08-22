@@ -292,6 +292,25 @@ namespace Blog.Migrations
                         principalColumn: "Id");
                 });
 
+            migrationBuilder.CreateTable(
+                name: "CommentLike",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    UserId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    CommentId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_CommentLike", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_CommentLike_Comments_CommentId",
+                        column: x => x.CommentId,
+                        principalTable: "Comments",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
             migrationBuilder.CreateIndex(
                 name: "IX_Articles_UserId1",
                 table: "Articles",
@@ -301,6 +320,11 @@ namespace Blog.Migrations
                 name: "IX_ArticleTag_TagsId",
                 table: "ArticleTag",
                 column: "TagsId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_CommentLike_CommentId",
+                table: "CommentLike",
+                column: "CommentId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Comments_ArticleId",
@@ -378,7 +402,7 @@ namespace Blog.Migrations
                 name: "ArticleTag");
 
             migrationBuilder.DropTable(
-                name: "Comments");
+                name: "CommentLike");
 
             migrationBuilder.DropTable(
                 name: "FavouriteArticles");
@@ -405,10 +429,13 @@ namespace Blog.Migrations
                 name: "Tags");
 
             migrationBuilder.DropTable(
-                name: "Articles");
+                name: "Comments");
 
             migrationBuilder.DropTable(
                 name: "Role");
+
+            migrationBuilder.DropTable(
+                name: "Articles");
 
             migrationBuilder.DropTable(
                 name: "User");

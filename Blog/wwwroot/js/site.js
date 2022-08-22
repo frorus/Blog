@@ -59,14 +59,14 @@ $(function () {
         var id = $(this).val();
         $.ajax({
             type: "POST",
-            url: "/Like/Add",
+            url: "/Like/AddLikeToArticle",
             data: { "id": id },
             context: this,
             success: function () {
                 $(this).removeClass("like");
                 $(this).addClass("unlike");
                 $(this).addClass("user-activated");
-                incrementCounterOfLikes();
+                $(this).children("span.blog-reaction__count")[0].textContent++;
             },
             error: function (error) {
                 console.log(error);
@@ -82,14 +82,14 @@ $(function () {
         var id = $(this).val();
         $.ajax({
             type: "POST",
-            url: "/Like/Delete",
+            url: "/Like/DeleteLikeFromArticle",
             data: { "id": id },
             context: this,
             success: function () {
                 $(this).removeClass("unlike");
                 $(this).addClass("like");
                 $(this).removeClass("user-activated");
-                decrementCounterOfLikes();
+                $(this).children("span.blog-reaction__count")[0].textContent--;
             },
             error: function (error) {
                 console.log(error);
@@ -98,13 +98,51 @@ $(function () {
     });
 })
 
-function incrementCounterOfLikes() {
-    document.getElementById('reaction-number-like').textContent++;
-}
+//Add like to comment
+$(function () {
+    $(document).on("click", ".like-comment", function (event) {
+        event.preventDefault();
+        var id = $(this).val();
+        $.ajax({
+            type: "POST",
+            url: "/Like/AddLikeToComment",
+            data: { "id": id },
+            context: this,
+            success: function () {
+                $(this).removeClass("like-comment");
+                $(this).addClass("unlike-comment");
+                $(this).addClass("reacted");
+                $(this).children("span.reactions-count")[0].textContent++;
+            },
+            error: function (error) {
+                console.log(error);
+            }
+        });
+    });
+})
 
-function decrementCounterOfLikes() {
-    document.getElementById('reaction-number-like').textContent--;
-}
+//Remove like from comment
+$(function () {
+    $(document).on("click", ".unlike-comment", function (event) {
+        event.preventDefault();
+        var id = $(this).val();
+        $.ajax({
+            type: "POST",
+            url: "/Like/DeleteLikeFromComment",
+            data: { "id": id },
+            context: this,
+            success: function () {
+                $(this).removeClass("unlike-comment");
+                $(this).addClass("like-comment");
+                $(this).removeClass("reacted");
+                $(this).children("span.reactions-count")[0].textContent--;
+            },
+            error: function (error) {
+                console.log(error);
+            }
+        });
+    });
+})
 
 //Add article to favourite
 $(function () {
@@ -120,7 +158,7 @@ $(function () {
                 $(this).removeClass("favourite");
                 $(this).addClass("unfavourite");
                 $(this).addClass("user-activated");
-                incrementCounterOfFavourites();
+                $(this).children("span.blog-reaction__count")[0].textContent++;
             },
             error: function (error) {
                 console.log(error);
@@ -143,27 +181,14 @@ $(function () {
                 $(this).removeClass("unfavourite");
                 $(this).addClass("favourite");
                 $(this).removeClass("user-activated");
-                decrementCounterOfFavourites();
+                $(this).children("span.blog-reaction__count")[0].textContent--;
             },
             error: function (error) {
-                //if (error.response.status == 401) {
-                //    //throw new Error(error);
-                //    console.log("Error!");
-                //}
                 console.log(error);
-                //console.log(error);
             }
         });
     });
 })
-
-function incrementCounterOfFavourites() {
-    document.getElementById('reaction-number-readinglist').textContent++;
-}
-
-function decrementCounterOfFavourites() {
-    document.getElementById('reaction-number-readinglist').textContent--;
-}
 
 //Errors handler
 $(document).ajaxError(function (event, request, settings) {
