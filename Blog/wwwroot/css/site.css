@@ -2390,3 +2390,33 @@ label::before {
 .blog-btn--ghost .reaction-icon.reacted {
     display: var(--reacted-display);
 }
+
+.c-btn[aria-pressed="true"] {
+    --bg: var(--btn-current-bg);
+    --color: var(--btn-current-color);
+    font-weight: var(--fw-bold);
+}
+
+button::-moz-focus-inner, [type="button"]::-moz-focus-inner, [type="reset"]::-moz-focus-inner, [type="submit"]::-moz-focus-inner {
+    border-style: none;
+    padding: 0;
+}
+
+.crayons-icon:not(.crayons-icon--default), .crayons-icon:not(.crayons-icon--default) * {
+    fill: currentColor !important;
+}
+
+.c-btn > *, .c-date-picker .DateRangePickerInput_calendarIcon > *, .c-date-picker .DateRangePickerInput_clearDates > *, .c-date-picker .DayPickerNavigation_button > * {
+    pointer-events: none;
+}
+
+.crayons-icon {
+    vertical-align: bottom;
+    -moz-transform: rotate(360deg);
+}
+
+.c-btn[aria-pressed="true"], .c-date-picker .DateRangePickerInput_calendarIcon[aria-pressed="true"], .c-date-picker .DateRangePickerInput_clearDates[aria-pressed="true"], .c-date-picker .DayPickerNavigation_button[aria-pressed="true"] {
+    --bg: var(--btn-current-bg);
+    --color: var(--btn-current-color);
+    font-weight: var(--fw-bold);
+}

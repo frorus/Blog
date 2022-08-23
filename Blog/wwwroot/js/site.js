@@ -190,6 +190,36 @@ $(function () {
     });
 })
 
+//Add/remove article to/from favourite from index page
+$(function () {
+    $(document).on("click", ".c-btn--icon-alone", function (event) {
+        event.preventDefault();
+        var id = $(this).val();
+        var params = {
+            type: "POST",
+            data: { "id": id },
+            context: this,
+            error: function (error) {
+                console.log(error);
+            }
+        };
+        if ($(this).attr("aria-pressed") == "false") {
+            params.url = "/Favourite/Add";
+            params.success = function () {
+                $(this).attr("aria-pressed", "true");
+                $(this).find("path").attr("d", "M6.75 4.5h10.5a.75.75 0 0 1 .75.75v14.357a.375.375 0 0 1-.575.318L12 16.523l-5.426 3.401A.375.375 0 0 1 6 19.607V5.25a.75.75 0 0 1 .75-.75z");
+            }
+        } else {
+            params.url = "/Favourite/Delete";
+            params.success = function () {
+                $(this).attr("aria-pressed", "false");
+                $(this).find("path").attr("d", "M6.75 4.5h10.5a.75.75 0 0 1 .75.75v14.357a.375.375 0 0 1-.575.318L12 16.523l-5.426 3.401A.375.375 0 0 1 6 19.607V5.25a.75.75 0 0 1 .75-.75zM16.5 6h-9v11.574l4.5-2.82 4.5 2.82V6z");
+            }
+        }
+        $.ajax(params);
+    });
+})
+
 //Errors handler
 $(document).ajaxError(function (event, request, settings) {
     let status = request.status;
