@@ -6,11 +6,40 @@
 
 @if (SignInManager.IsSignedIn(User))
 {
-
-    <a class="c-cta c-cta--branded whitespace-nowrap mr-2" asp-controller="Article" asp-action="Create">Create Post</a>
-    <span class="m:block">
-        <a class="c-link c-link--block mr-2 whitespace-nowrap ml-auto" asp-controller="Account" asp-action="Logout">Log out</a>
+    <span class="flex ml-auto">
+        <a class="c-cta c-cta--branded whitespace-nowrap mr-2" asp-controller="Article" asp-action="Create">Create Post</a>
     </span>
+    <div class="blog-header__menu mx-1">
+        <button class="c-btn c-btn--icon-alone radius-full p-1 dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            <span class="blog-avatar blog-avatar--l">
+                <img class="blog-avatar__image" src="https://thispersondoesnotexist.com/image">
+            </span
+       ></button>
+        <div class="dropdown-menu blog-dropdown right-2 left-auto -mr-2 mt-1">
+            <ul class="m-0">
+                <li class="border-0 border-b-1 border-solid border-base-20 pb-2 mb-2">
+                    <a class="c-link c-link--block lh-tight">
+                        <div>
+                            <span class="fw-medium block">Name</span
+                           ><small class="fs-s opacity-75">&#64;username</small>
+                        </div>
+                    </a>
+                </li>
+                <li>
+                    <a class="c-link c-link--block">Create post</a>
+                </li>
+                <li>
+                    <a class="c-link c-link--block">Reading list</a>
+                </li>
+                <li class="border-0 border-b-1 border-solid border-base-20 pb-2">
+                    <a class="c-link c-link--block">Settings</a>
+                </li>
+                <li class="pt-2">
+                    <a class="c-link c-link--block" asp-controller="Account" asp-action="Logout">Log out</a>
+                </li>
+            </ul>
+        </div>
+    </div>
 }
 else
 {

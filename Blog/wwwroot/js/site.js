@@ -192,7 +192,7 @@ $(function () {
 
 //Add/remove article to/from favourite from index page
 $(function () {
-    $(document).on("click", ".c-btn--icon-alone", function (event) {
+    $(document).on("click", ".reading-list", function (event) {
         event.preventDefault();
         var id = $(this).val();
         var params = {
