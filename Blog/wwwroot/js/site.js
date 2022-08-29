@@ -224,5 +224,5 @@ $(function () {
 $(document).ajaxError(function (event, request, settings) {
     let status = request.status;
     if (status == 401)
-        location.replace("/Account/Login");
+        location.replace("/Login/Login");
 });

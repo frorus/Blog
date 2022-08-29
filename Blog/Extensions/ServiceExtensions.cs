@@ -3,7 +3,7 @@ using Blog.Data.UnitOfWork;
 
 namespace Blog.Extensions
 {
-    public static class ServiceExtentions
+    public static class ServiceExtensions
     {
         public static IServiceCollection AddUnitOfWork(this IServiceCollection services)
         {

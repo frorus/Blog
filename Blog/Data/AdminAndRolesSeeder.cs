@@ -1,7 +1,5 @@
 ﻿using Blog.Models.DB;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore;
 
 namespace Blog.Data
 {
@@ -15,6 +13,7 @@ namespace Blog.Data
                 {
                     UserName = "admin@email.com",
                     Email = "admin@email.com",
+                    ImagePath = "default_avatar.png",
                     EmailConfirmed = true,
                     LockoutEnabled = false,
                 };
@@ -25,7 +24,7 @@ namespace Blog.Data
 
                     if (result.Succeeded)
                     {
-                        await _userManager.AddToRoleAsync(user,"Admin");
+                        await _userManager.AddToRoleAsync(user, "Admin");
                     }
                 }
             }

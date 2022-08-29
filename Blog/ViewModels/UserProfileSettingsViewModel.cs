@@ -1,9 +1,9 @@
-﻿using Microsoft.AspNetCore.Identity;
-
-namespace Blog.Models.DB
+﻿namespace Blog.ViewModels
 {
-    public class ApplicationUser : IdentityUser
+    public class UserProfileSettingsViewModel
     {
+        public string Email { get; set; }
+        public string Username { get; set; }
         public string Name { get; set; }
         public string ImagePath { get; set; }
         public string Website { get; set; }
@@ -13,7 +13,5 @@ namespace Blog.Models.DB
         public string Skills { get; set; }
         public string Work { get; set; }
         public string Education { get; set; }
-        public List<Article> Articles { get; set; } = new List<Article>();
-        public List<Comment> Comments { get; set; } = new List<Comment>();
     }
 }

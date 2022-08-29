@@ -1,12 +1,11 @@
-﻿@model Blog.ViewModels.RegisterViewModel
-
+﻿@model LoginViewModel
 @{
-    ViewData["Title"] = "Register";
+    ViewData["Title"] = "Login";
 }
 
 @section Scripts {
     @{
-        <partial name="_ValidationScriptsPartial" />
+    <partial name="_ValidationScriptsPartial" />
     }
 }
 
@@ -16,7 +15,7 @@
             <div class="registration blog-card">
                 <div class="registration__content">
                     <h1 class="registration__title">
-                        Welcome to BLOG Community
+                        Welcome back to BLOG Community
                     </h1>
                     <p class="registration__description">
                         <a href="/" class="c-link c-link--branded">BLOG Community</a>
@@ -29,24 +28,26 @@
                     </div>
                     <form method="post">
                         <div class="blog-field mb-3">
-                            <label class="blog-field__label" asp-for="EmailReg">Email</label>
-                            <input asp-for="EmailReg" class="blog-textfield" type="email"/>
-                            <span asp-validation-for="EmailReg" class="text-warning"></span>
+                            <label class="blog-field__label" asp-for="Email">Email</label>
+                            <input asp-for="Email" class="blog-textfield" type="email"/>
+                            <span asp-validation-for="Email" class="text-warning"></span>
                         </div>
                         <div class="blog-field mb-3">
-                            <label class="blog-field__label" asp-for="PasswordReg">Password</label>
-                            <input asp-for="PasswordReg" class="blog-textfield" type="password"/>
-                            <span asp-validation-for="PasswordReg" class="text-warning"></span>
+                            <label class="blog-field__label" asp-for="Password">Password</label>
+                            <input asp-for="Password" class="blog-textfield" type="password"/>
+                            <span asp-validation-for="Password" class="text-warning"></span>
                         </div>
-                        <div class="blog-field mb-3">
-                            <label class="blog-field__label" asp-for="PasswordConfirm">Password</label>
-                            <input asp-for="PasswordConfirm" class="blog-textfield" type="password"/>
-                            <span asp-validation-for="PasswordConfirm" class="text-warning"></span>
+                        <div class="blog-field blog-field--checkbox inline-flex flex-row items-center">
+                            <input asp-for="RememberMe" class="blog-checkbox" type="checkbox" checked="checked"/>
+                            <label asp-for="RememberMe" class="blog-field__label fw-normal">Remember me</label>
                         </div>
                         <div class="actions pt-3">
                             <input class="blog-btn blog-btn--l w-100" type="submit" value="Continue"/>
                         </div>
                     </form>
+                    <p class="pt-6 fs-s align-center">
+                        <a asp-controller="Account" asp-action="ResetPassword">I forgot my password</a>
+                    </p>
                 </div>
             </div>
         </section>

@@ -60,8 +60,8 @@
 									{
 										<li class="mb-1">
 											<input type="hidden" asp-for="@Model.Tags[i].Value">
-											<input asp-for="@Model.Tags[i].Selected">
-											<label asp-for="@Model.Tags[i].Selected">@Model.Tags[i].Text</label>
+											<input class="input-label-tag" asp-for="@Model.Tags[i].Selected">
+											<label class="input-label-tag" asp-for="@Model.Tags[i].Selected">@Model.Tags[i].Text</label>
 										</li>
 									}
 								</ul>

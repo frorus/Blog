@@ -7,6 +7,6 @@ namespace Blog.ViewModels
     {
         public Guid ArticleId { get; set; }
         [Required]
-        public string? Content { get; set; }
+        public string Content { get; set; }
     }
 }

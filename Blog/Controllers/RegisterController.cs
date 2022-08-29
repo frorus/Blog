@@ -21,6 +21,7 @@ namespace Blog.Controllers
         [HttpGet]
         public IActionResult Register()
         {
+            ViewData["UsersCount"] = _userManager.Users.Count();
             return View();
         }
 
@@ -32,7 +33,8 @@ namespace Blog.Controllers
         {
             if (ModelState.IsValid)
             {
-                var user = new ApplicationUser {
+                var user = new ApplicationUser
+                {
                     UserName = model.EmailReg,
                     Email = model.EmailReg,
                 };
@@ -40,6 +42,7 @@ namespace Blog.Controllers
                 var result = await _userManager.CreateAsync(user, model.PasswordReg);
                 if (result.Succeeded)
                 {
+                    user.ImagePath = "default_avatar.png";
                     await _signInManager.SignInAsync(user, false);
                     await _userManager.AddToRoleAsync(user, "Basic");
                     return RedirectToAction("Index", "Home");

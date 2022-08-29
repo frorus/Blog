@@ -1,62 +1,133 @@
-﻿using Blog.Models.DB;
+﻿using Blog.Data.Repository;
+using Blog.Data.UnitOfWork;
+using Blog.Extensions;
+using Blog.Models.DB;
 using Blog.ViewModels;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.ModelBinding;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace Blog.Controllers
 {
     public class AccountController : Controller
     {
-        private readonly SignInManager<ApplicationUser> _signInManager;
+        private readonly UserManager<ApplicationUser> _userManager;
+        private readonly IFileService _fileService;
 
-        public AccountController(SignInManager<ApplicationUser> signInManager)
+        public AccountController(UserManager<ApplicationUser> userManager, IFileService fileService)
         {
-            _signInManager = signInManager;
-        }
-
-        public IActionResult Login()
-        {
-            if (User.Identity.IsAuthenticated)
-            {
-                return RedirectToAction("Index", "Home");
-            }
-            return View();
-        }
-
-        [HttpPost]
-        public async Task<IActionResult> Login(LoginViewModel model)
-        {
-            if (ModelState.IsValid)
-            {
-                var result = await _signInManager.PasswordSignInAsync(
-                    model.Username,
-                    model.Password,
-                    model.RememberMe,
-                    false);
-
-                if (result.Succeeded)
-                {
-                    if (Request.Query.Keys.Contains("ReturnUrl"))
-                    {
-                        return Redirect(Request.Query["ReturnUrl"].First());
-                    }
-                    else
-                    {
-                        return RedirectToAction("Index", "Home");
-                    }
-                }
-            }
-
-            ModelState.AddModelError("", "Failed to Login");
-
-            return View();
+            _userManager = userManager;
+            _fileService = fileService;
         }
 
         [HttpGet]
-        public async Task<IActionResult> Logout()
+        [Authorize]
+        public async Task<IActionResult> Settings()
         {
-            await _signInManager.SignOutAsync();
-            return RedirectToAction("Index", "Home");
+            var user = await _userManager.GetUserAsync(User);
+            ViewData["UserEmail"] = user.Email;
+
+            if (user == null)
+            {
+                return NotFound();
+            }
+
+            var model = new UserProfileSettingsViewModel
+            {
+                Email = user.Email,
+                Username = user.UserName,
+                Name = user.Name,
+                ImagePath = user.ImagePath,
+                Website = user.Website,
+                Location = user.Location,
+                Bio = user.Bio,
+                Learning = user.Learning,
+                Skills = user.Skills,
+                Work = user.Work,
+                Education = user.Education
+            };
+
+            return View(model);
+        }
+
+        //Edit profile settings
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        [Authorize]
+        public async Task<IActionResult> EditProfileSettings(UserProfileSettingsViewModel model, IFormFile file)
+        {
+            var user = await _userManager.GetUserAsync(User);
+
+            if (user == null)
+            {
+                return NotFound();
+            }
+
+            if (ModelState.IsValid)
+            {
+                if (file != null)
+                {
+                    var fileName = await _fileService.UploadImage(file);
+                    user.ImagePath = fileName;
+                }
+
+                user.Email = model.Email;
+                user.UserName = model.Username;
+                user.Name = model.Name;
+                user.Website = model.Website;
+                user.Location = model.Location;
+                user.Bio = model.Bio;
+                user.Learning = model.Learning;
+                user.Skills = model.Skills;
+                user.Work = model.Work;
+                user.Education = model.Education;
+
+                await _userManager.UpdateAsync(user);
+                //TempData["success"] = "Category updated successfully";
+                return RedirectToAction("Settings");
+            }
+
+            return RedirectToAction("Settings");
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        [Authorize]
+        public async Task<IActionResult> EditAccountSettings(UserAccountSettingsViewModel model)
+        {
+            var user = await _userManager.GetUserAsync(User);
+
+            if (ModelState.IsValid)
+            {
+                if (user != null)
+                {
+                    var result = await _userManager.ChangePasswordAsync(user, model.PasswordCurrent, model.PasswordNew);
+
+                    if (result.Succeeded)
+                    {
+                        return RedirectToAction("Settings");
+                    }
+
+                    foreach (var error in result.Errors)
+                    {
+                        ModelState.AddModelError("", error.ToString());
+                    }
+                        
+                    return RedirectToAction("Settings");
+                }
+
+                return NotFound();
+            }
+
+            return RedirectToAction("Settings"); ;
+        }
+
+        [HttpGet]
+        public IActionResult ResetPassword()
+        {
+            return View();
         }
     }
 }

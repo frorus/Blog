@@ -224,6 +224,7 @@ namespace Blog.Controllers
         //}
 
         [HttpGet]
+        [Authorize]
         public async Task<IActionResult> Delete(Guid id)
         {
             if (id == Guid.Empty)
@@ -245,6 +246,7 @@ namespace Blog.Controllers
         //Delete article
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
+        [Authorize]
         public async Task<IActionResult> DeletePOST(Guid id)
         {
             var articleFromDb = await _unitOfWork.GetRepository<Article>().GetByIdAsync(id);

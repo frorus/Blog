@@ -1,10 +1,27 @@
-﻿@model CommentViewModel
+﻿@using Microsoft.AspNetCore.Identity
+
+@model CommentViewModel
+
+@inject SignInManager<ApplicationUser> SignInManager
+@inject UserManager<ApplicationUser> UserManager
 
 <form class="comment-form" accept-charset="UTF-8" method="post" asp-controller="Comment" asp-action="Create">
-    <span class="blog-avatar m:blog-avatar--l mr-2 shrink-0">
-        <img class="blog-avatar__image overflow-hidden" src="https://thispersondoesnotexist.com/image" width="32" height="32">
-        ::after
-    </span>
+    @if (SignInManager.IsSignedIn(User))
+    {
+        var user = await UserManager.GetUserAsync(User);
+
+        <span class="blog-avatar m:blog-avatar--l mr-2 shrink-0">
+            <img class="blog-avatar__image overflow-hidden" src="/img/avatars/@user.ImagePath" width="32" height="32">
+            ::after
+        </span>
+    }
+    else
+    {
+        <span class="blog-avatar m:blog-avatar--l mr-2 shrink-0">
+            <img class="blog-avatar__image overflow-hidden" src="/img/avatars/default_avatar.png" width="32" height="32">
+            ::after
+        </span>
+    }
     <div class="comment-form__inner">
         <input asp-for="ArticleId" type="hidden" />
         <div class="comment-form__field">

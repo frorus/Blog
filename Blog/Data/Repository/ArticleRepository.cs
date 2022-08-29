@@ -13,7 +13,8 @@ namespace Blog.Data.Repository
         public async Task<IEnumerable<Article>> GetAllArticles()
         {
             var articles = Set.Include(a => a.Tags)
-                              .Include(c => c.Comments);
+                              .Include(c => c.Comments)
+                              .Include(u => u.User);
 
             return await articles.ToListAsync();
         }
@@ -22,7 +23,8 @@ namespace Blog.Data.Repository
         {
             var articles = Set.Include(article => article.Tags)
                               .Include(article => article.Comments)
-                                .ThenInclude(comments => comments.User);
+                                .ThenInclude(comments => comments.User)
+                              .Include(article => article.User);
 
             return await articles.FirstOrDefaultAsync(a => a.Id == id);
         }
