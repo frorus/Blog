@@ -16,14 +16,17 @@
                 account.
             </p>
         </header>
+        @*  Current password field  *@
         <div class="blog-field mb-4">
             <label class="blog-field__label" asp-for="PasswordCurrent">Current password</label>
             <input class="blog-textfield" autocomplete="off" required="required" type="password" value="@Model.PasswordCurrent" asp-for="PasswordCurrent">
         </div>
+        @*  New password field  *@
         <div class="blog-field mb-4">
             <label class="blog-field__label" asp-for="PasswordNew">Password</label>
             <input class="blog-textfield" autocomplete="off" required="required" type="password" value="@Model.PasswordNew" asp-for="PasswordNew">
         </div>
+        @*  Confirm password field  *@
         <div class="blog-field mb-4">
             <label class="blog-field__label" asp-for="PasswordConfirm">Confirm new password</label>
             <input class="blog-textfield" autocomplete="off" required="required" type="password" value="@Model.PasswordConfirm" asp-for="PasswordConfirm">

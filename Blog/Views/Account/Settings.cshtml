@@ -7,14 +7,14 @@
 <div class="wrapper">
     <main>
         <div class="blog-layout blog-layout--header-inside blog-layout--2-cols blog-layout--limited-l">
-            <!-- Title -->
+            @*  Title  *@
             <div class="blog-page-header">
                 <h1 class="blog-title" style="font-size: var(--fs-3xl);">
                     Settings for
                     <a class="ml-1">&#64;@Model.Username</a>
                 </h1>
             </div>
-            <!-- Sidebar-->
+            @*  Sidebar  *@
             <div class="blog-layout__left-sidebar">
                 <div class="nav block nav-pills" role="tablist">
                     <a id="profile-tab" class="blog-link blog-link--block active show" data-toggle="pill" href="#profile" aria-controls="profile" role="tab" aria-selected="true">
@@ -34,24 +34,29 @@
                     </a>
                 </div>
             </div>
-            <!-- Content -->
+            @*  Content  *@
             <div class="blog-layout__content tab-content">
-                <!-- Profile data -->
+                @*  Profile data  *@
                 <form id="profile" class="tab-pane fade active show" role="tabpanel" aria-labelledby="profile-tab" method="post" asp-controller="Account" asp-action="EditProfileSettings" enctype="multipart/form-data">
+                    @*  User section  *@
                     <div class="blog-card blog-card--content-rows">
                         <h2 class="blog-subtitle-1">User</h2>
+                        @*  Name field  *@
                         <div class="blog-field">
                             <label class="blog-field__label" asp-for="Name">Name</label>
                             <input class="blog-textfield" maxlength="30" placeholder="John Doe" value="@Model.Name" type="text" asp-for="Name">
                         </div>
+                        @*  Email field  *@
                         <div class="blog-field">
                             <label class="blog-field__label" asp-for="Email">Email</label>
                             <input class="blog-textfield" maxlength="50" placeholder="john.doe@example.com" value="@Model.Email" type="text" asp-for="Email">
                         </div>
+                        @*  Username field  *@
                         <div class="blog-field">
                             <label class="blog-field__label" asp-for="Username">Username</label>
                             <input class="blog-textfield" maxlength="30" placeholder="johndoe" value="@Model.Username" type="text" asp-for="Username">
                         </div>
+                        @*  Upload image  *@
                         <div class="blog-field">
                             <label class="blog-field__label" asp-for="ImagePath">Profile image</label>
                             <div class="flex items-center">
@@ -62,75 +67,86 @@
                             </div>
                         </div>
                     </div>
+                    @*  Basic section  *@
                     <div class="blog-card blog-card--content-rows">
                         <h2 class="blog-subtitle-1">Basic</h2>
+                        @*  Website field  *@
                         <div class="blog-field">
                             <label class="blog-field__label" asp-for="Website">Website URL</label>
-                            <input class="blog-textfield" maxlength="100" placeholder="https://yoursite.com" value="@Model.Website" type="url" asp-for="Website">
+                            <input class="blog-textfield" maxlength="100" placeholder="https://yoursite.com" value="@Model.Website" type="url" asp-for="Website" onkeyup="countChar(this)">
                             <p class="blog-field__description align-right">
-                                <span id="url-characters">dynamic number</span>/100
+                                <span id="url-characters">0</span>/100
                             </p>
                         </div>
+                        @*  Location field  *@
                         <div class="blog-field">
                             <label class="blog-field__label" asp-for="Location">Location</label>
-                            <input class="blog-textfield" maxlength="100" placeholder="Halifax, Nova Scotia" value="@Model.Location" type="text" asp-for="Location">
+                            <input class="blog-textfield" maxlength="100" placeholder="Halifax, Nova Scotia" value="@Model.Location" type="text" asp-for="Location" onkeyup="countChar(this)">
                             <p class="blog-field__description align-right">
-                                <span id="location-characters">dynamic number</span>/100
+                                <span id="location-characters">0</span>/100
                             </p>
                         </div>
+                        @*  Bio field  *@
                         <div class="blog-field">
                             <label class="blog-field__label" asp-for="Bio">Bio</label>
-                            <textarea class="blog-textfield" maxlength="200" placeholder="A short bio..." asp-for="Bio">@Model.Bio</textarea>
+                            <textarea class="blog-textfield" maxlength="200" placeholder="A short bio..." asp-for="Bio" onkeyup="countChar(this)">@Model.Bio</textarea>
                             <p class="blog-field__description align-right">
-                                <span id="summary-characters">dynamic number</span>/200
+                                <span id="summary-characters">0</span>/200
                             </p>
                         </div>
                     </div>
+                    @*  Coding section  *@
                     <div class="blog-card blog-card--content-rows">
                         <h2 class="blog-subtitle-1">Coding</h2>
+                        @*  Learning field  *@
                         <div class="blog-field">
                             <label class="blog-field__label" asp-for="Learning">Currently learning</label>
                             <p class="blog-field__description">
                                 What are you learning right now? What are the new tools and languages you're picking up right now?
                             </p>
-                            <textarea class="blog-textfield" maxlength="200" asp-for="Learning">@Model.Learning</textarea>
+                            <textarea class="blog-textfield" maxlength="200" asp-for="Learning" onkeyup="countChar(this)">@Model.Learning</textarea>
                             <p class="blog-field__description align-right">
-                                <span id="currently_learning-characters">dynamic number</span>/200
+                                <span id="currently_learning-characters">0</span>/200
                             </p>
                         </div>
+                        @*  Skills/Languages field  *@
                         <div class="blog-field">
                             <label class="blog-field__label" asp-for="Skills">Skills/Languages</label>
                             <p class="blog-field__description">
                                 What tools and languages are you most experienced with? Are you specialized or more of a generalist?
                             </p>
-                            <textarea class="blog-textfield" maxlength="200" placeholder="Any languages, frameworks, etc. to highlight?" asp-for="Skills">@Model.Skills</textarea>
+                            <textarea class="blog-textfield" maxlength="200" placeholder="Any languages, frameworks, etc. to highlight?" asp-for="Skills" onkeyup="countChar(this)">@Model.Skills</textarea>
                             <p class="blog-field__description align-right">
-                                <span id="skills_languages-characters">dynamic number</span>/200
+                                <span id="skills_languages-characters">0</span>/200
                             </p>
                         </div>
                     </div>
+                    @*  Work section  *@
                     <div class="blog-card blog-card--content-rows">
                         <h2 class="blog-subtitle-1">Work</h2>
+                        @*  Work field  *@
                         <div class="blog-field">
                             <label class="blog-field__label" asp-for="Work">Work</label>
-                            <input class="blog-textfield" maxlength="100" placeholder="What do you do? Example: CEO at ACME Inc." value="@Model.Work" type="text" asp-for="Work">
+                            <input class="blog-textfield" maxlength="100" placeholder="What do you do? Example: CEO at ACME Inc." value="@Model.Work" type="text" asp-for="Work" onkeyup="countChar(this)">
                             <p class="blog-field__description align-right">
-                                <span id="work-characters">dynamic number</span>/100
+                                <span id="work-characters">0</span>/100
                             </p>
                         </div>
+                        @*  Education field  *@
                         <div class="blog-field">
                             <label class="blog-field__label" asp-for="Education">Education</label>
-                            <input class="blog-textfield" maxlength="100" placeholder="Where did you go to school?" value="@Model.Education" type="text" asp-for="Education">
+                            <input class="blog-textfield" maxlength="100" placeholder="Where did you go to school?" value="@Model.Education" type="text" asp-for="Education" onkeyup="countChar(this)">
                             <p class="blog-field__description align-right">
-                                <span id="education-characters">dynamic number</span>/100
+                                <span id="education-characters">0</span>/100
                             </p>
                         </div>
                     </div>
+                    @*  Save button  *@
                     <div class="blog-card blog-card--content-rows">
                         <button class="blog-btn" type="submit">Save Profile Information</button>
                     </div>
                 </form>
-                <!-- Account settings -->
+                @*  Account settings  *@
                 @await Html.PartialAsync("~/Views/Shared/Account/_AccountPartial.cshtml", new UserAccountSettingsViewModel())
             </div>
         </div>

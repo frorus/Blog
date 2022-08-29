@@ -226,3 +226,31 @@ $(document).ajaxError(function (event, request, settings) {
     if (status == 401)
         location.replace("/Login/Login");
 });
+
+//Characters counter for Settings - Profile page
+function countChar(element) {
+    var countOfChars = element.value.length;
+    switch (element.id) {
+        case 'Website':
+            $('#url-characters').text(countOfChars);
+            break;
+        case 'Location':
+            $('#location-characters').text(countOfChars);
+            break;
+        case 'Bio':
+            $('#summary-characters').text(countOfChars);
+            break;
+        case 'Learning':
+            $('#currently_learning-characters').text(countOfChars);
+            break;
+        case 'Skills':
+            $('#skills_languages-characters').text(countOfChars);
+            break;
+        case 'Work':
+            $('#work-characters').text(countOfChars);
+            break;
+        case 'Education':
+            $('#education-characters').text(countOfChars);
+            break;
+    }
+};
