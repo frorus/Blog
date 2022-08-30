@@ -65,6 +65,9 @@ namespace Blog.Migrations
                     b.Property<string>("ImagePath")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<DateTime>("JoinedDate")
+                        .HasColumnType("datetime2");
+
                     b.Property<string>("Learning")
                         .HasColumnType("nvarchar(max)");
 

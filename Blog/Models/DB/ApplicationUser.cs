@@ -13,6 +13,7 @@ namespace Blog.Models.DB
         public string Skills { get; set; }
         public string Work { get; set; }
         public string Education { get; set; }
+        public DateTime JoinedDate { get; set; } = DateTime.Now;
         public List<Article> Articles { get; set; } = new List<Article>();
         public List<Comment> Comments { get; set; } = new List<Comment>();
     }

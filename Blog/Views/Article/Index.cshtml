@@ -34,7 +34,7 @@
                                 <div class="blog-article__top">
                                     <div class="blog-article__meta">
                                         <div class="blog-article__author-pic">
-                                            <a class="blog-avatar blog-avatar--l" href="/">
+                                            <a class="blog-avatar blog-avatar--l" asp-controller="Account" asp-action="GetUserProfile" asp-route-id="@obj.UserId">
                                                 <img class="blog-avatar__image" src="/img/avatars/@obj.User.ImagePath">
                                                 ::after
                                             </a>

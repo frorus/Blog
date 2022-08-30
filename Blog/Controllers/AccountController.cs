@@ -1,13 +1,10 @@
-﻿using Blog.Data.Repository;
-using Blog.Data.UnitOfWork;
-using Blog.Extensions;
+﻿using Blog.Extensions;
 using Blog.Models.DB;
 using Blog.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.ModelBinding;
-using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.EntityFrameworkCore;
 
 namespace Blog.Controllers
 {
@@ -114,7 +111,7 @@ namespace Blog.Controllers
                     {
                         ModelState.AddModelError("", error.ToString());
                     }
-                        
+
                     return RedirectToAction("Settings");
                 }
 
@@ -128,6 +125,45 @@ namespace Blog.Controllers
         public IActionResult ResetPassword()
         {
             return View();
+        }
+
+        [HttpGet]
+        [Route("Profile/{id}")]
+        public async Task<IActionResult> GetUserProfile(Guid id)
+        {
+            if (id == Guid.Empty)
+            {
+                return NotFound();
+            }
+
+            var user = await _userManager.Users.Include(user => user.Articles)
+                                               .ThenInclude(article => article.Tags)
+                                               .Include(user => user.Comments)
+                                               .FirstOrDefaultAsync(user => user.Id == id.ToString());
+
+            if (user == null)
+            {
+                return NotFound();
+            }
+
+            var model = new UserProfileViewModel
+            {
+                ImagePath = user.ImagePath,
+                Name = user.Name,
+                Bio = user.Bio,
+                Location = user.Location,
+                JoinedDate = user.JoinedDate,
+                Email = user.Email,
+                Website = user.Website,
+                Education = user.Education,
+                Work = user.Work,
+                Learning = user.Learning,
+                Skills = user.Skills,
+                Comments = user.Comments.Count,
+                Articles = user.Articles
+            };
+
+            return View(model);
         }
     }
 }
