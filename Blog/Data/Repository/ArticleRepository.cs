@@ -13,6 +13,7 @@ namespace Blog.Data.Repository
         public async Task<IEnumerable<Article>> GetAllArticles()
         {
             var articles = Set.Include(a => a.Tags)
+                              .Include(b => b.ArticleLikes)
                               .Include(c => c.Comments)
                               .Include(u => u.User);
 

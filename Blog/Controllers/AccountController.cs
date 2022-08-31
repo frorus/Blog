@@ -160,7 +160,7 @@ namespace Blog.Controllers
                 Learning = user.Learning,
                 Skills = user.Skills,
                 Comments = user.Comments.Count,
-                Articles = user.Articles
+                Articles = user.Articles.OrderByDescending(article => article.Date).ToList()
             };
 
             return View(model);

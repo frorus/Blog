@@ -15,114 +15,125 @@
         </div>
         <main class="articles-list blog-layout__content">
             <header class="p-2 px-3 m:p-0 m:px-0 m:mb-2 fs-l">
-                    <nav class="-mx-3 m:mx-0 s:flex items-center justify-between">
-                        <ul class="blog-navigation blog-navigation--horizontal">
+                <nav class="-mx-3 m:mx-0 s:flex items-center justify-between">
+                    <ul class="blog-navigation blog-navigation--horizontal">
+                        @if (Context.Request.Query["sortOrder"] == "top_desc")
+                        {
                             <li>
-                                <a class="blog-navigation__item">Latest</a>
+                                <a class="blog-navigation__item" href="\">Latest</a>
                             </li>
-                        <li>
-                            <a class="blog-navigation__item">Top</a>
-                        </li>
-                        </ul>
-                    </nav>
+                            <li>
+                                <a class="blog-navigation__item blog-navigation__item--current" asp-action="Index" asp-route-sortOrder="top_desc">Top</a>
+                            </li>
+                        }
+                        else
+                        {
+                            <li>
+                                <a class="blog-navigation__item blog-navigation__item--current" href="\">Latest</a>
+                            </li>
+                            <li>
+                                <a class="blog-navigation__item" asp-action="Index" asp-route-sortOrder="top_desc">Top</a>
+                            </li>
+                        }
+                    </ul>
+                </nav>
             </header>
-            <div>
-                    @foreach(var obj in Model)
-                    {
-                        <div class="blog-article">
-                            <div class="blog-article__body">
-                                <div class="blog-article__top">
-                                    <div class="blog-article__meta">
-                                        <div class="blog-article__author-pic">
-                                            <a class="blog-avatar blog-avatar--l" asp-controller="Account" asp-action="GetUserProfile" asp-route-id="@obj.UserId">
-                                                <img class="blog-avatar__image" src="/img/avatars/@obj.User.ImagePath">
-                                                ::after
-                                            </a>
-                                        </div>
+            <div id="mydiv">
+                @foreach (var obj in Model)
+                {
+                    <div class="blog-article">
+                        <div class="blog-article__body">
+                            <div class="blog-article__top">
+                                <div class="blog-article__meta">
+                                    <div class="blog-article__author-pic">
+                                        <a class="blog-avatar blog-avatar--l" asp-controller="Account" asp-action="GetUserProfile" asp-route-id="@obj.UserId">
+                                            <img class="blog-avatar__image" src="/img/avatars/@obj.User.ImagePath">
+                                            ::after
+                                        </a>
+                                    </div>
+                                    <div>
                                         <div>
-                                            <div>
-                                                <div class="relative mb-0 fw-medium @*hidden*@ m:inline-block">
-                                                    @obj.AuthorUsername
-                                                </div>
-                                            </div>
-                                            <div class="blog-article__tertiary fs-xs">
-                                                <time datetime="@obj.Date">@obj.Date.ToLongDateString()</time>
+                                            <div class="relative mb-0 fw-medium @*hidden*@ m:inline-block">
+                                                @obj.AuthorUsername
                                             </div>
                                         </div>
-                                    </div>
-                                </div>
-                                <div class="blog-article__indention">
-                                    <h3 class="blog-article__title" style="font-weight:bold">
-                                        <a asp-controller="Article" asp-action="Details" asp-route-id="@obj.Id">@obj.Title</a>
-                                    </h3>
-                                    <div class="blog-article__tags">
-                                        @foreach(var tag in obj.Tags){
-                                            <a class="blog-tag blog-tag--monochrome" asp-controller="Tag" asp-action="Details" asp-route-id="@tag.Id">
-                                                <span style="color: rgb(59, 73, 223)">#</span>
-                                                @tag.Title
-                                            </a>
-                                        }
-                                    </div>
-                                    <div class="blog-article__bottom">
-                                        <div class="blog-article__details">
-                                            <a class="blog-btn blog-btn--s blog-btn--ghost blog-btn--icon-left" asp-controller="Article" asp-action="Details" asp-route-id="@obj.Id">
-                                                <svg class="blog-icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24">
-                                                    <path d="M18.884 12.595l.01.011L12 19.5l-6.894-6.894.01-.01A4.875 4.875 0 0112 5.73a4.875 4.875 0 016.884 6.865zM6.431 7.037a3.375 3.375 0 000 4.773L12 17.38l5.569-5.569a3.375 3.375 0 10-4.773-4.773L9.613 10.22l-1.06-1.062 2.371-2.372a3.375 3.375 0 00-4.492.25v.001z"></path>
-                                                </svg>@if (obj.ArticleLikes.Count() == 1)
-                                                {<span class="s:inline">@obj.ArticleLikes.Count() reaction</span>}
-                                                else
-                                                {<span class="s:inline">@obj.ArticleLikes.Count() reactions</span>}
-                                            </a>
-                                             <a class="blog-btn blog-btn--s blog-btn--ghost blog-btn--icon-left" asp-controller="Article" asp-action="Details" asp-route-id="@obj.Id" asp-fragment="comments">
-                                                 <svg class="blog-icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24">
-                                                     <path d="M10.5 5h3a6 6 0 110 12v2.625c-3.75-1.5-9-3.75-9-8.625a6 6 0 016-6zM12 15.5h1.5a4.501 4.501 0 001.722-8.657A4.5 4.5 0 0013.5 6.5h-3A4.5 4.5 0 006 11c0 2.707 1.846 4.475 6 6.36V15.5z"></path>
-                                                 </svg>@if(obj.Comments.Count == 0)
-                                                 {<span class="s:inline"> Add comment</span>}
-                                                 else{@if (obj.ArticleLikes.Count() == 1)
-                                                     {<span class="s:inline">@obj.Comments.Count() comment</span>}
-                                                    else
-                                                    {<span class="s:inline">@obj.Comments.Count() comments</span>}}
-                                             </a>
-                                        </div>
-                                        <div class="blog-article__save">
-                                            <small class="blog-article__tertiary fs-xs mr-2">@Math.Ceiling((double)obj.Text.Length / 1500) min read</small>
-                                            @if(obj.Favourites.Any(x => x.ArticleId == obj.Id && x.UserId.ToString() == UserManager.GetUserId(User)))
-                                            {
-                                                <button class="c-btn c-btn--icon-alone reading-list" type="button" title="Save to reading list" aria-pressed="true" value="@obj.Id">
-                                                    <svg class="crayons-icon c-btn__icon" focusable="false" width="24" height="24" xmlns="http://www.w3.org/2000/svg">
-                                                        <path d="M6.75 4.5h10.5a.75.75 0 0 1 .75.75v14.357a.375.375 0 0 1-.575.318L12 16.523l-5.426 3.401A.375.375 0 0 1 6 19.607V5.25a.75.75 0 0 1 .75-.75z"></path>
-                                                    </svg>
-                                                </button>
-                                            }
-                                            else
-                                            {
-                                                <button class="c-btn c-btn--icon-alone reading-list" type="button" title="Save to reading list" aria-pressed="false" value="@obj.Id">
-                                                    <svg class="crayons-icon c-btn__icon" focusable="false" width="24" height="24" xmlns="http://www.w3.org/2000/svg">
-                                                        <path d="M6.75 4.5h10.5a.75.75 0 0 1 .75.75v14.357a.375.375 0 0 1-.575.318L12 16.523l-5.426 3.401A.375.375 0 0 1 6 19.607V5.25a.75.75 0 0 1 .75-.75zM16.5 6h-9v11.574l4.5-2.82 4.5 2.82V6z"></path>
-                                                    </svg>
-                                                </button>
-                                            }
+                                        <div class="blog-article__tertiary fs-xs">
+                                            <time datetime="@obj.Date">@obj.Date.ToLongDateString()</time>
                                         </div>
                                     </div>
                                 </div>
                             </div>
+                            <div class="blog-article__indention">
+                                <h3 class="blog-article__title" style="font-weight:bold">
+                                    <a asp-controller="Article" asp-action="Details" asp-route-id="@obj.Id">@obj.Title</a>
+                                </h3>
+                                <div class="blog-article__tags">
+                                    @foreach (var tag in obj.Tags)
+                                    {
+                                        <a class="blog-tag blog-tag--monochrome" asp-controller="Tag" asp-action="Details" asp-route-id="@tag.Id">
+                                            <span style="color: rgb(59, 73, 223)">#</span>
+                                            @tag.Title
+                                        </a>
+                                    }
+                                </div>
+                                <div class="blog-article__bottom">
+                                    <div class="blog-article__details">
+                                        <a class="blog-btn blog-btn--s blog-btn--ghost blog-btn--icon-left" asp-controller="Article" asp-action="Details" asp-route-id="@obj.Id">
+                                            <svg class="blog-icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24">
+                                                <path d="M18.884 12.595l.01.011L12 19.5l-6.894-6.894.01-.01A4.875 4.875 0 0112 5.73a4.875 4.875 0 016.884 6.865zM6.431 7.037a3.375 3.375 0 000 4.773L12 17.38l5.569-5.569a3.375 3.375 0 10-4.773-4.773L9.613 10.22l-1.06-1.062 2.371-2.372a3.375 3.375 0 00-4.492.25v.001z"></path>
+                                            </svg>@if (obj.ArticleLikes.Count() == 1)
+                                            {
+                                                <span class="s:inline">@obj.ArticleLikes.Count() reaction</span>
+                                            }
+                                            else
+                                            {
+                                                <span class="s:inline">@obj.ArticleLikes.Count() reactions</span>
+                                            }
+                                        </a>
+                                        <a class="blog-btn blog-btn--s blog-btn--ghost blog-btn--icon-left" asp-controller="Article" asp-action="Details" asp-route-id="@obj.Id" asp-fragment="comments">
+                                            <svg class="blog-icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24">
+                                                <path d="M10.5 5h3a6 6 0 110 12v2.625c-3.75-1.5-9-3.75-9-8.625a6 6 0 016-6zM12 15.5h1.5a4.501 4.501 0 001.722-8.657A4.5 4.5 0 0013.5 6.5h-3A4.5 4.5 0 006 11c0 2.707 1.846 4.475 6 6.36V15.5z"></path>
+                                            </svg>@if (obj.Comments.Count == 0)
+                                            {
+                                                <span class="s:inline"> Add comment</span>
+                                            }
+                                            else
+                                            {@if (obj.ArticleLikes.Count() == 1)
+                                                {
+                                                    <span class="s:inline">@obj.Comments.Count() comment</span>
+                                                }
+                                                else
+                                                {
+                                                    <span class="s:inline">@obj.Comments.Count() comments</span>
+                                                }               }
+                                        </a>
+                                    </div>
+                                    <div class="blog-article__save">
+                                        <small class="blog-article__tertiary fs-xs mr-2">@Math.Ceiling((double)obj.Text.Length / 1500) min read</small>
+                                        @if (obj.Favourites.Any(x => x.ArticleId == obj.Id && x.UserId.ToString() == UserManager.GetUserId(User)))
+                                        {
+                                            <button class="c-btn c-btn--icon-alone reading-list" type="button" title="Save to reading list" aria-pressed="true" value="@obj.Id">
+                                                <svg class="crayons-icon c-btn__icon" focusable="false" width="24" height="24" xmlns="http://www.w3.org/2000/svg">
+                                                    <path d="M6.75 4.5h10.5a.75.75 0 0 1 .75.75v14.357a.375.375 0 0 1-.575.318L12 16.523l-5.426 3.401A.375.375 0 0 1 6 19.607V5.25a.75.75 0 0 1 .75-.75z"></path>
+                                                </svg>
+                                            </button>
+                                        }
+                                        else
+                                        {
+                                            <button class="c-btn c-btn--icon-alone reading-list" type="button" title="Save to reading list" aria-pressed="false" value="@obj.Id">
+                                                <svg class="crayons-icon c-btn__icon" focusable="false" width="24" height="24" xmlns="http://www.w3.org/2000/svg">
+                                                    <path d="M6.75 4.5h10.5a.75.75 0 0 1 .75.75v14.357a.375.375 0 0 1-.575.318L12 16.523l-5.426 3.401A.375.375 0 0 1 6 19.607V5.25a.75.75 0 0 1 .75-.75zM16.5 6h-9v11.574l4.5-2.82 4.5 2.82V6z"></path>
+                                                </svg>
+                                            </button>
+                                        }
+                                    </div>
+                                </div>
+                            </div>
                         </div>
-                    }
+                    </div>
+                }
             </div>
         </main>
         <div>3</div>
     </div>
 </div>
-
-@*<header class="p-2 px-3 m:p-0 m:px-0 m:mb-2 fs-l">
-    <nav class="-mx-3 m:mx-0 s:flex items-center justify-between">
-        <ul class="blog-navigation blog-navigation--horizontal">
-            <li>
-                <a class="blog-navigation__item">Latest</a>
-            </li>
-            <li>
-                <a class="blog-navigation__item">Top</a>
-            </li>
-        </ul>
-    </nav>
-</header>*@

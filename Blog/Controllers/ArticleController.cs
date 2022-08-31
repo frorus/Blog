@@ -20,11 +20,19 @@ namespace Blog.Controllers
             _userManager = userManager;
         }
 
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string sortOrder)
         {
-            //IEnumerable<Article> articleList = await _unitOfWork.GetRepository<Article>().GetAllAsync();
             var repository = _unitOfWork.GetRepository<Article>() as ArticleRepository;
             IEnumerable<Article> articleList = await repository.GetAllArticles();
+
+            if (sortOrder == "top_desc")
+            {
+                articleList = articleList.OrderByDescending(s => s.ArticleLikes.Count);
+            }
+            else
+            {
+                articleList = articleList.OrderByDescending(s => s.Date);
+            }
 
             return View(articleList);
         }

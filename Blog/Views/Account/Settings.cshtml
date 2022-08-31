@@ -75,7 +75,14 @@
                             <label class="blog-field__label" asp-for="Website">Website URL</label>
                             <input class="blog-textfield" maxlength="100" placeholder="https://yoursite.com" value="@Model.Website" type="url" asp-for="Website" onkeyup="countChar(this)">
                             <p class="blog-field__description align-right">
-                                <span id="url-characters">0</span>/100
+                                @if(Model.Website != null)
+                                {
+                                    <span id="url-characters">@Model.Website.Length</span><span>/100</span>
+                                }
+                                else
+                                {
+                                    <span id="url-characters">0</span><span>/100</span>
+                                }
                             </p>
                         </div>
                         @*  Location field  *@
@@ -83,7 +90,14 @@
                             <label class="blog-field__label" asp-for="Location">Location</label>
                             <input class="blog-textfield" maxlength="100" placeholder="Halifax, Nova Scotia" value="@Model.Location" type="text" asp-for="Location" onkeyup="countChar(this)">
                             <p class="blog-field__description align-right">
-                                <span id="location-characters">0</span>/100
+                                @if(Model.Location != null)
+                                {
+                                    <span id="location-characters">@Model.Location.Length</span><span>/100</span>
+                                }
+                                else
+                                {
+                                    <span id="location-characters">0</span><span>/100</span>
+                                }
                             </p>
                         </div>
                         @*  Bio field  *@
@@ -91,7 +105,14 @@
                             <label class="blog-field__label" asp-for="Bio">Bio</label>
                             <textarea class="blog-textfield" maxlength="200" placeholder="A short bio..." asp-for="Bio" onkeyup="countChar(this)">@Model.Bio</textarea>
                             <p class="blog-field__description align-right">
-                                <span id="summary-characters">0</span>/200
+                                @if(Model.Bio != null)
+                                {
+                                    <span id="summary-characters">@Model.Bio.Length</span><span>/200</span>
+                                }
+                                else
+                                {
+                                    <span id="summary-characters">0</span><span>/200</span>
+                                }
                             </p>
                         </div>
                     </div>
@@ -106,7 +127,14 @@
                             </p>
                             <textarea class="blog-textfield" maxlength="200" asp-for="Learning" onkeyup="countChar(this)">@Model.Learning</textarea>
                             <p class="blog-field__description align-right">
-                                <span id="currently_learning-characters">0</span>/200
+                                @if(Model.Learning != null)
+                                {
+                                    <span id="currently_learning-characters">@Model.Learning.Length</span><span>/200</span>
+                                }
+                                else
+                                {
+                                    <span id="currently_learning-characters">0</span><span>/200</span>
+                                }
                             </p>
                         </div>
                         @*  Skills/Languages field  *@
@@ -117,7 +145,14 @@
                             </p>
                             <textarea class="blog-textfield" maxlength="200" placeholder="Any languages, frameworks, etc. to highlight?" asp-for="Skills" onkeyup="countChar(this)">@Model.Skills</textarea>
                             <p class="blog-field__description align-right">
-                                <span id="skills_languages-characters">0</span>/200
+                                @if(Model.Skills != null)
+                                {
+                                    <span id="skills_languages-characters">@Model.Skills.Length</span><span>/200</span>
+                                }
+                                else
+                                {
+                                    <span id="skills_languages-characters">0</span><span>/200</span>
+                                }
                             </p>
                         </div>
                     </div>
@@ -129,7 +164,14 @@
                             <label class="blog-field__label" asp-for="Work">Work</label>
                             <input class="blog-textfield" maxlength="100" placeholder="What do you do? Example: CEO at ACME Inc." value="@Model.Work" type="text" asp-for="Work" onkeyup="countChar(this)">
                             <p class="blog-field__description align-right">
-                                <span id="work-characters">0</span>/100
+                                @if(Model.Work != null)
+                                {
+                                    <span id="work-characters">@Model.Work.Length</span><span>/100</span>
+                                }
+                                else
+                                {
+                                    <span id="work-characters">0</span><span>/100</span>
+                                }
                             </p>
                         </div>
                         @*  Education field  *@
@@ -137,7 +179,14 @@
                             <label class="blog-field__label" asp-for="Education">Education</label>
                             <input class="blog-textfield" maxlength="100" placeholder="Where did you go to school?" value="@Model.Education" type="text" asp-for="Education" onkeyup="countChar(this)">
                             <p class="blog-field__description align-right">
-                                <span id="education-characters">0</span>/100
+                                @if(Model.Education != null)
+                                {
+                                    <span id="education-characters">@Model.Education.Length</span><span>/100</span>
+                                }
+                                else
+                                {
+                                    <span id="education-characters">0</span><span>/100</span>
+                                }
                             </p>
                         </div>
                     </div>
