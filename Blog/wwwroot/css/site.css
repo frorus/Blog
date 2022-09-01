@@ -115,6 +115,8 @@
     --content-padding-x: var(--su-8);
     --content-padding-y: var(--su-7);
     --profile-brand-color: #000000;
+    --layout-sidebar-left-display: block;
+    --layout-sidebar-left-row-end: initial;
 }
 
 :root {
@@ -1114,15 +1116,15 @@ body #main-content {
 .blog-navigation {
     --tab-horizontal-padding: 0.75rem;
     --tab-vertical-padding: 0.5rem;
-    display: flex;
-    overflow-x: auto;
+    display: block;
+    overflow-x: unset;
     flex-wrap: nowrap;
     padding: 0.25rem 0 !important;
     margin: calc(-1 * 0.25rem) 0 !important;
 }
 
 .blog-navigation__item {
-    display: inline-flex;
+    display: flex;
     white-space: nowrap;
     padding: var(--tab-vertical-padding) var(--tab-horizontal-padding);
     color: #575757;
@@ -1379,11 +1381,6 @@ a {
     --bg-hover: var(--link-bg-hover);
     --color: var(--link-color);
     --color-hover: var(--link-branded-color-hover);
-}
-
-.c-link:hover {
-    color: var(--color-hover);
-    background-color: var(--bg-hover);
 }
 
 .c-link--block {
@@ -2622,8 +2619,8 @@ div.field, div.actions {
     transition: background var(--transition-props),color var(--transition-props);
 }
 
-a.active/*.show*/ {
-    font-weight: var(--fw-medium);
+a.active {
+    font-weight: var(--fw-bold);
     color: var(--link-color-current);
     background: var(--link-bg-current);
 }
@@ -3000,6 +2997,35 @@ h3.blog-story__title {
     color: var(--accent-brand);
 }
 
+.blog-layout--header-inside.blog-layout--2-cols {
+    --header-span: 1 / span 2;
+}
+
 .blog-navigation__item:hover {
+    color: var(--accent-brand);
     background: var(--base-inverted);
+}
+
+.blog-navigation__item--current {
+    background: var(--base-inverted);
+}
+
+.p-9 {
+    padding: var(--su-9) !important;
+}
+
+.radius-default {
+    border-radius: var(--radius) !important;
+}
+
+.c-link:hover {
+    color: var(--color-hover);
+    z-index: var(--z-elevate);
+    text-decoration: underline;
+}
+
+.blog-textfield:focus {
+    background-color: var(--form-bg-focus);
+    border-color: var(--focus);
+    box-shadow: 0 0 0 1px var(--focus);
 }

@@ -1,0 +1,30 @@
+﻿@model IEnumerable<Tag>
+
+@if (Model.Any())
+{
+    @foreach (var tag in Model)
+    {
+        @*  Tag  *@
+        <article class="blog-story">
+            <div class="blog-story__body flex items-start gap-2">
+                @*  # icon *@
+                <span class="radius-default p-2 shrink-0" style="background: #2222221a; color: #222222">
+                    <svg class="blog-icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+                        <path d="M7.784 14l.42-4H4V8h4.415l.525-5h2.011l-.525 5h3.989l.525-5h2.011l-.525 5H20v2h-3.784l-.42 4H20v2h-4.415l-.525 5h-2.011l.525-5H9.585l-.525 5H7.049l.525-5H4v-2h3.784zm2.011 0h3.99l.42-4h-3.99l-.42 4z"></path>
+                    </svg>
+                </span>
+                @*  Tag title and decription  *@ 
+                <div>
+                    <h3 class="blog-subtitle-2 lh-tight py-2">
+                        <a class="c-link" asp-controller="Tag" asp-action="Details" asp-route-id="@tag.Id">@tag.Title</a>
+                    </h3>
+                    <div class="truncate-at-3">@tag.Description</div>
+                </div>
+            </div>
+        </article>
+    }
+}
+else
+{
+    <div class="p-9 align-center blog-card">No results match that query</div>
+}

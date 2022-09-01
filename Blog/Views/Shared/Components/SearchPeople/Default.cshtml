@@ -1,0 +1,41 @@
+﻿@model List<ApplicationUser>
+
+@if (Model.Any())
+{
+    @foreach (var user in Model)
+    {
+        @*  User  *@
+        <article class="blog-story">
+            <div class="blog-story__body">
+                <div class="blog-story__top">
+                    <div class="blog-story__meta">
+                        @*  User avatar  *@
+                        <div class="blog-story__author-pic">
+                            <a class="blog-avatar blog-avatar--l" asp-controller="Account" asp-action="GetUserProfile" asp-route-id="@user.Id">
+                                <img class="blog-avatar__image" src="/img/avatars/@user.ImagePath" loading="lazy">
+                            </a>
+                        </div>
+                        <div>
+                            @*  User name  *@
+                            <div>
+                                <div class="relative mb-0 fw-medium inline-block">
+                                    <span class="fs-s p-1 -ml-1 -my-2">@user.UserName</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="blog-story__indention">
+                    @*  User title  *@
+                    <h3 class="blog-story__title fw-bold">
+                        <a asp-controller="Account" asp-action="GetUserProfile" asp-route-id="@user.Id">@user.Name</a>
+                    </h3>
+                </div>
+            </div>
+        </article>
+    }
+}
+else
+{
+    <div class="p-9 align-center blog-card">No results match that query</div>
+}
