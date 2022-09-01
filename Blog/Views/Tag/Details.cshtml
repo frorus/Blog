@@ -1,4 +1,7 @@
-﻿@model Tag
+﻿@using Microsoft.AspNetCore.Identity
+@model Tag
+
+@inject UserManager<ApplicationUser> UserManager
 
 @{
     ViewData["Title"] = "Articles by tag";
@@ -52,7 +55,7 @@
                     </div>
                 </header>
                 <div>
-                    @foreach(var obj in Model.Articles)
+                    @foreach(var article in Model.Articles)
                     {
                         <div class="blog-article">
                             <div class="blog-article__body">
@@ -60,34 +63,34 @@
                                     <div class="blog-article__meta">
                                         <div class="blog-article__author-pic">
                                             <a class="blog-avatar blog-avatar--l" href="/">
-                                                <img class="blog-avatar__image" src="/img/avatars/@obj.User.ImagePath">
+                                                <img class="blog-avatar__image" src="/img/avatars/@article.User.ImagePath">
                                                 ::after
                                             </a>
                                         </div>
                                         <div>
                                             <div>
-                                                <div class="relative mb-4 s:mb-0 fw-medium @*hidden*@ m:inline-block">
-                                                    @obj.AuthorUsername
+                                                <div class="relative mb-4 s:mb-0 fw-medium m:inline-block">
+                                                    @await UserManager.GetUserNameAsync(article.User)
                                                 </div>
                                             </div>
                                             <div class="blog-article__tertiary fs-xs">
-                                                <time datetime="@obj.Date">@obj.Date.ToLongDateString()</time>
+                                                <time datetime="@article.Date">@article.Date.ToLongDateString()</time>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
                                 <div class="blog-article__indention">
                                     <h2 class="blog-article__title">
-                                        <a asp-controller="Article" asp-action="Details" asp-route-id="@obj.Id">@obj.Title</a>
+                                        <a asp-controller="Article" asp-action="Details" asp-route-id="@article.Id">@article.Title</a>
                                     </h2>
                                     <div class="blog-article__tags">
-                                        @foreach(var tag in obj.Tags){
+                                        @foreach(var tag in article.Tags){
                                             <a class="blog-tag blog-tag--monochrome" asp-controller="Tag" asp-action="Details" asp-route-id="@tag.Id">#@tag.Title</a>
                                         }
                                     </div>
                                     <div class="blog-article__bottom">
                                         <div class="blog-article__details">
-                                            <a class="blog-btn blog-btn--s blog-btn--ghost blog-btn--icon-left" asp-controller="Article" asp-action="Details" asp-route-id="@obj.Id">
+                                            <a class="blog-btn blog-btn--s blog-btn--ghost blog-btn--icon-left" asp-controller="Article" asp-action="Details" asp-route-id="@article.Id">
                                                 <svg class="blog-icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24">
                                                     <path d="M18.884 12.595l.01.011L12 19.5l-6.894-6.894.01-.01A4.875 4.875 0 0112 5.73a4.875 4.875 0 016.884 6.865zM6.431 7.037a3.375 3.375 0 000 4.773L12 17.38l5.569-5.569a3.375 3.375 0 10-4.773-4.773L9.613 10.22l-1.06-1.062 2.371-2.372a3.375 3.375 0 00-4.492.25v.001z"></path>
                                                 </svg>
@@ -102,7 +105,7 @@
                                              </a>
                                         </div>
                                         <div class="blog-article__save">
-                                            <small class="blog-article__tertiary fs-xs mr-2">@Math.Ceiling((double)obj.Text.Length / 1500) min read</small>
+                                            <small class="blog-article__tertiary fs-xs mr-2">@Math.Ceiling((double)article.Text.Length / 1500) min read</small>
                                             <button class="blog-btn blog-btn--secondary blog-btn--s w-max bookmark-button" type="button">
                                                 <span class="bm-initial">Save</span>
                                             </button>

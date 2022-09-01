@@ -1,5 +1,5 @@
-﻿@model Article
-@using Microsoft.AspNetCore.Identity
+﻿@using Microsoft.AspNetCore.Identity
+@model Article
 
 @inject SignInManager<ApplicationUser> SignInManager
 @inject UserManager<ApplicationUser> UserManager
@@ -99,7 +99,7 @@
                                         </a>
                                     </div>
                                     <div class="pl-3 flex-1">
-                                        <a class="blog-link fw-bold">@Model.AuthorUsername</a>
+                                        <a class="blog-link fw-bold">@await UserManager.GetUserNameAsync(Model.User)</a>
                                         <p class="fs-xs color-base-60">Posted on <time datetime="@Model.Date">@Model.Date.ToLongDateString()</time></p>
                                     </div>
                                     <div>

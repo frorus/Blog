@@ -71,7 +71,6 @@ namespace Blog.Controllers
                 {
                     Title = model.Title,
                     Text = model.Text,
-                    AuthorUsername = _userManager.GetUserName(this.User),
                     UserId = Guid.Parse(userId),
                     User = await _userManager.FindByIdAsync(userId)
                 };
