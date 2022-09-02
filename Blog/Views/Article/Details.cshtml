@@ -1,31 +1,20 @@
 ﻿@using Microsoft.AspNetCore.Identity
 @model ArticleDetailsViewModel
 
-@*@inject SignInManager<ApplicationUser> SignInManager*@
 @inject UserManager<ApplicationUser> UserManager
 
 @{
     ViewData["Title"] = "Details";
 }
 
-@*if (SignInManager.IsSignedIn(User))
-{
-    @*  Get current user  
-    var user = await UserManager.GetUserAsync(User);
-}*@
-
 <div class="wrapper">
-    @{
-        //var user = await UserManager.FindByIdAsync(Model.UserId.ToString());
-    }
-
     <div class="blog-layout blog-layout--3-cols blog-layout--article">
         @*  Left sidebar  *@
         <aside class="blog-layout__sidebar-left">
             <div class="blog-article-actions">
                 <div class="blog-article-actions__inner">
                     @if(Model.ArticleLikes.Any(x => x.ArticleId == Model.Id && x.UserId.ToString() == UserManager.GetUserId(User))){
-                        <button @*id="reaction-button-like"*@ class="blog-reaction blog-reaction--like relative unlike user-activated" value="@Model.Id">
+                        <button class="blog-reaction blog-reaction--like relative unlike user-activated" value="@Model.Id">
                             <span class="blog-reaction__icon blog-reaction__icon--inactive">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" role="img" aria-hidden="true" class="blog-icon">
                                     <path d="M21.179 12.794l.013.014L12 22l-9.192-9.192.013-.014A6.5 6.5 0 0112 3.64a6.5 6.5 0 019.179 9.154zM4.575 5.383a4.5 4.5 0 000 6.364L12 19.172l7.425-7.425a4.5 4.5 0 10-6.364-6.364L8.818 9.626 7.404 8.21l3.162-3.162a4.5 4.5 0 00-5.99.334l-.001.001z"></path>
@@ -41,7 +30,7 @@
                     }
                     else
                     {
-                        <button @*id="reaction-button-like"*@ class="blog-reaction blog-reaction--like relative like" value="@Model.Id">
+                        <button class="blog-reaction blog-reaction--like relative like" value="@Model.Id">
                             <span class="blog-reaction__icon blog-reaction__icon--inactive">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" role="img" aria-hidden="true" class="blog-icon">
                                     <path d="M21.179 12.794l.013.014L12 22l-9.192-9.192.013-.014A6.5 6.5 0 0112 3.64a6.5 6.5 0 019.179 9.154zM4.575 5.383a4.5 4.5 0 000 6.364L12 19.172l7.425-7.425a4.5 4.5 0 10-6.364-6.364L8.818 9.626 7.404 8.21l3.162-3.162a4.5 4.5 0 00-5.99.334l-.001.001z"></path>
@@ -57,7 +46,7 @@
                     }
                     @if(Model.Favourites.Any(x => x.ArticleId == Model.Id && x.UserId.ToString() == UserManager.GetUserId(User)))
                     {
-                        <button @*id="reaction-button-readinglist"*@ class="blog-reaction blog-reaction--readinglist relative unfavourite user-activated" title="Save" value="@Model.Id">
+                        <button class="blog-reaction blog-reaction--readinglist relative unfavourite user-activated" title="Save" value="@Model.Id">
                             <span class="blog-reaction__icon blog-reaction__icon--inactive">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" role="img" aria-hidden="true" class="blog-icon">
                                     <path d="M5 2h14a1 1 0 011 1v19.143a.5.5 0 01-.766.424L12 18.03l-7.234 4.536A.5.5 0 014 22.143V3a1 1 0 011-1zm13 2H6v15.432l6-3.761 6 3.761V4z"></path>
@@ -73,7 +62,7 @@
                     }
                     else
                     {
-                        <button @*id="reaction-button-readinglist"*@ class="blog-reaction blog-reaction--readinglist relative favourite" title="Save" value="@Model.Id">
+                        <button class="blog-reaction blog-reaction--readinglist relative favourite" title="Save" value="@Model.Id">
                             <span class="blog-reaction__icon blog-reaction__icon--inactive">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" role="img" aria-hidden="true" class="blog-icon">
                                     <path d="M5 2h14a1 1 0 011 1v19.143a.5.5 0 01-.766.424L12 18.03l-7.234 4.536A.5.5 0 014 22.143V3a1 1 0 011-1zm13 2H6v15.432l6-3.761 6 3.761V4z"></path>

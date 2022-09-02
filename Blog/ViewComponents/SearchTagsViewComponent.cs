@@ -20,7 +20,7 @@ namespace Blog.ViewComponents
             IEnumerable<Tag> tags = await repository.GetAllTags();
 
             var tagList = tags.Where(x => (x.Title.ToLower().Contains(search.ToLower()) ||
-                                           x.Description.ToLower().Contains(search.ToLower())));
+                                          (x.Description == null || x.Description.ToLower().Contains(search.ToLower()))));
 
             return View(tagList);
         }
