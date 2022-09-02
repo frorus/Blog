@@ -3054,3 +3054,57 @@ h3.blog-story__title {
 .c-link--block:hover {
     background-color: var(--bg-hover);
 }
+
+.blog-layout__sidebar-right {
+    display: var(--layout-sidebar-right-display);
+    width: var(--layout-sidebar-right-width);
+}
+
+.branded-7 {
+    border-top: var(--su-7) solid var(--accent-brand);
+    border-top-color: #111111
+}
+
+.-mt-4 {
+    margin-top: calc(var(--su-4) * -1) !important;
+}
+
+.user-metadata-details .key {
+    font-size: var(--fs-xs);
+    font-weight: var(--fw-bold);
+    text-transform: uppercase;
+    color: var(--card-color-tertiary);
+}
+
+.user-metadata-details li + li {
+    margin-top: var(--su-3);
+}
+
+.blog-link--contentful {
+    display: block;
+    padding: var(--su-4);
+    border-bottom: 1px solid var(--body-bg);
+}
+
+.blog-link--contentful:hover {
+    background: var(--link-bg-hover-alt);
+}
+
+.opacity-50 {
+    opacity: 0.5 !important;
+}
+
+.blog-link--contentful .blog-link__secondary {
+    color: var(--link-color-secondary);
+    font-size: var(--fs-s);
+    padding-top: var(--su-1);
+}
+
+.blog-link--contentful:hover .blog-link__secondary {
+    color: var(--link-color-secondary-hover);
+}
+
+.blog-article-sticky {
+    position: sticky;
+    top: calc(var(--header-height) + var(--layout-padding));
+}

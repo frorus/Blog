@@ -2,6 +2,8 @@
 using Blog.Data.UnitOfWork;
 using Blog.Models.DB;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+
 namespace Blog.Controllers
 {
     public class SearchController : Controller
@@ -19,9 +21,7 @@ namespace Blog.Controllers
             ViewData["Search"] = search;
 
             var repository = _unitOfWork.GetRepository<Article>() as ArticleRepository;
-            IEnumerable<Article> articles = await repository.GetAllArticles();
-
-            var articleList = articles.Where(x => x.Title.ToLower().Contains(search.ToLower()));
+            var articleList = await repository.GetAllArticles().Where(x => x.Title.ToLower().Contains(search.ToLower())).ToListAsync();
 
             return View(articleList);
         }

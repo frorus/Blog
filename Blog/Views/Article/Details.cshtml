@@ -1,21 +1,26 @@
 ﻿@using Microsoft.AspNetCore.Identity
-@model Article
+@model ArticleDetailsViewModel
 
-@inject SignInManager<ApplicationUser> SignInManager
+@*@inject SignInManager<ApplicationUser> SignInManager*@
 @inject UserManager<ApplicationUser> UserManager
 
 @{
     ViewData["Title"] = "Details";
 }
 
-@if (SignInManager.IsSignedIn(User))
+@*if (SignInManager.IsSignedIn(User))
 {
-    @*  Get current user  *@
+    @*  Get current user  
     var user = await UserManager.GetUserAsync(User);
-}
+}*@
 
 <div class="wrapper">
+    @{
+        //var user = await UserManager.FindByIdAsync(Model.UserId.ToString());
+    }
+
     <div class="blog-layout blog-layout--3-cols blog-layout--article">
+        @*  Left sidebar  *@
         <aside class="blog-layout__sidebar-left">
             <div class="blog-article-actions">
                 <div class="blog-article-actions__inner">
@@ -86,6 +91,7 @@
                 </div>
             </div>
         </aside>
+        @*  Article content  *@
         <main class="blog-layout__content grid gap-4">
             <div class="article-wrapper">
                 <article class="blog-card blog-article mb-4">
@@ -208,5 +214,103 @@
                 </article>
             </div>
         </main>
+        @*  Article author info  *@
+        <aside class="blog-layout__sidebar-right">
+            <div class="blog-article-sticky grid gap-4 break-word">
+                @*  Info section  *@
+                <div class="blog-card blog-card--secondary branded-7 p-4 pt-0 gap-4 grid">
+                    @* User's avatar/name  *@
+                    <div class="-mt-4">
+                        <a class="flex" asp-controller="Account" asp-action="GetUserProfile" asp-route-id="@Model.UserId">
+                            <span class="blog-avatar blog-avatar--xl mr-2 shrink-0">
+                                <img class="blog-avatar__image" src="/img/avatars/@Model.User.ImagePath" loading="lazy">
+                            </span>
+                            @if(@Model.User.Name != null)
+                            {
+                                <span class="blog-link blog-subtitle-2 mt-5">@Model.User.Name</span>
+                            }
+                            else
+                            {
+                                <span class="blog-link blog-subtitle-2 mt-5">@Model.User.UserName</span>
+                            }
+                        </a>
+                    </div>
+                    @*  User's bio  *@
+                    <div class="color-base-70">@Model.User.Bio</div>
+                    @*  User's location/education/work/joined data  *@
+                    <div class="user-metadata-details">
+                        <ul class="user-metadata-details-inner">
+                            @*  Location  *@
+                            @if(@Model.User.Location != null)
+                            {
+                                <li>
+                                    <div class="key">Location</div>
+                                    <div class="value">@Model.User.Location</div>
+                                </li>
+                            }
+                            @*  Education  *@
+                            @if(@Model.User.Education != null)
+                            {
+                                <li>
+                                    <div class="key">Education</div>
+                                    <div class="value">@Model.User.Education</div>
+                                </li>
+                            }
+                            @*  Work  *@
+                            @if(@Model.User.Work != null)
+                            {
+                                <li>
+                                    <div class="key">Work</div>
+                                    <div class="value">@Model.User.Work</div>
+                                </li>
+                            }
+                            @*  Joined date *@
+                            <li>
+                                <div class="key">Joined</div>
+                                <div class="value">@Model.User.JoinedDate.ToLongDateString()</div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                @*  Last 3 articles section  *@
+                <div class="blog-card blog-card--secondary">
+                    @*  Title "More from author"  *@ 
+                    <header class="blog-card__header">
+                        <h3 class="blog-subtitle-2">
+                            More from
+                            @if(@Model.User.Name != null)
+                            {
+                                <a asp-controller="Account" asp-action="GetUserProfile" asp-route-id="@Model.UserId">
+                                    @Model.User.Name
+                                </a>
+                            }
+                            else
+                            {
+                                <a asp-controller="Account" asp-action="GetUserProfile" asp-route-id="@Model.UserId">
+                                    @Model.User.UserName
+                                </a>
+                            }
+                        </h3>
+                    </header>
+                    @*  Articles  *@
+                    <div>
+                        @foreach(var article in Model.UserArticles)
+                        {
+                            <a class="blog-link blog-link--contentful" asp-controller="Article" asp-action="Details" asp-route-id="@article.Id">
+                                @article.Title
+                                <div class="blog-link__secondary -ml-1">
+                                    @foreach(var tag in article.Tags)
+                                    {
+                                        <span class="mr-1">
+                                            <span class="opacity-50">#</span>@tag.Title
+                                        </span>
+                                    }
+                                </div>
+                            </a>
+                        }
+                    </div>
+                </div>
+            </div>
+        </aside>
     </div>
 </div>

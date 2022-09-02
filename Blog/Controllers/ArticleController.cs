@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.EntityFrameworkCore;
 
 namespace Blog.Controllers
 {
@@ -23,7 +24,7 @@ namespace Blog.Controllers
         public async Task<IActionResult> Index(string sortOrder)
         {
             var repository = _unitOfWork.GetRepository<Article>() as ArticleRepository;
-            IEnumerable<Article> articleList = await repository.GetAllArticles();
+            var articleList = repository.GetAllArticles();
 
             if (sortOrder == "top_desc")
             {
@@ -34,7 +35,7 @@ namespace Blog.Controllers
                 articleList = articleList.OrderByDescending(s => s.Date);
             }
 
-            return View(articleList);
+            return View(await articleList.ToListAsync());
         }
 
         [HttpGet]
@@ -191,16 +192,35 @@ namespace Blog.Controllers
                 return NotFound();
             }
 
-            //var articleFromDb = await _unitOfWork.GetRepository<Article>().GetByIdAsync(id);
             var repository = _unitOfWork.GetRepository<Article>() as ArticleRepository;
             var articleFromDb = await repository.GetArticleById(id);
+
+            var userArticles = await repository.GetAllArticles().Where(article => article.UserId == articleFromDb.UserId)
+                                                                .OrderByDescending(article => article.Date)
+                                                                .Take(3)
+                                                                .ToListAsync();
 
             if (articleFromDb == null)
             {
                 return NotFound();
             }
 
-            return View(articleFromDb);
+            var article = new ArticleDetailsViewModel
+            {
+                Id = articleFromDb.Id,
+                Date = articleFromDb.Date,
+                Title = articleFromDb.Title,
+                Text = articleFromDb.Text,
+                UserId = articleFromDb.UserId,
+                User = articleFromDb.User,
+                UserArticles = userArticles,
+                Comments = articleFromDb.Comments,
+                Tags = articleFromDb.Tags,
+                ArticleLikes = articleFromDb.ArticleLikes,
+                Favourites = articleFromDb.Favourites
+            };
+
+            return View(article);
         }
 
 

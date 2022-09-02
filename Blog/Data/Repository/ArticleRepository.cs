@@ -10,24 +10,24 @@ namespace Blog.Data.Repository
 
         }
 
-        public async Task<IEnumerable<Article>> GetAllArticles()
+        public IQueryable<Article> GetAllArticles()
         {
             var articles = Set.Include(a => a.Tags)
                               .Include(b => b.ArticleLikes)
                               .Include(c => c.Comments)
                               .Include(u => u.User);
 
-            return await articles.ToListAsync();
+            return articles.AsQueryable();
         }
 
         public async Task<Article> GetArticleById(Guid id)
         {
-            var articles = Set.Include(article => article.Tags)
-                              .Include(article => article.Comments)
+            var article = Set.Include(article => article.Tags)
+                             .Include(article => article.Comments)
                                 .ThenInclude(comments => comments.User)
-                              .Include(article => article.User);
+                             .Include(article => article.User);
 
-            return await articles.FirstOrDefaultAsync(a => a.Id == id);
+            return await article.FirstOrDefaultAsync(a => a.Id == id);
         }
     }
 }

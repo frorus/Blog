@@ -1,4 +1,5 @@
-﻿using Blog.Extensions;
+﻿using Blog.Data.Repository;
+using Blog.Extensions;
 using Blog.Models.DB;
 using Blog.ViewModels;
 using Microsoft.AspNetCore.Authorization;
