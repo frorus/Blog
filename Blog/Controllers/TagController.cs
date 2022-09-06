@@ -115,7 +115,7 @@ namespace Blog.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> Details(Guid id)
+        public async Task<IActionResult> Details(Guid id, string sortOrder)
         {
             if (id == Guid.Empty)
             {
@@ -128,6 +128,15 @@ namespace Blog.Controllers
             if (tagFromDb == null)
             {
                 return NotFound();
+            }
+
+            if (sortOrder == "top_desc")
+            {
+                tagFromDb.Articles = tagFromDb.Articles.OrderByDescending(s => s.ArticleLikes.Count).ToList();
+            }
+            else
+            {
+                tagFromDb.Articles = tagFromDb.Articles.OrderByDescending(s => s.Date).ToList();
             }
 
             return View(tagFromDb);

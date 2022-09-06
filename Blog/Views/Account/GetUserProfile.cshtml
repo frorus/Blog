@@ -29,17 +29,34 @@
                     @*  Info section  *@
                     <div class="profile-header__details">
                         @*  Name  *@
-                        <h1 class="blog-title fw-heavy mb-2" style="font-size: var(--fs-3xl);">@Model.Name</h1>
+                        @if (String.IsNullOrEmpty(Model.Name))
+                        {
+                            <h1 class="blog-title fw-heavy mb-2">@Model.Email</h1>
+                        }
+                        else
+                        {
+                            <h1 class="blog-title fw-heavy mb-2">@Model.Name</h1>
+                        }
                         @*  Bio  *@
-                        <p class="fs-l color-base-90 mb-4 mx-auto max-w-75">@Model.Bio</p>
+                        @if(String.IsNullOrEmpty(Model.Bio))
+                        {
+                            <p class="fs-l color-base-90 mb-4 mx-auto max-w-75">404 bio not found</p>
+                        }
+                        else
+                        {
+                            <p class="fs-l color-base-90 mb-4 mx-auto max-w-75">@Model.Bio</p>
+                        }
                         <div class="profile-header__meta">
                             @*  Location  *@
-                            <span class="profile-header__meta__item">
-                                <svg class="blog-icon mr-2 shrink-0" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" role="img">
-                                    <path d="M18.364 17.364L12 23.728l-6.364-6.364a9 9 0 1112.728 0zM12 13a2 2 0 100-4 2 2 0 000 4z"></path>
-                                </svg>
-                                <span>@Model.Location</span>
-                            </span>
+                            @if(!String.IsNullOrEmpty(Model.Location))
+                            {
+                                <span class="profile-header__meta__item">
+                                    <svg class="blog-icon mr-2 shrink-0" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" role="img">
+                                        <path d="M18.364 17.364L12 23.728l-6.364-6.364a9 9 0 1112.728 0zM12 13a2 2 0 100-4 2 2 0 000 4z"></path>
+                                    </svg>
+                                    <span>@Model.Location</span>
+                                </span>
+                            }
                             @*  Joined date  *@
                             <span class="profile-header__meta__item">
                                 <svg class="blog-icon mr-2 shrink-0" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" role="img">
@@ -55,31 +72,43 @@
                                 <span>@Model.Email</span>
                             </a>
                             @*  Website  *@
-                            <a class="profile-header__meta__item" href=@Model.Website">
-                                <svg class="blog-icon mr-2 shrink-0" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" role="img">
-                                    <path d="M10.667 8v1.333H7.333v7.334h7.334v-3.334H16v4a.666.666 0 01-.667.667H6.667A.666.666 0 016 17.333V8.667A.667.667 0 016.667 8h4zM18 6v5.333h-1.333V8.275l-5.196 5.196-.942-.942 5.194-5.196h-3.056V6H18z"></path>
-                                </svg>
-                                <span>@Model.Website</span>
-                            </a>
+                            @if(!String.IsNullOrEmpty(Model.Website))
+                            {
+                                <a class="profile-header__meta__item" href="@Model.Website">
+                                    <svg class="blog-icon mr-2 shrink-0" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" role="img">
+                                        <path d="M10.667 8v1.333H7.333v7.334h7.334v-3.334H16v4a.666.666 0 01-.667.667H6.667A.666.666 0 016 17.333V8.667A.667.667 0 016.667 8h4zM18 6v5.333h-1.333V8.275l-5.196 5.196-.942-.942 5.194-5.196h-3.056V6H18z"></path>
+                                    </svg>
+                                    <span>@Model.Website</span>
+                                </a>
+                            }
                         </div>
                     </div>
                     @*  Education/Work section  *@
-                    <div class="profile-header__bottom fs-base">
-                        @*  Education  *@
-                        <div class="blog-definition">
-                            <strong class="blog-definition__title">
-                                Education
-                            </strong>
-                            <p>@Model.Education</p>
+                    @if (!String.IsNullOrEmpty(Model.Education) && !String.IsNullOrEmpty(Model.Work))
+                    {
+                        <div class="profile-header__bottom fs-base">
+                            @*  Education  *@
+                            @if (!String.IsNullOrEmpty(Model.Education))
+                            {
+                                <div class="blog-definition">
+                                    <strong class="blog-definition__title">
+                                        Education
+                                    </strong>
+                                    <p>@Model.Education</p>
+                                </div>
+                            }
+                            @*  Work  *@
+                            @if (!String.IsNullOrEmpty(Model.Work))
+                            {
+                                <div class="blog-definition">
+                                    <strong class="blog-definition__title">
+                                        Work
+                                    </strong>
+                                    <p>@Model.Work</p>
+                                </div>
+                            }
                         </div>
-                        @*  Work  *@
-                        <div class="blog-definition">
-                            <strong class="blog-definition__title">
-                                Work
-                            </strong>
-                            <p>@Model.Work</p>
-                        </div>
-                    </div>
+                    }
                 </header>
             </div>
         </div>
@@ -88,27 +117,33 @@
             <div class="blog-layout__sidebar-left blog-layout__content">
                 <div class="gap-4 grid">
                     @*  Learning  *@
-                    <div class="blog-card blog-card--secondary">
-                        <header class="blog-card__header">
-                            <h3 class="blog-subtitle-3">
-                                Currently learning
-                            </h3>
-                        </header>
-                        <div class="blog-card__body">
-                            @Model.Learning
+                    @if (!String.IsNullOrEmpty(Model.Learning))
+                    {
+                        <div class="blog-card blog-card--secondary">
+                            <header class="blog-card__header">
+                                <h3 class="blog-subtitle-3">
+                                    Currently learning
+                                </h3>
+                            </header>
+                            <div class="blog-card__body">
+                                @Model.Learning
+                            </div>
                         </div>
-                    </div>
+                    }
                     @*  Skills  *@
-                    <div class="blog-card blog-card--secondary">
-                        <header class="blog-card__header">
-                            <h3 class="blog-subtitle-3">
-                                Skills/Languages
-                            </h3>
-                        </header>
-                        <div class="blog-card__body">
-                            @Model.Skills
+                    @if (!String.IsNullOrEmpty(Model.Skills))
+                    {
+                        <div class="blog-card blog-card--secondary">
+                            <header class="blog-card__header">
+                                <h3 class="blog-subtitle-3">
+                                    Skills/Languages
+                                </h3>
+                            </header>
+                            <div class="blog-card__body">
+                                @Model.Skills
+                            </div>
                         </div>
-                    </div>
+                    }
                     @*  User statistics  *@
                     <div class="blog-card blog-card--secondary p-4">
                         @*  Posts published  *@
@@ -130,9 +165,12 @@
             </div>
             @*  User articles  *@
             <main class="blog-layout__content articles-list">
-                    <div>
-                    @foreach(var obj in Model.Articles)
+                <div>
+                    @foreach(var article in Model.Articles)
                     {
+                        @*  Get username  *@
+                        var user = await UserManager.GetUserNameAsync(article.User);
+
                         @*  Article  *@
                         <article class="blog-story">
                             <div class="blog-story__body">
@@ -140,7 +178,7 @@
                                     <div class="blog-story__meta">
                                         @*  User avatar  *@
                                         <div class="blog-story__author-pic">
-                                            <a class="blog-avatar blog-avatar--l" asp-controller="Account" asp-action="GetUserProfile" asp-route-id="@obj.UserId">
+                                            <a class="blog-avatar blog-avatar--l" asp-controller="Account" asp-action="GetUserProfile" asp-route-id="@article.UserId">
                                                 <img class="blog-avatar__image" src="/img/avatars/@Model.ImagePath" loading="lazy">
                                             </a>
                                         </div>
@@ -148,12 +186,12 @@
                                             @*  User name  *@
                                             <div>
                                                 <div class="relative mb-0 fw-medium inline-block">
-                                                    <span class="fs-s p-1 -ml-1 -my-2">@Model.Name</span>
+                                                    <span class="fs-s p-1 -ml-1 -my-2">@user</span>
                                                 </div>
                                             </div>
                                             @*  Article creation date  *@
                                             <div class="blog-story__tertiary fs-xs">
-                                                <time>@obj.Date.ToLongDateString()</time>
+                                                <time>@article.Date.ToLongDateString()</time>
                                             </div>
                                         </div>
                                     </div>
@@ -161,11 +199,11 @@
                                 <div class="blog-story__indention">
                                     @*  Article title  *@
                                     <h3 class="blog-story__title fw-bold">
-                                        <a asp-controller="Article" asp-action="Details" asp-route-id="@obj.Id">@obj.Title</a>
+                                        <a asp-controller="Article" asp-action="Details" asp-route-id="@article.Id">@article.Title</a>
                                     </h3>
                                     @*  Article tags  *@
                                     <div class="blog-story__tags">
-                                        @foreach(var tag in obj.Tags)
+                                        @foreach(var tag in article.Tags)
                                         {
                                             <a class="blog-tag" asp-controller="Tag" asp-action="Details" asp-route-id="@tag.Id">
                                                 <span class="blog-tag__prefix">#</span>@tag.Title
@@ -177,37 +215,37 @@
                                         <div class="blog-article__details">
                                             @*  Likes  *@
                                             @*  Here and below extra comments (started with "@*") added for remove spaces between inline blocks  *@
-                                            <a class="blog-btn blog-btn--s blog-btn--ghost blog-btn--icon-left" asp-controller="Article" asp-action="Details" asp-route-id="@obj.Id">
+                                            <a class="blog-btn blog-btn--s blog-btn--ghost blog-btn--icon-left" asp-controller="Article" asp-action="Details" asp-route-id="@article.Id">
                                                 <svg class="blog-icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24">
                                                     <path d="M18.884 12.595l.01.011L12 19.5l-6.894-6.894.01-.01A4.875 4.875 0 0112 5.73a4.875 4.875 0 016.884 6.865zM6.431 7.037a3.375 3.375 0 000 4.773L12 17.38l5.569-5.569a3.375 3.375 0 10-4.773-4.773L9.613 10.22l-1.06-1.062 2.371-2.372a3.375 3.375 0 00-4.492.25v.001z"></path>
                                                 </svg>@*
-                                                *@@if(obj.ArticleLikes.Count() == 1)
+                                                *@@if(article.ArticleLikes.Count() == 1)
                                                 {@*
-                                                    *@<span class="s:inline">@obj.ArticleLikes.Count() reaction</span>
+                                                    *@<span class="s:inline">@article.ArticleLikes.Count() reaction</span>
                                                 }
                                                 else
                                                 {@*
-                                                    *@<span class="s:inline">@obj.ArticleLikes.Count() reactions</span>
+                                                    *@<span class="s:inline">@article.ArticleLikes.Count() reactions</span>
                                                 }
                                             </a>
                                             @*  Comments  *@
-                                            <a class="blog-btn blog-btn--s blog-btn--ghost blog-btn--icon-left" asp-controller="Article" asp-action="Details" asp-route-id="@obj.Id" asp-fragment="comments">
+                                            <a class="blog-btn blog-btn--s blog-btn--ghost blog-btn--icon-left" asp-controller="Article" asp-action="Details" asp-route-id="@article.Id" asp-fragment="comments">
                                                 <svg class="blog-icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24">
                                                     <path d="M10.5 5h3a6 6 0 110 12v2.625c-3.75-1.5-9-3.75-9-8.625a6 6 0 016-6zM12 15.5h1.5a4.501 4.501 0 001.722-8.657A4.5 4.5 0 0013.5 6.5h-3A4.5 4.5 0 006 11c0 2.707 1.846 4.475 6 6.36V15.5z"></path>
                                                 </svg>@*
-                                                *@@if (obj.Comments.Count == 0)
+                                                *@@if (article.Comments.Count == 0)
                                                 {@*
                                                     *@<span class="s:inline"> Add comment</span>
                                                 }
                                                 else
                                                 {@*
-                                                *@@if (obj.ArticleLikes.Count() == 1)
+                                                *@@if (article.ArticleLikes.Count() == 1)
                                                     {@*
-                                                        *@<span class="s:inline">@obj.Comments.Count() comment</span>
+                                                        *@<span class="s:inline">@article.Comments.Count() comment</span>
                                                     }
                                                     else
                                                     {@*
-                                                        *@<span class="s:inline">@obj.Comments.Count() comments</span>
+                                                        *@<span class="s:inline">@article.Comments.Count() comments</span>
                                                     }
                                                 }
                                             </a>
@@ -215,11 +253,11 @@
                                         @*  Favourite  *@
                                         <div class="blog-article__save">
                                             @*  Min to read  *@
-                                            <small class="blog-article__tertiary fs-xs mr-2">@Math.Ceiling((double)obj.Text.Length / 1500) min read</small>
+                                            <small class="blog-article__tertiary fs-xs mr-2">@Math.Ceiling((double)article.Text.Length / 1500) min read</small>
                                             @*  Favourite button  *@
-                                            @if (obj.Favourites.Any(x => x.ArticleId == obj.Id && x.UserId.ToString() == UserManager.GetUserId(User)))
+                                            @if (article.Favourites.Any(x => x.ArticleId == article.Id && x.UserId.ToString() == UserManager.GetUserId(User)))
                                             {
-                                                <button class="c-btn c-btn--icon-alone reading-list" type="button" title="Save to reading list" aria-pressed="true" value="@obj.Id">
+                                                <button class="c-btn c-btn--icon-alone reading-list" type="button" title="Save to reading list" aria-pressed="true" value="@article.Id">
                                                     <svg class="crayons-icon c-btn__icon" focusable="false" width="24" height="24" xmlns="http://www.w3.org/2000/svg">
                                                         <path d="M6.75 4.5h10.5a.75.75 0 0 1 .75.75v14.357a.375.375 0 0 1-.575.318L12 16.523l-5.426 3.401A.375.375 0 0 1 6 19.607V5.25a.75.75 0 0 1 .75-.75z"></path>
                                                     </svg>
@@ -227,7 +265,7 @@
                                             }
                                             else
                                             {
-                                                <button class="c-btn c-btn--icon-alone reading-list" type="button" title="Save to reading list" aria-pressed="false" value="@obj.Id">
+                                                <button class="c-btn c-btn--icon-alone reading-list" type="button" title="Save to reading list" aria-pressed="false" value="@article.Id">
                                                     <svg class="crayons-icon c-btn__icon" focusable="false" width="24" height="24" xmlns="http://www.w3.org/2000/svg">
                                                         <path d="M6.75 4.5h10.5a.75.75 0 0 1 .75.75v14.357a.375.375 0 0 1-.575.318L12 16.523l-5.426 3.401A.375.375 0 0 1 6 19.607V5.25a.75.75 0 0 1 .75-.75zM16.5 6h-9v11.574l4.5-2.82 4.5 2.82V6z"></path>
                                                     </svg>

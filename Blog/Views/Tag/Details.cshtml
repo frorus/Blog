@@ -4,129 +4,176 @@
 @inject UserManager<ApplicationUser> UserManager
 
 @{
-    ViewData["Title"] = "Articles by tag";
+    ViewData["Title"] = Model.Title;
 }
 
 <div class="wrapper">
-    <div>
-        <div class="blog-layout">
-            <header class="blog-card branded-4 p-4 l:p-6" style="border-top-color: #562765 ">
-                <div class="flex">
-                    <div class="flex flex-col w-100 justify-center">
-                        <div class="flex justify-between items-center">
-                            <h1 class="blog-title">@Model.Title</h1>
-                        </div>
-                        <p class="max-w-100 m:max-w-75 pt-2 s:pt-4">@Model.Description</p>
+    @*  Tag title and description  *@
+    <div class="blog-layout">
+        <header class="blog-card branded-4 p-6" style="border-top-color: #562765 ">
+            <div class="flex">
+                <div class="flex flex-col w-100 justify-center">
+                    <div class="flex justify-between items-center">
+                        <h1 class="blog-title">@Model.Title</h1>
+                    </div>
+                    <p class="max-w-75 pt-5">@Model.Description</p>
+                </div>
+            </div>
+        </header>
+    </div>
+    @*  Sidebar/main content  *@
+    <div class="home">
+        @*  Sidebar  *@
+        <div id="sidebar-wrapper-left" class="sidebar-wrapper sidebar-wrapper-left">
+            <aside class="side-bar">
+                <div class="widget">
+                    <a class="blog-btn blog-btn--s" asp-controller="Article" asp-action="Create">Create Post</a>
+                </div>
+                <div class="sidebar-data">
+                    <div>
+                        @Model.Articles.Count() Posts Published
                     </div>
                 </div>
-            </header>
+            </aside>
         </div>
-        <div class="home">
-            <div id="sidebar-wrapper-left" class="sidebar-wrapper sidebar-wrapper-left">
-                <aside class="side-bar">
-                    <div class="widget">
-                        <a class="blog-btn blog-btn--s" asp-controller="Article" asp-action="Create">Create Post</a>
-                    </div>
-                    <div class="sidebar-data">
-                        <div>
-                            @Model.Articles.Count() Posts Published
-                        </div>
-                        <div class="blog-btn-group mt-3">
-                            <a id="tag-edit-button" data-tag="webdev" class="blog-btn blog-btn--outlined fs-s">Edit</a>
-                            <a id="tag-admin-button" data-tag="webdev" class="blog-btn blog-btn--outlined fs-s" data-no-instant="">Admin</a>
-                            <a id="tag-mod-button" data-tag="webdev" class="blog-btn blog-btn--outlined fs-s">Moderate</a>
-                        </div>
-                    </div>
-                </aside>
-            </div>
-            <main id="main-content" class="articles-list">
-                <header id="on-page-nav-controls" class="flex items-center p-2 m:p-0 m:pb-2">
-                    <div class="flex-1 flex items-center justify-between">
-                        <nav class="-mx-3 m:mx-0 s:flex items-center justify-between w-100">
-                            <ul class="blog-navigation blog-navigation--horizontal">
-                                <li>
-                                    <a class="blog-navigation__item">Latest</a>
-                                </li>
-                                <li>
-                                    <a class="blog-navigation__item">Top</a>
-                                </li>
-                            </ul>
-                        </nav>
-                    </div>
-                </header>
-                <div>
-                    @foreach(var article in Model.Articles)
-                    {
-                        <div class="blog-article">
-                            <div class="blog-article__body">
-                                <div class="blog-article__top">
-                                    <div class="blog-article__meta">
-                                        <div class="blog-article__author-pic">
-                                            <a class="blog-avatar blog-avatar--l" href="/">
-                                                <img class="blog-avatar__image" src="/img/avatars/@article.User.ImagePath">
-                                                ::after
-                                            </a>
-                                        </div>
+        @*  Articles by tag  *@
+        <main id="main-content" class="articles-list">
+            @*  Latest/top filter  *@
+            <header id="on-page-nav-controls" class="flex items-center p-0 pb-2">
+                <div class="flex-1 flex items-center justify-between">
+                    <ul class="blog-navigation blog-navigation--horizontal">
+                        @if (Context.Request.Query["sortOrder"] == "top_desc")
+                        {
+                            <li>
+                                <a class="blog-navigation__item" asp-action="Details" asp-route-id="@Model.Id">Latest</a>
+                            </li>
+                            <li>
+                                <a class="blog-navigation__item blog-navigation__item--current" asp-action="Details" asp-route-id="@Model.Id" asp-route-sortOrder="top_desc">Top</a>
+                            </li>
+                        }
+                        else
+                        {
+                            <li>
+                                <a class="blog-navigation__item blog-navigation__item--current" asp-action="Details" asp-route-id="@Model.Id">Latest</a>
+                            </li>
+                            <li>
+                                <a class="blog-navigation__item" asp-action="Details" asp-route-id="@Model.Id" asp-route-sortOrder="top_desc">Top</a>
+                            </li>
+                        }
+                    </ul>
+                </div>
+            </header>
+            @*  Articles  *@
+            <div>
+                @foreach (var article in Model.Articles)
+                {
+                    @*  Get username  *@
+                    var user = await UserManager.GetUserNameAsync(article.User);
+
+                    @*  Article  *@
+                    <div class="blog-article">
+                        <div class="blog-article__body">
+                            <div class="blog-article__top">
+                                <div class="blog-article__meta">
+                                    @*  User avatar  *@
+                                    <div class="blog-article__author-pic">
+                                        <a class="blog-avatar blog-avatar--l" asp-controller="Account" asp-action="GetUserProfile" asp-route-id="@article.UserId">
+                                            <img class="blog-avatar__image" src="/img/avatars/@article.User.ImagePath">
+                                            ::after
+                                        </a>
+                                    </div>
+                                    <div>
+                                        @*  User name  *@
                                         <div>
-                                            <div>
-                                                <div class="relative mb-4 s:mb-0 fw-medium m:inline-block">
-                                                    @await UserManager.GetUserNameAsync(article.User)
-                                                </div>
-                                            </div>
-                                            <div class="blog-article__tertiary fs-xs">
-                                                <time datetime="@article.Date">@article.Date.ToLongDateString()</time>
+                                            <div class="relative mb-0 fw-medium m:inline-block">
+                                                <span class="fs-s p-1 -ml-1 -my-2">@user</span>
                                             </div>
                                         </div>
-                                    </div>
-                                </div>
-                                <div class="blog-article__indention">
-                                    <h2 class="blog-article__title">
-                                        <a asp-controller="Article" asp-action="Details" asp-route-id="@article.Id">@article.Title</a>
-                                    </h2>
-                                    <div class="blog-article__tags">
-                                        @foreach(var tag in article.Tags){
-                                            <a class="blog-tag blog-tag--monochrome" asp-controller="Tag" asp-action="Details" asp-route-id="@tag.Id">#@tag.Title</a>
-                                        }
-                                    </div>
-                                    <div class="blog-article__bottom">
-                                        <div class="blog-article__details">
-                                            <a class="blog-btn blog-btn--s blog-btn--ghost blog-btn--icon-left" asp-controller="Article" asp-action="Details" asp-route-id="@article.Id">
-                                                <svg class="blog-icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24">
-                                                    <path d="M18.884 12.595l.01.011L12 19.5l-6.894-6.894.01-.01A4.875 4.875 0 0112 5.73a4.875 4.875 0 016.884 6.865zM6.431 7.037a3.375 3.375 0 000 4.773L12 17.38l5.569-5.569a3.375 3.375 0 10-4.773-4.773L9.613 10.22l-1.06-1.062 2.371-2.372a3.375 3.375 0 00-4.492.25v.001z"></path>
-                                                </svg>
-                                                12
-                                                <span class="s:inline"> reactions</span>
-                                            </a>
-                                             <a class="blog-btn blog-btn--s blog-btn--ghost blog-btn--icon-left">
-                                                 <svg class="blog-icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24">
-                                                     <path d="M10.5 5h3a6 6 0 110 12v2.625c-3.75-1.5-9-3.75-9-8.625a6 6 0 016-6zM12 15.5h1.5a4.501 4.501 0 001.722-8.657A4.5 4.5 0 0013.5 6.5h-3A4.5 4.5 0 006 11c0 2.707 1.846 4.475 6 6.36V15.5z"></path>
-                                                 </svg>
-                                                 <span class="s:inline"> Add comment</span>
-                                             </a>
-                                        </div>
-                                        <div class="blog-article__save">
-                                            <small class="blog-article__tertiary fs-xs mr-2">@Math.Ceiling((double)article.Text.Length / 1500) min read</small>
-                                            <button class="blog-btn blog-btn--secondary blog-btn--s w-max bookmark-button" type="button">
-                                                <span class="bm-initial">Save</span>
-                                            </button>
+                                        @*  Article creation date  *@
+                                        <div class="blog-article__tertiary fs-xs">
+                                            <time datetime="@article.Date">@article.Date.ToLongDateString()</time>
                                         </div>
                                     </div>
                                 </div>
                             </div>
+                            <div class="blog-article__indention">
+                                @*  Article title  *@
+                                <h3 class="blog-story__title fw-bold">
+                                    <a asp-controller="Article" asp-action="Details" asp-route-id="@article.Id">@article.Title</a>
+                                </h3>
+                                @*  Article tags  *@
+                                <div class="blog-article__tags">
+                                    @foreach (var tag in article.Tags)
+                                    {
+                                        <a class="blog-tag blog-tag--monochrome" asp-controller="Tag" asp-action="Details" asp-route-id="@tag.Id">
+                                            <span class="blog-tag__prefix">#</span>@tag.Title
+                                        </a>
+                                    }
+                                </div>
+                                @*  Likes/comments/favourite section  *@
+                                <div class="blog-article__bottom">
+                                    <div class="blog-article__details">
+                                        @*  Likes  *@
+                                        @*  Here and below extra comments (started with "@*") added for remove spaces between inline blocks  *@
+                                        <a class="blog-btn blog-btn--s blog-btn--ghost blog-btn--icon-left" asp-controller="Article" asp-action="Details" asp-route-id="@article.Id">
+                                            <svg class="blog-icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24">
+                                                <path d="M18.884 12.595l.01.011L12 19.5l-6.894-6.894.01-.01A4.875 4.875 0 0112 5.73a4.875 4.875 0 016.884 6.865zM6.431 7.037a3.375 3.375 0 000 4.773L12 17.38l5.569-5.569a3.375 3.375 0 10-4.773-4.773L9.613 10.22l-1.06-1.062 2.371-2.372a3.375 3.375 0 00-4.492.25v.001z"></path>
+                                            </svg>@if (article.ArticleLikes.Count() == 1)
+                                            {@*
+                                                *@<span class="s:inline">@article.ArticleLikes.Count() reaction</span>
+                                            }
+                                            else
+                                            {@*
+                                                *@<span class="s:inline">@article.ArticleLikes.Count() reactions</span>
+                                            }
+                                        </a>
+                                        @*  Comments  *@
+                                        <a class="blog-btn blog-btn--s blog-btn--ghost blog-btn--icon-left" asp-controller="Article" asp-action="Details" asp-route-id="@article.Id" asp-fragment="comments">
+                                            <svg class="blog-icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24">
+                                                <path d="M10.5 5h3a6 6 0 110 12v2.625c-3.75-1.5-9-3.75-9-8.625a6 6 0 016-6zM12 15.5h1.5a4.501 4.501 0 001.722-8.657A4.5 4.5 0 0013.5 6.5h-3A4.5 4.5 0 006 11c0 2.707 1.846 4.475 6 6.36V15.5z"></path>
+                                            </svg>@if (article.Comments.Count == 0)
+                                            {@*
+                                                *@<span class="s:inline"> Add comment</span>
+                                            }
+                                            else
+                                            {@if (article.ArticleLikes.Count() == 1)
+                                                {@*
+                                                    *@<span class="s:inline">@article.Comments.Count() comment</span>
+                                                }
+                                                else
+                                                {@*
+                                                    *@<span class="s:inline">@article.Comments.Count() comments</span>
+                                                }               }
+                                        </a>
+                                    </div>
+                                    @*  Favourite  *@
+                                    <div class="blog-article__save">
+                                        @*  Min to read  *@
+                                        <small class="blog-article__tertiary fs-xs mr-2">@Math.Ceiling((double)article.Text.Length / 1500) min read</small>
+                                        @*  Favourite button  *@
+                                        @if (article.Favourites.Any(x => x.ArticleId == article.Id && x.UserId.ToString() == UserManager.GetUserId(User)))
+                                        {
+                                            <button class="c-btn c-btn--icon-alone reading-list" type="button" title="Save to reading list" aria-pressed="true" value="@article.Id">
+                                                <svg class="crayons-icon c-btn__icon" focusable="false" width="24" height="24" xmlns="http://www.w3.org/2000/svg">
+                                                    <path d="M6.75 4.5h10.5a.75.75 0 0 1 .75.75v14.357a.375.375 0 0 1-.575.318L12 16.523l-5.426 3.401A.375.375 0 0 1 6 19.607V5.25a.75.75 0 0 1 .75-.75z"></path>
+                                                </svg>
+                                            </button>
+                                        }
+                                        else
+                                        {
+                                            <button class="c-btn c-btn--icon-alone reading-list" type="button" title="Save to reading list" aria-pressed="false" value="@article.Id">
+                                                <svg class="crayons-icon c-btn__icon" focusable="false" width="24" height="24" xmlns="http://www.w3.org/2000/svg">
+                                                    <path d="M6.75 4.5h10.5a.75.75 0 0 1 .75.75v14.357a.375.375 0 0 1-.575.318L12 16.523l-5.426 3.401A.375.375 0 0 1 6 19.607V5.25a.75.75 0 0 1 .75-.75zM16.5 6h-9v11.574l4.5-2.82 4.5 2.82V6z"></path>
+                                                </svg>
+                                            </button>
+                                        }
+                                    </div>
+                                </div>
+                            </div>
                         </div>
-                    }
-                </div>
-            </main>
-            <div id="sidebar-wrapper-right" class="sidebar-wrapper sidebar-wrapper-right">
-                <aside id="sidebar-additional" class="side-bar sidebar-additional showing">
-                    <div class="widget">
-                        <header>
-                            <h4>Widget header</h4>
-                        </header>
-                        <div class="widget-body">3</div>
                     </div>
-                </aside>
+                }
             </div>
-        </div>
+        </main>
     </div>
 </div>

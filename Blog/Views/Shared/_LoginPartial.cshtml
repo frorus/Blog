@@ -23,7 +23,7 @@
         <div class="dropdown-menu blog-dropdown right-2 left-auto -mr-2 mt-1">
             <ul class="m-0">
                 <li class="border-0 border-b-1 border-solid border-base-20 pb-2 mb-2">
-                    <a class="c-link c-link--block lh-tight">
+                    <a class="c-link c-link--block lh-tight" asp-controller="Account" asp-action="GetUserProfile" asp-route-id="@user.Id">
                         <div>
                             <span class="fw-medium block">@user.Name</span
                            ><small class="fs-s opacity-75">&#64;@user.UserName</small>
