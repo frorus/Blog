@@ -89,12 +89,12 @@
                             <div class="flex s:items-start s:flex-row">
                                 <div class="flex flex-1 mb-5 items-start">
                                     <div class="relative">
-                                        <a asp-controller="Account" asp-action="GetUserProfile" asp-route-id="@Model.UserId">
+                                        <a asp-controller="User" asp-action="GetUserProfile" asp-route-id="@Model.UserId">
                                             <img class="radius-full align-middle" src="/img/avatars/@Model.User.ImagePath" width="40" height="40">
                                         </a>
                                     </div>
                                     <div class="pl-3 flex-1">
-                                        <a class="blog-link fw-bold" asp-controller="Account" asp-action="GetUserProfile" asp-route-id="@Model.UserId">@await UserManager.GetUserNameAsync(Model.User)</a>
+                                        <a class="blog-link fw-bold" asp-controller="User" asp-action="GetUserProfile" asp-route-id="@Model.UserId">@await UserManager.GetUserNameAsync(Model.User)</a>
                                         <p class="fs-xs color-base-60">Posted on <time datetime="@Model.Date">@Model.Date.ToLongDateString()</time></p>
                                     </div>
                                     <div>
@@ -135,14 +135,14 @@
                                 {
                                     <div class="comment-wrapper">
                                         <div class="comment__inner">
-                                            <a class="shrink-0 blog-avatar m:blog-avatar--l mt-3" asp-controller="Account" asp-action="GetUserProfile" asp-route-id="@comment.UserId">
+                                            <a class="shrink-0 blog-avatar m:blog-avatar--l mt-3" asp-controller="User" asp-action="GetUserProfile" asp-route-id="@comment.UserId">
                                                 <img class="blog-avatar__image" src="/img/avatars/@comment.User.ImagePath" width="32" height="32">
                                             </a>
                                             <div class="comment__details">
                                                 <div class="comment__content blog-card">
                                                     <div class="comment__header">
                                                         <div class="profile-preview-card relative s:mb-0 fw-medium m:block">
-                                                            <a class="p-1 -my-1 -ml-1 blog-btn blog-btn--ghost" asp-controller="Account" asp-action="GetUserProfile" asp-route-id="@comment.UserId">@comment.User.UserName</a>
+                                                            <a class="p-1 -my-1 -ml-1 blog-btn blog-btn--ghost" asp-controller="User" asp-action="GetUserProfile" asp-route-id="@comment.UserId">@comment.User.UserName</a>
                                                         </div>
                                                         <span class="color-base-30 px-2 m:pl-0" role="presentation">•</span>
                                                         <p class="fs-s">
@@ -207,7 +207,7 @@
                 <div class="blog-card blog-card--secondary branded-7 p-4 pt-0 gap-4 grid">
                     @* User's avatar/name  *@
                     <div class="-mt-4">
-                        <a class="flex" asp-controller="Account" asp-action="GetUserProfile" asp-route-id="@Model.UserId">
+                        <a class="flex" asp-controller="User" asp-action="GetUserProfile" asp-route-id="@Model.UserId">
                             <span class="blog-avatar blog-avatar--xl mr-2 shrink-0">
                                 <img class="blog-avatar__image" src="/img/avatars/@Model.User.ImagePath" loading="lazy">
                             </span>
@@ -266,13 +266,13 @@
                             More from
                             @if(@Model.User.Name != null)
                             {
-                                <a asp-controller="Account" asp-action="GetUserProfile" asp-route-id="@Model.UserId">
+                                <a asp-controller="User" asp-action="GetUserProfile" asp-route-id="@Model.UserId">
                                     @Model.User.Name
                                 </a>
                             }
                             else
                             {
-                                <a asp-controller="Account" asp-action="GetUserProfile" asp-route-id="@Model.UserId">
+                                <a asp-controller="User" asp-action="GetUserProfile" asp-route-id="@Model.UserId">
                                     @Model.User.UserName
                                 </a>
                             }

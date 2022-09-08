@@ -27,7 +27,7 @@
             <div class="grid gap-3 m:gap-4 l:gap-6 m:grid-cols-2 l:grid-cols-3 px-3 m:px-0 pb-3">
                 @foreach(var obj in Model)
                 {
-                    <div class="tag-card blog-card branded-4 p-3 pt-2 m:p-6 m:pt-4 relative" style="border-top-color: rgb(59, 73, 223); ">
+                    <div class="tag-card blog-card branded-4 p-3 pt-2 m:p-6 m:pt-4 relative" style="border-top-color: #2A0798; ">
                         <h3 class="mb-1 -ml-2">
                             <a class="blog-tag" asp-controller="Tag" asp-action="Details" asp-route-id="@obj.Id">#@obj.Title</a>
                         </h3>

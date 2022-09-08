@@ -1,0 +1,69 @@
+﻿@using Microsoft.AspNetCore.Identity
+
+@inject UserManager<ApplicationUser> UserManager
+
+@model List<Article>
+
+<section class="blog-layout__content blog-card pb-4">
+    @foreach (var article in Model)
+    {
+        @*  Get username  *@
+        var user = await UserManager.GetUserNameAsync(article.User);
+
+        <article class="flex p-6 pb-2 pr-6">
+            @*  Avatar  *@
+            <a class="blog-avatar blog-avatar--l" asp-controller="User" asp-action="GetUserProfile" asp-route-id="@article.UserId">
+                <img class="blog-avatar__image" src="/img/avatars/@article.User.ImagePath">
+            </a>
+            @*  Article data  *@
+            <div class="flex-1 pl-2 pl-4">
+                @*  Title  *@
+                <a class="flex blog-link" asp-controller="Article" asp-action="Details" asp-route-id="@article.Id">
+                    <h2 class="lh-tight fs-l fw-bold break-word">@article.Title</h2>
+                </a>
+                @*  Article info  *@
+                <p class="fs-s">
+                    @*  Author  *@
+                    <a class="blog-link fw-medium" asp-controller="User" asp-action="GetUserProfile" asp-route-id="@article.UserId">@user</a>
+                    <span class="color-base-30"> • </span>
+                    @*  Creation date / time to read  *@
+                    <span class="color-base-60">
+                        @article.Date.ToLongDateString()
+                        <span class="color-base-30"> • </span>
+                        @Math.Ceiling((double)article.Text.Length / 1500) min read
+                    </span>
+                    @*  Tags  *@
+                    <span>
+                        <span class="color-base-30"> • </span>
+                        @foreach (var tag in article.Tags)
+                        {
+                            <a class="blog-tag blog-tag--monochrome" asp-controller="Tag" asp-action="Details" asp-route-id="@tag.Id">
+                                <span class="blog-tag__prefix">#</span>@tag.Title
+                            </a>
+                        }
+                    </span>
+                </p>
+            </div>
+            @*  Favourite button  *@
+            <div class="self-center">
+                @if (article.Favourites.Any(x => x.ArticleId == article.Id && x.UserId.ToString() == UserManager.GetUserId(User)))
+                {
+                    <button class="c-btn c-btn--icon-alone reading-list" type="button" title="Save to reading list" aria-pressed="true" value="@article.Id">
+                        <svg class="crayons-icon c-btn__icon" focusable="false" width="24" height="24" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M6.75 4.5h10.5a.75.75 0 0 1 .75.75v14.357a.375.375 0 0 1-.575.318L12 16.523l-5.426 3.401A.375.375 0 0 1 6 19.607V5.25a.75.75 0 0 1 .75-.75z"></path>
+                        </svg>
+                    </button>
+                }
+                else
+                {
+                    <button class="c-btn c-btn--icon-alone reading-list" type="button" title="Save to reading list" aria-pressed="false" value="@article.Id">
+                        <svg class="crayons-icon c-btn__icon" focusable="false" width="24" height="24" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M6.75 4.5h10.5a.75.75 0 0 1 .75.75v14.357a.375.375 0 0 1-.575.318L12 16.523l-5.426 3.401A.375.375 0 0 1 6 19.607V5.25a.75.75 0 0 1 .75-.75zM16.5 6h-9v11.574l4.5-2.82 4.5 2.82V6z"></path>
+                        </svg>
+                    </button>
+                }
+            </div>
+        </article>
+    }
+</section>
+

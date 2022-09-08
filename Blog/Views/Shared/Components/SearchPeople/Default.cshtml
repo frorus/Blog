@@ -11,7 +11,7 @@
                     <div class="blog-story__meta">
                         @*  User avatar  *@
                         <div class="blog-story__author-pic">
-                            <a class="blog-avatar blog-avatar--l" asp-controller="Account" asp-action="GetUserProfile" asp-route-id="@user.Id">
+                            <a class="blog-avatar blog-avatar--l" asp-controller="User" asp-action="GetUserProfile" asp-route-id="@user.Id">
                                 <img class="blog-avatar__image" src="/img/avatars/@user.ImagePath" loading="lazy">
                             </a>
                         </div>
@@ -28,7 +28,7 @@
                 <div class="blog-story__indention">
                     @*  User title  *@
                     <h3 class="blog-story__title fw-bold">
-                        <a asp-controller="Account" asp-action="GetUserProfile" asp-route-id="@user.Id">@user.Name</a>
+                        <a asp-controller="User" asp-action="GetUserProfile" asp-route-id="@user.Id">@user.Name</a>
                     </h3>
                 </div>
             </div>

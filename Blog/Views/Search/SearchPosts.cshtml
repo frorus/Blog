@@ -38,7 +38,7 @@
                                         <div class="blog-story__meta">
                                             @*  User avatar  *@
                                             <div class="blog-story__author-pic">
-                                                <a class="blog-avatar blog-avatar--l" asp-controller="Account" asp-action="GetUserProfile" asp-route-id="@article.UserId">
+                                                <a class="blog-avatar blog-avatar--l" asp-controller="User" asp-action="GetUserProfile" asp-route-id="@article.UserId">
                                                     <img class="blog-avatar__image" src="/img/avatars/@article.User.ImagePath" loading="lazy">
                                                 </a>
                                             </div>

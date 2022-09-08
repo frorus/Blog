@@ -127,44 +127,5 @@ namespace Blog.Controllers
         {
             return View();
         }
-
-        [HttpGet]
-        [Route("Profile/{id}")]
-        public async Task<IActionResult> GetUserProfile(Guid id)
-        {
-            if (id == Guid.Empty)
-            {
-                return NotFound();
-            }
-
-            var user = await _userManager.Users.Include(user => user.Articles)
-                                               .ThenInclude(article => article.Tags)
-                                               .Include(user => user.Comments)
-                                               .FirstOrDefaultAsync(user => user.Id == id.ToString());
-
-            if (user == null)
-            {
-                return NotFound();
-            }
-
-            var model = new UserProfileViewModel
-            {
-                ImagePath = user.ImagePath,
-                Name = user.Name,
-                Bio = user.Bio,
-                Location = user.Location,
-                JoinedDate = user.JoinedDate,
-                Email = user.Email,
-                Website = user.Website,
-                Education = user.Education,
-                Work = user.Work,
-                Learning = user.Learning,
-                Skills = user.Skills,
-                Comments = user.Comments.Count,
-                Articles = user.Articles.OrderByDescending(article => article.Date).ToList()
-            };
-
-            return View(model);
-        }
     }
 }
