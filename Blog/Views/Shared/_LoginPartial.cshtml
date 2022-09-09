@@ -34,7 +34,7 @@
                     <a class="c-link c-link--block" asp-controller="Article" asp-action="Create">Create post</a>
                 </li>
                 <li>
-                    <a class="c-link c-link--block">Reading list</a>
+                    <a class="c-link c-link--block" asp-controller="User" asp-action="GetUserReadingList" asp-route-id="@UserManager.GetUserId(User)">Reading list</a>
                 </li>
                 <li class="border-0 border-b-1 border-solid border-base-20 pb-2">
                     <a class="c-link c-link--block" asp-controller="Account" asp-action="Settings">Settings</a>

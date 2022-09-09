@@ -3213,3 +3213,16 @@ body {
 .break-word {
     word-break: break-word !important;
 }
+
+.gap-6 {
+    gap: var(--su-6) !important;
+}
+
+.grid-cols-3 {
+    grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+}
+
+.px-0 {
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+}

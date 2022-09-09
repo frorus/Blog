@@ -24,7 +24,7 @@ namespace Blog.Controllers
             var repository = _unitOfWork.GetRepository<Tag>() as TagRepository;
             IEnumerable<Tag> tagList = await repository.GetAllTags();
 
-            return View(tagList);
+            return View(tagList.OrderByDescending(x => x.Articles.Count));
         }
 
         [HttpGet]
