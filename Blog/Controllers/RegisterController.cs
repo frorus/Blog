@@ -45,7 +45,7 @@ namespace Blog.Controllers
                     user.ImagePath = "default_avatar.png";
                     await _signInManager.SignInAsync(user, false);
                     await _userManager.AddToRoleAsync(user, "Basic");
-                    return RedirectToAction("Index", "Home");
+                    return RedirectToAction("Index", "Article");
                 }
                 else
                 {

@@ -233,6 +233,7 @@
     --reaction-comment-bg: rgba(var(--yellow-500), 0.1);
     --content-font-size: var(--fs-xl);
     --content-font-family: var(--ff-sans-serif);
+    --content-rhythm: var(--content-font-size);
     --content-secondary-font-size: var(--fs-l);
     --story-padding: var(--su-5);
     --layout: var(--layout-content-width);
@@ -2173,6 +2174,7 @@ textarea.blog-textfield.blog-textfield--ghost, .c-date-picker textarea.blog-text
 }
 
 .text-styles {
+    font-size: var(--content-font-size);
     font-family: var(--content-font-family);
     overflow-wrap: break-word;
 }
@@ -3225,4 +3227,33 @@ body {
 .px-0 {
     padding-left: 0 !important;
     padding-right: 0 !important;
+}
+
+.text-styles h1, .text-styles h2, .text-styles h3, .text-styles h4, .text-styles h5, .text-styles h6 {
+    font-family: var(--ff-sans-serif);
+    margin: calc(var(--content-rhythm) / 2) 0;
+    padding: 0;
+    font-weight: var(--fw-bold);
+    line-height: var(--lh-tight);
+}
+
+.fs-5xl {
+    font-size: var(--fs-5xl) !important;
+}
+
+.text-styles p {
+    margin: 0 0 var(--content-rhythm) 0;
+}
+
+.text-styles h3 {
+    font-size: 1.25em;
+}
+
+.text-styles ul {
+    list-style-type: disc;
+}
+
+.text-styles ul, .text-styles ol {
+    padding-left: var(--su-6);
+    margin: 0 0 var(--content-rhythm) 0;
 }
