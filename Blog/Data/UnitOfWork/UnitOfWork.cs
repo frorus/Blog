@@ -16,7 +16,7 @@ namespace Blog.Data.UnitOfWork
 
         public void Dispose()
         {
-
+            GC.SuppressFinalize(this);
         }
 
         public IRepository<TEntity> GetRepository<TEntity>(bool hasCustomRepository = true) where TEntity : class

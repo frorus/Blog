@@ -1,9 +1,15 @@
 ﻿@using Microsoft.AspNetCore.Identity
+@using X.PagedList
+@using X.PagedList.Mvc.Core
+@using X.PagedList.Web.Common
 
 @inject UserManager<ApplicationUser> UserManager
 @inject SignInManager<ApplicationUser> SignInManager
 
-@model List<Article>
+@*@model PagedList.IPagedList<ContosoUniversity.Models.Student>*@
+
+@model IPagedList<Article>
+@*List<Article>*@
 
 @{
     ViewData["Title"] = "Home";
@@ -83,7 +89,7 @@
                         <li>
                             <a class="sidebar-navigation-link c-link c-link--block c-link--icon-left" asp-controller="Home" asp-action="About">
                                 <span class="c-link__icon">
-                                    <svg xmlns:svg="http://www.w3.org/2000/svg" xmlns="http://www.w3.org/2000/svg" version="1.1" viewBox="0 0 47.5 47.5" style="enable-background:new 0 0 47.5 47.5;" id="svg2" xml:space="preserve">
+                                    <svg xmlns:svg="http://www.w3.org/2000/svg" xmlns="http://www.w3.org/2000/svg" version="1.1" viewBox="0 0 47.5 47.5" style="enable-background:new 0 0 47,5 47,5;" id="svg2" xml:space="preserve">
                                         <g transform="matrix(1.25,0,0,-1.25,0,47.5)">
                                             <g transform="translate(33,30)" id="g22">
                                                 <path d="m 0,0 -28,0 c -2.209,0 -4,-1.791 -4,-4 l 0,-15 c 0,-2.209 1.791,-4 4,-4 l 11.416,0 c 0.52,-0.596 1.477,-1 2.584,-1 1.107,0 2.064,0.404 2.584,1 L 0,-23 c 2.209,0 4,1.791 4,4 L 4,-4 C 4,-1.791 2.209,0 0,0" id="path24" style="fill:#226699;fill-opacity:1;fill-rule:nonzero;stroke:none"></path>
@@ -309,4 +315,22 @@
             </div>
         </main>
     </div>
+    @*  Pagination  *@
+    @if (Model.PageSize > 20)
+    {
+        <div class="flex mb-4">
+            @if (Context.Request.Query["sortOrder"] == "top_desc")
+            {
+                @Html.PagedListPager(Model, page => Url.Action("Index", new { page, sortOrder = "top_desc" }), new PagedListRenderOptions(){ PageClasses = new List<string> {"blog-navigation__item"},
+                                                                                                                                             UlElementClasses = new string[2] { "blog-navigation", "blog-navigation--horizontal" },
+                                                                                                                                             ContainerDivClasses = new string[1] { "mx-auto" }});
+            }
+            else
+            {
+                @Html.PagedListPager(Model, page => Url.Action("Index", new { page }), new PagedListRenderOptions(){ PageClasses = new List<string> {"blog-navigation__item"},
+                                                                                                                     UlElementClasses = new string[2] { "blog-navigation", "blog-navigation--horizontal" },
+                                                                                                                     ContainerDivClasses = new string[1] { "mx-auto" }});
+            }
+        </div>
+    }
 </div>

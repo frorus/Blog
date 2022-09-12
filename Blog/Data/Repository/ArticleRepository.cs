@@ -17,7 +17,7 @@ namespace Blog.Data.Repository
                               .Include(c => c.Comments)
                               .Include(u => u.User);
 
-            return articles.AsQueryable();
+            return articles.AsNoTracking();
         }
 
         public async Task<Article> GetArticleById(Guid id)

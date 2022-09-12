@@ -3257,3 +3257,10 @@ body {
     padding-left: var(--su-6);
     margin: 0 0 var(--content-rhythm) 0;
 }
+
+li.active {
+    font-weight: var(--fw-bold);
+    color: var(--link-color-current);
+    background: var(--link-bg-current);
+    border-radius: var(--radius);
+}

@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using X.PagedList;
 
 namespace Blog.Controllers
 {
@@ -21,7 +22,7 @@ namespace Blog.Controllers
             _userManager = userManager;
         }
 
-        public async Task<IActionResult> Index(string sortOrder)
+        public async Task<IActionResult> Index(string sortOrder, int? page)
         {
             var repository = _unitOfWork.GetRepository<Article>() as ArticleRepository;
             var articleList = repository.GetAllArticles();
@@ -35,7 +36,10 @@ namespace Blog.Controllers
                 articleList = articleList.OrderByDescending(s => s.Date);
             }
 
-            return View(await articleList.ToListAsync());
+            int pageSize = 20;
+            int pageNumber = (page ?? 1);
+
+            return View(await articleList.ToPagedListAsync(pageNumber, pageSize));
         }
 
         [HttpGet]
