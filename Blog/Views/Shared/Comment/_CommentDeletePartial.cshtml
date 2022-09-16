@@ -1,11 +1,11 @@
 ﻿@model CommentEditViewModel
 
 <form accept-charset="UTF-8" method="post" asp-controller="Comment" asp-action="Delete">
-<div class="modal fade" id="ModalCenterDelete" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+<div class="modal fade" tabindex="-1" role="dialog" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                    <h5 class="modal-title" style="font-weight: var(--fw-bold);" id="exampleModalTitle">Delete comment?</h5>
+                    <h5 class="modal-title fw-bold">Удалить комментарий?</h5>
                     <button class="c-btn c-btn--icon-alone" type="button" data-dismiss="modal" aria-label="Close">
                         <i class="bi bi-x-lg"></i>
                     </button>
@@ -13,11 +13,10 @@
             <div class="modal-body">
                 <input asp-for="Id" type="hidden" />
                 <div>
-                    @*<textarea class="w-100" asp-for="Content" style="color: gray;" disabled>@Model.Content</textarea>*@
                     <p style="color: gray;" disabled>@Model.Content</p>
                     <div class="pt-4">
-                        <button class="blog-btn blog-btn--danger mr-1" type="submit">Yes, delete</button>
-                        <button class="blog-btn blog-btn--secondary" type="button" data-dismiss="modal">Close</button>
+                        <button class="blog-btn blog-btn--danger mr-1" type="submit">Да, удалить</button>
+                        <button class="blog-btn blog-btn--secondary" type="button" data-dismiss="modal">Закрыть</button>
                     </div>
                 </div>
             </div>
@@ -27,4 +26,3 @@
 </form>
 
 <script src="~/js/site.js" asp-append-version="true"></script>
-

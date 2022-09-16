@@ -1,11 +1,9 @@
-﻿using Blog.Data.Repository;
-using Blog.Extensions;
+﻿using Blog.Extensions;
 using Blog.Models.DB;
 using Blog.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 
 namespace Blog.Controllers
 {
@@ -20,12 +18,12 @@ namespace Blog.Controllers
             _fileService = fileService;
         }
 
+        //Get user settings
         [HttpGet]
         [Authorize]
         public async Task<IActionResult> Settings()
         {
             var user = await _userManager.GetUserAsync(User);
-            ViewData["UserEmail"] = user.Email;
 
             if (user == null)
             {
@@ -57,10 +55,22 @@ namespace Blog.Controllers
         public async Task<IActionResult> EditProfileSettings(UserProfileSettingsViewModel model, IFormFile file)
         {
             var user = await _userManager.GetUserAsync(User);
+            var checkUserByEmail = await _userManager.FindByEmailAsync(model.Email);
+            var checkUserByUsername = await _userManager.FindByNameAsync(model.Username);
 
             if (user == null)
             {
                 return NotFound();
+            }
+
+            if (checkUserByEmail != null && user.Email != model.Email)
+            {
+                ModelState.AddModelError("Email", "Почта уже существует");
+            }
+
+            if (checkUserByUsername != null && user.UserName != model.Username)
+            {
+                ModelState.AddModelError("Username", "Username уже существует");
             }
 
             if (ModelState.IsValid)
@@ -83,11 +93,13 @@ namespace Blog.Controllers
                 user.Education = model.Education;
 
                 await _userManager.UpdateAsync(user);
-                //TempData["success"] = "Category updated successfully";
-                return RedirectToAction("Settings");
+
+                TempData["success"] = "Настройки профиля успешно обновлены.";
             }
 
-            return RedirectToAction("Settings");
+            model.ImagePath = user.ImagePath;
+
+            return View("Settings", model);
         }
 
         [HttpPost]
@@ -97,29 +109,26 @@ namespace Blog.Controllers
         {
             var user = await _userManager.GetUserAsync(User);
 
-            if (ModelState.IsValid)
+            if (user == null)
             {
-                if (user != null)
-                {
-                    var result = await _userManager.ChangePasswordAsync(user, model.PasswordCurrent, model.PasswordNew);
-
-                    if (result.Succeeded)
-                    {
-                        return RedirectToAction("Settings");
-                    }
-
-                    foreach (var error in result.Errors)
-                    {
-                        ModelState.AddModelError("", error.ToString());
-                    }
-
-                    return RedirectToAction("Settings");
-                }
-
                 return NotFound();
             }
 
-            return RedirectToAction("Settings"); ;
+            if (ModelState.IsValid)
+            {
+                var result = await _userManager.ChangePasswordAsync(user, model.PasswordCurrent, model.PasswordNew);
+
+                if (result.Succeeded)
+                {
+                    TempData["success"] = "Пароль успешно обновлен.";
+                }
+                else
+                {
+                    TempData["error"] = "Не удалось обновить пароль.";
+                }
+            }
+
+            return RedirectToAction("Settings");
         }
 
         [HttpGet]

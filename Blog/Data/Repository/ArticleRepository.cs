@@ -12,10 +12,10 @@ namespace Blog.Data.Repository
 
         public IQueryable<Article> GetAllArticles()
         {
-            var articles = Set.Include(a => a.Tags)
-                              .Include(b => b.ArticleLikes)
-                              .Include(c => c.Comments)
-                              .Include(u => u.User);
+            var articles = Set.Include(article => article.Tags)
+                              .Include(article => article.ArticleLikes)
+                              .Include(article => article.Comments)
+                              .Include(article => article.User);
 
             return articles.AsNoTracking();
         }
@@ -24,7 +24,7 @@ namespace Blog.Data.Repository
         {
             var article = Set.Include(article => article.Tags)
                              .Include(article => article.Comments)
-                                .ThenInclude(comments => comments.User)
+                             .ThenInclude(comments => comments.User)
                              .Include(article => article.User);
 
             return await article.FirstOrDefaultAsync(a => a.Id == id);

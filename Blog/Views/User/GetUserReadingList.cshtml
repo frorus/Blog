@@ -14,11 +14,11 @@
         <header class="blog-page-header flex">
             @*  Reading list (count)  *@
             <div class="flex justify-between items-center flex-1 mb-0">
-                <h1 class="blog-title flex-1">Reading list (@Model.Articles.Count())</h1>
+                <h1 class="blog-title flex-1">Избранные статьи (@Model.Articles.Count())</h1>
             </div>
             @*  Search field  *@
             <fieldset class="flex justify-end pl-2 w-auto">
-                <input id="searchbox" class="blog-textfield mb-0" type="text" placeholder="Search...">
+                <input id="searchbox" class="blog-textfield mb-0" type="text" placeholder="Поиск...">
             </fieldset>
         </header>
         @*  Sidebar  *@
@@ -26,7 +26,7 @@
             <nav aria-label="Filter by tag">
                 <ul class="list-none">
                     <li>
-                        <a class="blog-link blog-link--block blog-link--current" asp-action="GetUserReadingList" asp-controller="User" asp-route-id="@Model.UserId">All tags</a>
+                        <a class="blog-link blog-link--block blog-link--current" asp-action="GetUserReadingList" asp-controller="User" asp-route-id="@Model.UserId">Все теги</a>
                     </li>
                     @foreach (var tag in Model.Tags)
                     {
@@ -68,7 +68,7 @@
                                 <span class="color-base-60">
                                     @article.Date.ToLongDateString()
                                     <span class="color-base-30"> • </span>
-                                    @Math.Ceiling((double)article.Text.Length / 1500) min read
+                                    @Math.Ceiling((double)article.Text.Length / 1500) мин на чтение
                                 </span>
                                 @*  Tags  *@
                                 <span>
@@ -107,16 +107,16 @@
             else
             {
                 <section class="align-center p-9 py-10 color-base-80">
-                    <h2 class="fw-bold fs-l">Your reading list is empty</h2>
+                    <h2 class="fw-bold fs-l">Список избранных статей пуст</h2>
                     <p class="color-base-60 pt-2">
-                        Click the
+                        Нажмите на
                         <span class="fw-bold">
-                            bookmark reaction
+                            значок закладки
                             <svg class="blog-icon mx-1" width="24" height="24" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" role="img">
                                 <path d="M5 2h14a1 1 0 011 1v19.143a.5.5 0 01-.766.424L12 18.03l-7.234 4.536A.5.5 0 014 22.143V3a1 1 0 011-1zm13 2H6v15.432l6-3.761 6 3.761V4z"></path>
                             </svg>
                         </span>
-                        when viewing a post to add it to your reading list.
+                        если хотите добавить статью в избранное.
                     </p>
                 </section>
             }

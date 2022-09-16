@@ -1,7 +1,8 @@
 ﻿@using Microsoft.AspNetCore.Identity
-@model IEnumerable<Article>
 
 @inject UserManager<ApplicationUser> UserManager
+
+@model IEnumerable<Article>
 
 @{
     ViewData["Title"] = "Search";
@@ -11,18 +12,19 @@
     <main>
         <div class="blog-layout blog-layout--header-inside blog-layout--limited-l blog-layout--2-cols">
             <div class="blog-page-header block s:flex">
-                <h1 class="blog-title block">Search results for "@ViewData["Search"]"</h1>
+                <h1 class="blog-title block">Результаты поиска для "@ViewData["Search"]"</h1>
             </div>
             @*  Sidebar  *@
             <div class="blog-layout__sidebar-left block">
                 <div class="blog-navigation nav block nav-pills" role="tablist">
-                    <a class="blog-link blog-link--block active show" asp-controller="Search" asp-action="SearchPosts" asp-route-search="@ViewData["Search"]" aria-selected="true">Posts</a>
-                    <a class="blog-link blog-link--block" data-toggle="pill" href="#people" aria-controls="people" role="tab" aria-selected="false">People</a>
-                    <a class="blog-link blog-link--block" data-toggle="pill" href="#tags" aria-controls="tags" role="tab" aria-selected="false">Tags</a>
+                    <a class="blog-link blog-link--block active show" asp-controller="Search" asp-action="SearchPosts" asp-route-search="@ViewData["Search"]" aria-selected="true">Статьи</a>
+                    <a class="blog-link blog-link--block" data-toggle="pill" href="#people" aria-controls="people" role="tab" aria-selected="false">Пользователи</a>
+                    <a class="blog-link blog-link--block" data-toggle="pill" href="#tags" aria-controls="tags" role="tab" aria-selected="false">Теги</a>
                 </div>
             </div>
             @*  Search result body *@
             <div class="articles-list blog-layout__content tab-content">
+                @*  Articles Tab  *@
                 @if (Model.Any())
                 {
                     <div id="articles" class="tab-pane fade active show" role="tabpanel" aria-labelledby="articles-tab">
@@ -79,14 +81,7 @@
                                                     <svg class="blog-icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24">
                                                         <path d="M18.884 12.595l.01.011L12 19.5l-6.894-6.894.01-.01A4.875 4.875 0 0112 5.73a4.875 4.875 0 016.884 6.865zM6.431 7.037a3.375 3.375 0 000 4.773L12 17.38l5.569-5.569a3.375 3.375 0 10-4.773-4.773L9.613 10.22l-1.06-1.062 2.371-2.372a3.375 3.375 0 00-4.492.25v.001z"></path>
                                                     </svg>@*
-                                                    *@@if (article.ArticleLikes.Count() == 1)
-                                                    {@*
-                                                        *@<span class="s:inline">@article.ArticleLikes.Count() reaction</span>
-                                                    }
-                                                    else
-                                                    {@*
-                                                        *@<span class="s:inline">@article.ArticleLikes.Count() reactions</span>
-                                                    }
+                                                    *@<span class="inline">@article.ArticleLikes.Count() По нраву</span>
                                                 </a>
                                                 @*  Comments  *@
                                                 <a class="blog-btn blog-btn--s blog-btn--ghost blog-btn--icon-left" asp-controller="Article" asp-action="Details" asp-route-id="@article.Id" asp-fragment="comments">
@@ -95,25 +90,18 @@
                                                     </svg>@*
                                                     *@@if (article.Comments.Count == 0)
                                                     {@*
-                                                        *@<span class="s:inline"> Add comment</span>
+                                                        *@<span class="inline"> Добавить коммент</span>
                                                     }
                                                     else
                                                     {@*
-                                                    *@@if (article.ArticleLikes.Count() == 1)
-                                                        {@*
-                                                            *@<span class="s:inline">@article.Comments.Count() comment</span>
-                                                        }
-                                                        else
-                                                        {@*
-                                                            *@<span class="s:inline">@article.Comments.Count() comments</span>
-                                                        }
+                                                        *@<span class="s:inline">Комментов: @article.Comments.Count()</span>
                                                     }
                                                 </a>
                                             </div>
                                             @*  Favourite  *@
                                             <div class="blog-article__save">
                                                 @*  Min to read  *@
-                                                <small class="blog-article__tertiary fs-xs mr-2">@Math.Ceiling((double)article.Text.Length / 1500) min read</small>
+                                                <small class="blog-article__tertiary fs-xs mr-2">@Math.Ceiling((double)article.Text.Length / 1500) мин на чтение</small>
                                                 @*  Favourite button  *@
                                                 @if (article.Favourites.Any(x => x.ArticleId == article.Id && x.UserId.ToString() == UserManager.GetUserId(User)))
                                                 {
@@ -141,15 +129,16 @@
                 }
                 else
                 {
-                    <div class="p-9 align-center blog-card tab-pane fade active show" id="articles" role="tabpanel" aria-labelledby="articles-tab">No results match that query</div>
+                    <div class="p-9 align-center blog-card tab-pane fade active show" id="articles" role="tabpanel" aria-labelledby="articles-tab">По такому запросу нет результатов</div>
                 }
+                @*  People Tab  *@
                 <div id="people" class="tab-pane fade" role="tabpanel" aria-labelledby="people-tab">
                     @await Component.InvokeAsync("SearchPeople", new { search = ViewData["Search"] })
                 </div>
+                @*  Tag Tab  *@
                 <div id="tags" class="tab-pane fade" role="tabpanel" aria-labelledby="tags-tab">
                     @await Component.InvokeAsync("SearchTags", new { search = ViewData["Search"] })
                 </div>
-                
             </div>
         </div>
     </main>

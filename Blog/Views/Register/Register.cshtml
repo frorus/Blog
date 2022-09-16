@@ -1,50 +1,49 @@
-﻿@model Blog.ViewModels.RegisterViewModel
+﻿@model RegisterViewModel
 
 @{
     ViewData["Title"] = "Register";
-}
-
-@section Scripts {
-    @{
-        <partial name="_ValidationScriptsPartial" />
-    }
 }
 
 <div class="wrapper">
     <div>
         <section class="blog-layout">
             <div class="registration blog-card">
+                @*  Welcome title  *@
                 <div class="registration__content">
                     <h1 class="registration__title">
-                        Welcome to BLOG Community
+                        Приветствуем в BLOG сообществе!
                     </h1>
                     <p class="registration__description">
-                        <a href="/" class="c-link c-link--branded">BLOG Community</a>
-                        is a community of @ViewData["UsersCount"] amazing users
+                        В нашей команде уже @ViewData["UsersCount"] потрясающих пользователей!
                     </p>
                 </div>
                 <div>
+                    @*  Horizontal line  *@
                     <div class="registration__hr">
                         <span class="registration__hr-label"></span>
                     </div>
                     <form method="post">
+                        @*  Email  *@
                         <div class="blog-field mb-3">
                             <label class="blog-field__label" asp-for="EmailReg">Email</label>
-                            <input asp-for="EmailReg" class="blog-textfield" type="email"/>
-                            <span asp-validation-for="EmailReg" class="text-warning"></span>
+                            <input asp-for="EmailReg" class="blog-textfield"/>
+                            <span class="blog-notice pl-2" asp-validation-for="EmailReg"></span>
                         </div>
+                        @*  Password  *@
                         <div class="blog-field mb-3">
-                            <label class="blog-field__label" asp-for="PasswordReg">Password</label>
+                            <label class="blog-field__label" asp-for="PasswordReg">Пароль</label>
                             <input asp-for="PasswordReg" class="blog-textfield" type="password"/>
-                            <span asp-validation-for="PasswordReg" class="text-warning"></span>
+                            <span class="blog-notice pl-2" asp-validation-for="PasswordReg"></span>
                         </div>
+                        @*  Password confirm *@
                         <div class="blog-field mb-3">
-                            <label class="blog-field__label" asp-for="PasswordConfirm">Password</label>
+                            <label class="blog-field__label" asp-for="PasswordConfirm">Повторите пароль</label>
                             <input asp-for="PasswordConfirm" class="blog-textfield" type="password"/>
-                            <span asp-validation-for="PasswordConfirm" class="text-warning"></span>
+                            <span class="blog-notice pl-2" asp-validation-for="PasswordConfirm"></span>
                         </div>
+                        @*  Submit button  *@
                         <div class="actions pt-3">
-                            <input class="blog-btn blog-btn--l w-100" type="submit" value="Continue"/>
+                            <input class="blog-btn blog-btn--l w-100" type="submit" value="Продолжить"/>
                         </div>
                     </form>
                 </div>
@@ -53,3 +52,6 @@
     </div>
 </div>
 
+@section Scripts {
+        <partial name="_ValidationScriptsPartial" />
+}

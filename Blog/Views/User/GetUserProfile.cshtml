@@ -1,8 +1,9 @@
 ﻿@using Microsoft.AspNetCore.Identity
-@model UserProfileViewModel
 
 @inject SignInManager<ApplicationUser> SignInManager
 @inject UserManager<ApplicationUser> UserManager
+
+@model UserProfileViewModel
 
 @{
     ViewData["Title"] = "Profile";
@@ -22,7 +23,7 @@
                         @if (SignInManager.IsSignedIn(User))
                         {
                             <div class="profile-header__actions">
-                                <a class="blog-btn whitespace-nowrap" asp-controller="Account" asp-action="Settings">Edit profile</a>
+                                <a class="blog-btn whitespace-nowrap" asp-controller="Account" asp-action="Settings">Настройки</a>
                             </div>
                         }
                     </div>
@@ -38,9 +39,9 @@
                             <h1 class="blog-title fw-heavy mb-2">@Model.Name</h1>
                         }
                         @*  Bio  *@
-                        @if(String.IsNullOrEmpty(Model.Bio))
+                        @if (String.IsNullOrEmpty(Model.Bio))
                         {
-                            <p class="fs-l color-base-90 mb-4 mx-auto max-w-75">404 bio not found</p>
+                            <p class="fs-l color-base-90 mb-4 mx-auto max-w-75">404 биография не найдена</p>
                         }
                         else
                         {
@@ -48,7 +49,7 @@
                         }
                         <div class="profile-header__meta">
                             @*  Location  *@
-                            @if(!String.IsNullOrEmpty(Model.Location))
+                            @if (!String.IsNullOrEmpty(Model.Location))
                             {
                                 <span class="profile-header__meta__item">
                                     <svg class="blog-icon mr-2 shrink-0" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" role="img">
@@ -62,7 +63,7 @@
                                 <svg class="blog-icon mr-2 shrink-0" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" role="img">
                                     <path d="M8 6v3.999h3V6h2v3.999h3V6h2v3.999L19 10a3 3 0 012.995 2.824L22 13v1c0 1.014-.377 1.94-.999 2.645L21 21a1 1 0 01-1 1H4a1 1 0 01-1-1v-4.36a4.025 4.025 0 01-.972-2.182l-.022-.253L2 14v-1a3 3 0 012.824-2.995L5 10l1-.001V6h2zm11 6H5a1 1 0 00-.993.883L4 13v.971l.003.147a2 2 0 003.303 1.4c.363-.312.602-.744.674-1.218l.015-.153.005-.176c.036-1.248 1.827-1.293 1.989-.134l.01.134.004.147a2 2 0 003.992.031l.012-.282c.124-1.156 1.862-1.156 1.986 0l.012.282a2 2 0 003.99 0L20 14v-1a1 1 0 00-.883-.993L19 12zM7 1c1.32.871 1.663 2.088 1.449 2.888a1.5 1.5 0 11-2.898-.776C5.85 2.002 7 2.5 7 1zm5 0c1.32.871 1.663 2.088 1.449 2.888a1.5 1.5 0 01-2.898-.776C10.85 2.002 12 2.5 12 1zm5 0c1.32.871 1.663 2.088 1.449 2.888a1.5 1.5 0 01-2.898-.776C15.85 2.002 17 2.5 17 1z"></path>
                                 </svg>
-                                <span>Joined on <time>@Model.JoinedDate.ToLongDateString()</time></span>
+                                <span>Присоединился <time>@Model.JoinedDate.ToLongDateString()</time></span>
                             </span>
                             @*  Email  *@
                             <a class="profile-header__meta__item" href="mailto:@Model.Email">
@@ -72,7 +73,7 @@
                                 <span>@Model.Email</span>
                             </a>
                             @*  Website  *@
-                            @if(!String.IsNullOrEmpty(Model.Website))
+                            @if (!String.IsNullOrEmpty(Model.Website))
                             {
                                 <a class="profile-header__meta__item" href="@Model.Website">
                                     <svg class="blog-icon mr-2 shrink-0" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" role="img">
@@ -92,7 +93,7 @@
                             {
                                 <div class="blog-definition">
                                     <strong class="blog-definition__title">
-                                        Education
+                                        Образование
                                     </strong>
                                     <p>@Model.Education</p>
                                 </div>
@@ -102,7 +103,7 @@
                             {
                                 <div class="blog-definition">
                                     <strong class="blog-definition__title">
-                                        Work
+                                        Работа
                                     </strong>
                                     <p>@Model.Work</p>
                                 </div>
@@ -122,7 +123,7 @@
                         <div class="blog-card blog-card--secondary">
                             <header class="blog-card__header">
                                 <h3 class="blog-subtitle-3">
-                                    Currently learning
+                                    Обучаюсь
                                 </h3>
                             </header>
                             <div class="blog-card__body">
@@ -136,7 +137,7 @@
                         <div class="blog-card blog-card--secondary">
                             <header class="blog-card__header">
                                 <h3 class="blog-subtitle-3">
-                                    Skills/Languages
+                                    Навыки/Языки
                                 </h3>
                             </header>
                             <div class="blog-card__body">
@@ -151,14 +152,14 @@
                             <svg class="blog-icon mr-3 color-base-50" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" role="img">
                                 <path d="M19 22H5a3 3 0 01-3-3V3a1 1 0 011-1h14a1 1 0 011 1v12h4v4a3 3 0 01-3 3zm-1-5v2a1 1 0 002 0v-2h-2zm-2 3V4H4v15a1 1 0 001 1h11zM6 7h8v2H6V7zm0 4h8v2H6v-2zm0 4h5v2H6v-2z"></path>
                             </svg>
-                            <span>@Model.Articles.Count posts published</span>
+                            <span>Статей опубликовано: @Model.Articles.Count </span>
                         </div>
                         @*  Comments written  *@
                         <div class="flex items-center">
                             <svg class="blog-icon mr-3 color-base-50" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" role="img">
                                 <path d="M10 3h4a8 8 0 010 16v3.5c-5-2-12-5-12-11.5a8 8 0 018-8zm2 14h2a6 6 0 000-12h-4a6 6 0 00-6 6c0 3.61 2.462 5.966 8 8.48V17z"></path>
                             </svg>
-                            <span>@Model.Comments comments written</span>
+                            <span>Комментов написано: @Model.Comments</span>
                         </div>
                     </div>
                 </div>
@@ -166,20 +167,20 @@
             @*  User articles  *@
             <main class="blog-layout__content articles-list">
                 <div>
-                    @foreach(var article in Model.Articles)
+                    @foreach (var article in Model.Articles)
                     {
                         @*  Get username  *@
                         var user = await UserManager.GetUserNameAsync(article.User);
 
                         @*  Article  *@
-                        <article class="blog-story">
-                            <div class="blog-story__body">
-                                <div class="blog-story__top">
-                                    <div class="blog-story__meta">
+                        <div class="blog-article">
+                            <div class="blog-article__body">
+                                <div class="blog-article__top">
+                                    <div class="blog-article__meta">
                                         @*  User avatar  *@
-                                        <div class="blog-story__author-pic">
+                                        <div class="blog-article__author-pic">
                                             <a class="blog-avatar blog-avatar--l" asp-controller="User" asp-action="GetUserProfile" asp-route-id="@article.UserId">
-                                                <img class="blog-avatar__image" src="/img/avatars/@Model.ImagePath" loading="lazy">
+                                                <img class="blog-avatar__image" src="/img/avatars/@article.User.ImagePath">
                                             </a>
                                         </div>
                                         <div>
@@ -190,22 +191,22 @@
                                                 </div>
                                             </div>
                                             @*  Article creation date  *@
-                                            <div class="blog-story__tertiary fs-xs">
-                                                <time>@article.Date.ToLongDateString()</time>
+                                            <div class="blog-article__tertiary fs-xs">
+                                                <time datetime="@article.Date">@article.Date.ToLongDateString()</time>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
-                                <div class="blog-story__indention">
+                                <div class="blog-article__indention">
                                     @*  Article title  *@
                                     <h3 class="blog-story__title fw-bold">
                                         <a asp-controller="Article" asp-action="Details" asp-route-id="@article.Id">@article.Title</a>
                                     </h3>
                                     @*  Article tags  *@
-                                    <div class="blog-story__tags">
-                                        @foreach(var tag in article.Tags)
+                                    <div class="blog-article__tags">
+                                        @foreach (var tag in article.Tags)
                                         {
-                                            <a class="blog-tag" asp-controller="Tag" asp-action="Details" asp-route-id="@tag.Id">
+                                            <a class="blog-tag blog-tag--monochrome" asp-controller="Tag" asp-action="Details" asp-route-id="@tag.Id">
                                                 <span class="blog-tag__prefix">#</span>@tag.Title
                                             </a>
                                         }
@@ -219,41 +220,29 @@
                                                 <svg class="blog-icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24">
                                                     <path d="M18.884 12.595l.01.011L12 19.5l-6.894-6.894.01-.01A4.875 4.875 0 0112 5.73a4.875 4.875 0 016.884 6.865zM6.431 7.037a3.375 3.375 0 000 4.773L12 17.38l5.569-5.569a3.375 3.375 0 10-4.773-4.773L9.613 10.22l-1.06-1.062 2.371-2.372a3.375 3.375 0 00-4.492.25v.001z"></path>
                                                 </svg>@*
-                                                *@@if(article.ArticleLikes.Count() == 1)
-                                                {@*
-                                                    *@<span class="s:inline">@article.ArticleLikes.Count() reaction</span>
-                                                }
-                                                else
-                                                {@*
-                                                    *@<span class="s:inline">@article.ArticleLikes.Count() reactions</span>
-                                                }
+                                            *@<span class="inline">@article.ArticleLikes.Count() По нраву</span>
                                             </a>
                                             @*  Comments  *@
                                             <a class="blog-btn blog-btn--s blog-btn--ghost blog-btn--icon-left" asp-controller="Article" asp-action="Details" asp-route-id="@article.Id" asp-fragment="comments">
                                                 <svg class="blog-icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24">
                                                     <path d="M10.5 5h3a6 6 0 110 12v2.625c-3.75-1.5-9-3.75-9-8.625a6 6 0 016-6zM12 15.5h1.5a4.501 4.501 0 001.722-8.657A4.5 4.5 0 0013.5 6.5h-3A4.5 4.5 0 006 11c0 2.707 1.846 4.475 6 6.36V15.5z"></path>
                                                 </svg>@*
-                                                *@@if (article.Comments.Count == 0)
+                                            *@@if (article.Comments.Count == 0)
                                                 {@*
-                                                    *@<span class="s:inline"> Add comment</span>
+                                            *@
+                                                    <span class="inline"> Добавить коммент</span>
                                                 }
                                                 else
                                                 {@*
-                                                *@@if (article.ArticleLikes.Count() == 1)
-                                                    {@*
-                                                        *@<span class="s:inline">@article.Comments.Count() comment</span>
-                                                    }
-                                                    else
-                                                    {@*
-                                                        *@<span class="s:inline">@article.Comments.Count() comments</span>
-                                                    }
+                                            *@
+                                                    <span class="inline">Комментов: @article.Comments.Count()</span>
                                                 }
                                             </a>
                                         </div>
                                         @*  Favourite  *@
                                         <div class="blog-article__save">
                                             @*  Min to read  *@
-                                            <small class="blog-article__tertiary fs-xs mr-2">@Math.Ceiling((double)article.Text.Length / 1500) min read</small>
+                                            <small class="blog-article__tertiary fs-xs mr-2">@Math.Ceiling((double)article.Text.Length / 1500) мин на чтение</small>
                                             @*  Favourite button  *@
                                             @if (article.Favourites.Any(x => x.ArticleId == article.Id && x.UserId.ToString() == UserManager.GetUserId(User)))
                                             {
@@ -275,7 +264,7 @@
                                     </div>
                                 </div>
                             </div>
-                        </article>
+                        </div>
                     }
                 </div>
             </main>

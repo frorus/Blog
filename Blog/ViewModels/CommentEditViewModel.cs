@@ -1,12 +1,14 @@
-﻿using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace Blog.ViewModels
 {
     public class CommentEditViewModel
     {
-        public Guid Id { get; set; }
         [Required]
+        public Guid Id { get; set; }
+
+        [Required]
+        [StringLength(250)]
         public string Content { get; set; }
     }
 }

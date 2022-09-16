@@ -1,5 +1,4 @@
-﻿using Blog.Data.UnitOfWork;
-using Blog.Models.DB;
+﻿using Blog.Models.DB;
 using Blog.ViewModels;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -35,13 +34,14 @@ namespace Blog.Controllers
         {
             var user = await _userManager.FindByEmailAsync(model.Email);
 
+            if (user == null)
+            {
+                ModelState.AddModelError("Email", "Пользователя с такой почтой не существует");
+            }
+
             if (ModelState.IsValid)
             {
-                var result = await _signInManager.PasswordSignInAsync(
-                    user,
-                    model.Password,
-                    model.RememberMe,
-                    false);
+                var result = await _signInManager.PasswordSignInAsync(user, model.Password, model.RememberMe, false);
 
                 if (result.Succeeded)
                 {
@@ -56,15 +56,22 @@ namespace Blog.Controllers
                 }
             }
 
-            ModelState.AddModelError("", "Failed to Login");
+            ModelState.AddModelError("Password", "Неверный пароль");
 
-            return View();
+            return View(model);
         }
 
         [HttpGet]
         public async Task<IActionResult> Logout()
         {
-            await _signInManager.SignOutAsync();
+            var task = _signInManager.SignOutAsync();
+            await task;
+
+            if (!task.IsCompletedSuccessfully)
+            {
+                return BadRequest();
+            }
+
             return RedirectToAction("Index", "Article");
         }
     }

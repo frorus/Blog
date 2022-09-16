@@ -1,11 +1,14 @@
 ﻿@using Microsoft.AspNetCore.Identity
-@model ArticleDetailsViewModel
 
 @inject UserManager<ApplicationUser> UserManager
+
+@model ArticleDetailsViewModel
 
 @{
     ViewData["Title"] = "Details";
 }
+
+<partial name="_Notification">
 
 <div class="wrapper">
     <div class="blog-layout blog-layout--3-cols blog-layout--article">
@@ -13,53 +16,59 @@
         <aside class="blog-layout__sidebar-left">
             <div class="blog-article-actions">
                 <div class="blog-article-actions__inner">
+                    @*  Like button  *@
+                    @*  Pressed  *@
                     @if(Model.ArticleLikes.Any(x => x.ArticleId == Model.Id && x.UserId.ToString() == UserManager.GetUserId(User))){
                         <button class="blog-reaction blog-reaction--like relative unlike user-activated" value="@Model.Id">
                             <span class="blog-reaction__icon blog-reaction__icon--inactive">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" role="img" aria-hidden="true" class="blog-icon">
+                                <svg class="blog-icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" role="img">
                                     <path d="M21.179 12.794l.013.014L12 22l-9.192-9.192.013-.014A6.5 6.5 0 0112 3.64a6.5 6.5 0 019.179 9.154zM4.575 5.383a4.5 4.5 0 000 6.364L12 19.172l7.425-7.425a4.5 4.5 0 10-6.364-6.364L8.818 9.626 7.404 8.21l3.162-3.162a4.5 4.5 0 00-5.99.334l-.001.001z"></path>
                                 </svg>
                             </span>
                             <span class="blog-reaction__icon blog-reaction__icon--active">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" role="img" aria-hidden="true" class="blog-icon">
+                                <svg class="blog-icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" role="img">
                                     <path d="M2.821 12.794a6.5 6.5 0 017.413-10.24h-.002L5.99 6.798l1.414 1.414 4.242-4.242a6.5 6.5 0 019.193 9.192L12 22l-9.192-9.192.013-.014z"></path>
                                 </svg>
                             </span>
                             <span class="blog-reaction__count" id="reaction-number-like">@Model.ArticleLikes.Count()</span>
                         </button>
                     }
+                    @*  Not pressed  *@
                     else
                     {
                         <button class="blog-reaction blog-reaction--like relative like" value="@Model.Id">
                             <span class="blog-reaction__icon blog-reaction__icon--inactive">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" role="img" aria-hidden="true" class="blog-icon">
+                                <svg class="blog-icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" role="img">
                                     <path d="M21.179 12.794l.013.014L12 22l-9.192-9.192.013-.014A6.5 6.5 0 0112 3.64a6.5 6.5 0 019.179 9.154zM4.575 5.383a4.5 4.5 0 000 6.364L12 19.172l7.425-7.425a4.5 4.5 0 10-6.364-6.364L8.818 9.626 7.404 8.21l3.162-3.162a4.5 4.5 0 00-5.99.334l-.001.001z"></path>
                                 </svg>
                             </span>
                             <span class="blog-reaction__icon blog-reaction__icon--active">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" role="img" aria-hidden="true" class="blog-icon">
+                                <svg class="blog-icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" role="img">
                                     <path d="M2.821 12.794a6.5 6.5 0 017.413-10.24h-.002L5.99 6.798l1.414 1.414 4.242-4.242a6.5 6.5 0 019.193 9.192L12 22l-9.192-9.192.013-.014z"></path>
                                 </svg>
                             </span>
                             <span class="blog-reaction__count" id="reaction-number-like">@Model.ArticleLikes.Count()</span>
                         </button>
                     }
+                    @*  Favourite button  *@
+                    @*  Pressed  *@
                     @if(Model.Favourites.Any(x => x.ArticleId == Model.Id && x.UserId.ToString() == UserManager.GetUserId(User)))
                     {
                         <button class="blog-reaction blog-reaction--readinglist relative unfavourite user-activated" title="Save" value="@Model.Id">
                             <span class="blog-reaction__icon blog-reaction__icon--inactive">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" role="img" aria-hidden="true" class="blog-icon">
+                                <svg class="blog-icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" role="img">
                                     <path d="M5 2h14a1 1 0 011 1v19.143a.5.5 0 01-.766.424L12 18.03l-7.234 4.536A.5.5 0 014 22.143V3a1 1 0 011-1zm13 2H6v15.432l6-3.761 6 3.761V4z"></path>
                                 </svg>
                             </span>
                             <span class="blog-reaction__icon blog-reaction__icon--active">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" role="img" aria-hidden="true" class="blog-icon">
+                                <svg class="blog-icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" role="img">
                                     <path d="M5 2h14a1 1 0 011 1v19.143a.5.5 0 01-.766.424L12 18.03l-7.234 4.536A.5.5 0 014 22.143V3a1 1 0 011-1z"></path>
                                 </svg>
                             </span>
                             <span class="blog-reaction__count" id="reaction-number-readinglist">@Model.Favourites.Count()</span>
                         </button>
                     }
+                    @*  Not pressed  *@
                     else
                     {
                         <button class="blog-reaction blog-reaction--readinglist relative favourite" title="Save" value="@Model.Id">
@@ -84,28 +93,33 @@
         <main class="blog-layout__content grid gap-4">
             <div class="article-wrapper">
                 <article class="blog-card mb-4">
+                    @*  Header meta info  *@
                     <header class="blog-article__header">
                         <div class="blog-article__header__meta">
-                            <div class="flex s:items-start s:flex-row">
+                            @*  Info section  *@
+                            <div class="flex items-start flex-row">
                                 <div class="flex flex-1 mb-5 items-start">
+                                    @*  User avatar  *@
                                     <div class="relative">
                                         <a asp-controller="User" asp-action="GetUserProfile" asp-route-id="@Model.UserId">
                                             <img class="radius-full align-middle" src="/img/avatars/@Model.User.ImagePath" width="40" height="40">
                                         </a>
                                     </div>
+                                    @*  Username/posted on  *@
                                     <div class="pl-3 flex-1">
                                         <a class="blog-link fw-bold" asp-controller="User" asp-action="GetUserProfile" asp-route-id="@Model.UserId">@await UserManager.GetUserNameAsync(Model.User)</a>
-                                        <p class="fs-xs color-base-60">Posted on <time datetime="@Model.Date">@Model.Date.ToLongDateString()</time></p>
+                                        <p class="fs-xs color-base-60">Опубликовано <time datetime="@Model.Date">@Model.Date.ToLongDateString()</time></p>
                                     </div>
+                                    @*  Edit/delete buttons  *@
                                     <div>
-                                        <a asp-controller="Article" asp-action="Edit" asp-route-id="@Model.Id"
-                                             class="btn btn-primary mx-2"> <i class="bi bi-pencil"></i> Edit</a>
-                                        <a asp-controller="Article" asp-action="Delete" asp-route-id="@Model.Id"
-                                             class="btn btn-danger mx-2"> <i class="bi bi-trash-fill"></i> Delete</a>
+                                        <a class="btn btn-primary mx-2" asp-controller="Article" asp-action="Edit" asp-route-id="@Model.Id"> <i class="bi bi-pencil"></i> Изменить</a>
+                                        <a class="btn btn-danger" asp-controller="Article" asp-action="Delete" asp-route-id="@Model.Id"> <i class="bi bi-trash-fill"></i> Удалить</a>
                                     </div>
                                 </div>
                             </div>
-                            <h1 class="l:fs-5xl s:fw-heavy lh-tight mb-2">@Model.Title</h1>
+                            @*  Title  *@
+                            <h1 class="fs-5xl fw-heavy lh-tight mb-2">@Model.Title</h1>
+                            @*  Tags  *@
                             <div class="flex flex-wrap">
                                 @foreach(var tag in Model.Tags)
                                 {
@@ -117,55 +131,73 @@
                             </div>
                         </div>
                     </header>
+                    @*  Article text  *@
                     <div class="blog-article__main">
                         <div class="text-styles">
                             @Html.Raw(Markdig.Markdown.ToHtml(Model.Text))
                         </div>
                     </div>
-                    <section class="text-padding mb-4 border-t-1 border-0 border-solid border-base-10" id="comments">
+                    @*  Comments section  *@
+                    <section class="text-padding mb-4 border-t-1 border-0 border-solid border-base-10">
+                        @*  Discussion  *@
                         <header class="relative flex justify-between items-center mb-6">
-                            <h2 class="blog-subtitle-1">Discussion <span>(@Model.Comments.Count())</span></h2>
+                            <h2 class="blog-subtitle-1">Обсуждение <span>(@Model.Comments.Count())</span></h2>
                         </header>
+                        @*  Comments  *@
                         <div>
+                            @*  Add comment  *@
                             @{
-                                await Html.RenderPartialAsync("_CommentPartial", new CommentViewModel { ArticleId = Model.Id });
+                                await Html.RenderPartialAsync("~/Views/Shared/Comment/_CommentPartial.cshtml", new CommentViewModel { ArticleId = Model.Id });
                             }
+                            @*  All comments  *@
                             <div class="comments">
                                 @foreach(var comment in Model.Comments)
                                 {
                                     <div class="comment-wrapper">
                                         <div class="comment__inner">
-                                            <a class="shrink-0 blog-avatar m:blog-avatar--l mt-3" asp-controller="User" asp-action="GetUserProfile" asp-route-id="@comment.UserId">
+                                            @*  User avatar  *@
+                                            <a class="shrink-0 blog-avatar blog-avatar--l mt-3" asp-controller="User" asp-action="GetUserProfile" asp-route-id="@comment.UserId">
                                                 <img class="blog-avatar__image" src="/img/avatars/@comment.User.ImagePath" width="32" height="32">
                                             </a>
+                                            @*  Comment content  *@
                                             <div class="comment__details">
                                                 <div class="comment__content blog-card">
+                                                    @*  Comment header  *@
                                                     <div class="comment__header">
-                                                        <div class="profile-preview-card relative s:mb-0 fw-medium m:block">
+                                                        @*  Username  *@
+                                                        <div class="relative mb-0 fw-medium block">
                                                             <a class="p-1 -my-1 -ml-1 blog-btn blog-btn--ghost" asp-controller="User" asp-action="GetUserProfile" asp-route-id="@comment.UserId">@comment.User.UserName</a>
                                                         </div>
-                                                        <span class="color-base-30 px-2 m:pl-0" role="presentation">•</span>
+                                                        <span class="color-base-30 px-2 pl-0">•</span>
+                                                        @*  Publish date  *@
                                                         <p class="fs-s">
                                                             <time>@comment.Date.ToLongDateString()</time>
                                                         </p>
+                                                        @*  Edit/delete buttons  *@
                                                         <div class="blog-article-form__edit">
+                                                            @*  Edit  *@
                                                             <button type="button" class="c-btn c-btn--icon-alone" data-toggle="myModal" data-target="#ModalCenter" data-url="@Url.Action("Edit", "Comment", new {id = comment.Id})">
                                                                 <i class="bi bi-pencil"></i>
                                                             </button>
+                                                            @*  Delete  *@
                                                             <button type="button" class="c-btn c-btn--icon-alone" data-toggle="myModal" data-target="#ModalCenterDelete" data-url="@Url.Action("Delete", "Comment", new {id = comment.Id})">
                                                                 <i class="bi bi-x-lg"></i>
                                                             </button>
                                                         </div>
-                                                        <div id="EditCommentModalWindow"></div>
+                                                        @*  Modal window  *@
+                                                        <div id="CommentModalWindow"></div>
                                                     </div>
+                                                    @*  Comment content  *@
                                                     <div class="comment__body text-styles text-styles--secondary">
                                                         <p>@comment.Content</p>
                                                     </div>
                                                 </div>
+                                                @*  Comment likes  *@
                                                 <footer class="comment__footer">
+                                                    @*  Like pressed  *@
                                                     @if (comment.CommentLikes.Any(x => x.CommentId == comment.Id && x.UserId.ToString() == UserManager.GetUserId(User)))
                                                     {
-                                                        <button id="thisdiv" class="blog-btn blog-btn--ghost blog-btn--icon-left blog-btn--s reaction-like inline-flex reaction-button unlike-comment reacted" value="@comment.Id">
+                                                        <button class="blog-btn blog-btn--ghost blog-btn--icon-left blog-btn--s reaction-like inline-flex reaction-button unlike-comment reacted" value="@comment.Id">
                                                             <svg class="blog-icon reaction-icon not-reacted" xmlns="http://www.w3.org/2000/svg" width="24" height="24" role="img">
                                                                 <path d="M18.884 12.595l.01.011L12 19.5l-6.894-6.894.01-.01A4.875 4.875 0 0112 5.73a4.875 4.875 0 016.884 6.865zM6.431 7.037a3.375 3.375 0 000 4.773L12 17.38l5.569-5.569a3.375 3.375 0 10-4.773-4.773L9.613 10.22l-1.06-1.062 2.371-2.372a3.375 3.375 0 00-4.492.25v.001z"></path>
                                                             </svg>
@@ -173,12 +205,13 @@
                                                                 <path d="M5.116 12.595a4.875 4.875 0 015.56-7.68h-.002L7.493 8.098l1.06 1.061 3.181-3.182a4.875 4.875 0 016.895 6.894L12 19.5l-6.894-6.894.01-.01z"></path>
                                                             </svg>
                                                             <span id="reaction-number-comments" class="reactions-count">@comment.CommentLikes.Count()</span>
-                                                            <span class="reactions-label m:inline-block">&nbsp;likes</span>
+                                                            <span class="inline-block">&nbsp;По нраву</span>
                                                         </button>
                                                     }
+                                                    @*  Like not pressed  *@
                                                     else
                                                     {
-                                                        <button id="thisdiv" class="blog-btn blog-btn--ghost blog-btn--icon-left blog-btn--s reaction-like inline-flex reaction-button like-comment" value="@comment.Id">
+                                                        <button class="blog-btn blog-btn--ghost blog-btn--icon-left blog-btn--s reaction-like inline-flex reaction-button like-comment" value="@comment.Id">
                                                             <svg class="blog-icon reaction-icon not-reacted" xmlns="http://www.w3.org/2000/svg" width="24" height="24" role="img">
                                                                 <path d="M18.884 12.595l.01.011L12 19.5l-6.894-6.894.01-.01A4.875 4.875 0 0112 5.73a4.875 4.875 0 016.884 6.865zM6.431 7.037a3.375 3.375 0 000 4.773L12 17.38l5.569-5.569a3.375 3.375 0 10-4.773-4.773L9.613 10.22l-1.06-1.062 2.371-2.372a3.375 3.375 0 00-4.492.25v.001z"></path>
                                                             </svg>
@@ -186,7 +219,7 @@
                                                                 <path d="M5.116 12.595a4.875 4.875 0 015.56-7.68h-.002L7.493 8.098l1.06 1.061 3.181-3.182a4.875 4.875 0 016.895 6.894L12 19.5l-6.894-6.894.01-.01z"></path>
                                                             </svg>
                                                             <span id="reaction-number-comments" class="reactions-count">@comment.CommentLikes.Count()</span>
-                                                            <span class="reactions-label m:inline-block">&nbsp;likes</span>
+                                                            <span class="inline-block">&nbsp;По нраву</span>
                                                         </button>
                                                     }
                                                 </footer>
@@ -230,7 +263,7 @@
                             @if(@Model.User.Location != null)
                             {
                                 <li>
-                                    <div class="key">Location</div>
+                                    <div class="key">Локация</div>
                                     <div class="value">@Model.User.Location</div>
                                 </li>
                             }
@@ -238,7 +271,7 @@
                             @if(@Model.User.Education != null)
                             {
                                 <li>
-                                    <div class="key">Education</div>
+                                    <div class="key">Образование</div>
                                     <div class="value">@Model.User.Education</div>
                                 </li>
                             }
@@ -246,13 +279,13 @@
                             @if(@Model.User.Work != null)
                             {
                                 <li>
-                                    <div class="key">Work</div>
+                                    <div class="key">Работа</div>
                                     <div class="value">@Model.User.Work</div>
                                 </li>
                             }
                             @*  Joined date *@
                             <li>
-                                <div class="key">Joined</div>
+                                <div class="key">Присоединился</div>
                                 <div class="value">@Model.User.JoinedDate.ToLongDateString()</div>
                             </li>
                         </ul>
@@ -263,7 +296,7 @@
                     @*  Title "More from author"  *@ 
                     <header class="blog-card__header">
                         <h3 class="blog-subtitle-2">
-                            More from
+                            Больше от
                             @if(@Model.User.Name != null)
                             {
                                 <a asp-controller="User" asp-action="GetUserProfile" asp-route-id="@Model.UserId">

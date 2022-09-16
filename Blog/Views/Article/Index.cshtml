@@ -6,15 +6,13 @@
 @inject UserManager<ApplicationUser> UserManager
 @inject SignInManager<ApplicationUser> SignInManager
 
-@*@model PagedList.IPagedList<ContosoUniversity.Models.Student>*@
-
 @model IPagedList<Article>
-@*List<Article>*@
 
 @{
     ViewData["Title"] = "Home";
 }
 
+<partial name="_Notification">
 
 <div class="wrapper">
     <div class="blog-layout blog-layout--2-cols blog-layout--limited-s">
@@ -40,7 +38,7 @@
                                         </g>
                                     </svg>
                                 </span>
-                                Home
+                                Главная
                             </a>
                         </li>
                         @*  Reading list  *@
@@ -65,7 +63,7 @@
                                             </g>
                                         </svg>
                                     </span>
-                                    Reading List
+                                    Избранные статьи
                                     <span class="c-indicator ml-2 self-center hidden" data-id="@UserManager.GetUserId(User)">0</span>
                                 </a>
                             </li>
@@ -82,7 +80,7 @@
                                         </g>
                                     </svg>
                                 </span>
-                                Tags
+                                Теги
                             </a>
                         </li>
                         @*  About link  *@
@@ -112,7 +110,7 @@
                                         </g>
                                     </svg>
                                 </span>
-                                About
+                                О сайте
                             </a>
                         </li>
                         @*  Contact link  *@
@@ -127,7 +125,7 @@
                                         </g>
                                     </svg>
                                 </span>
-                                Contact
+                                Контакты
                             </a>
                         </li>
                         @*  Privacy policy  *@
@@ -145,7 +143,7 @@
                                         </g>
                                     </svg>
                                 </span>
-                                Privacy Policy
+                                Политика конфиденциальности
                             </a>
                         </li>
                         @*  Terms of use  *@
@@ -167,7 +165,7 @@
                                         </g>
                                     </svg>
                                 </span>
-                                Terms of use
+                                Правила использования
                             </a>
                         </li>
                     </ul>
@@ -178,25 +176,25 @@
         @*  Main content  *@
         <main class="articles-list blog-layout__content">
             @*  Latest/Top filter  *@
-            <header class="m:p-0 m:px-0 m:mb-2 fs-l">
-                <nav class="m:mx-0 s:flex items-center justify-between">
+            <header class="p-0 px-0 mb-2 fs-l">
+                <nav class="mx-0 flex items-center justify-between">
                     <ul class="blog-navigation blog-navigation--horizontal">
                         @if (Context.Request.Query["sortOrder"] == "top_desc")
                         {
                             <li>
-                                <a class="blog-navigation__item" href="\">Latest</a>
+                                <a class="blog-navigation__item" href="\">Последние</a>
                             </li>
                             <li>
-                                <a class="blog-navigation__item blog-navigation__item--current" asp-action="Index" asp-route-sortOrder="top_desc">Top</a>
+                                <a class="blog-navigation__item blog-navigation__item--current" asp-action="Index" asp-route-sortOrder="top_desc">Лучшие</a>
                             </li>
                         }
                         else
                         {
                             <li>
-                                <a class="blog-navigation__item blog-navigation__item--current" href="\">Latest</a>
+                                <a class="blog-navigation__item blog-navigation__item--current" href="\">Последние</a>
                             </li>
                             <li>
-                                <a class="blog-navigation__item" asp-action="Index" asp-route-sortOrder="top_desc">Top</a>
+                                <a class="blog-navigation__item" asp-action="Index" asp-route-sortOrder="top_desc">Лучшие</a>
                             </li>
                         }
                     </ul>
@@ -218,13 +216,12 @@
                                     <div class="blog-article__author-pic">
                                         <a class="blog-avatar blog-avatar--l" asp-controller="User" asp-action="GetUserProfile" asp-route-id="@article.UserId">
                                             <img class="blog-avatar__image" src="/img/avatars/@article.User.ImagePath">
-                                            ::after
                                         </a>
                                     </div>
                                     <div>
                                         @*  User name  *@
                                         <div>
-                                            <div class="relative mb-0 fw-medium m:inline-block">
+                                            <div class="relative mb-0 fw-medium inline-block">
                                                 <span class="fs-s p-1 -ml-1 -my-2">@user</span>
                                             </div>
                                         </div>
@@ -257,38 +254,28 @@
                                         <a class="blog-btn blog-btn--s blog-btn--ghost blog-btn--icon-left" asp-controller="Article" asp-action="Details" asp-route-id="@article.Id">
                                             <svg class="blog-icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24">
                                                 <path d="M18.884 12.595l.01.011L12 19.5l-6.894-6.894.01-.01A4.875 4.875 0 0112 5.73a4.875 4.875 0 016.884 6.865zM6.431 7.037a3.375 3.375 0 000 4.773L12 17.38l5.569-5.569a3.375 3.375 0 10-4.773-4.773L9.613 10.22l-1.06-1.062 2.371-2.372a3.375 3.375 0 00-4.492.25v.001z"></path>
-                                            </svg>@if (article.ArticleLikes.Count() == 1)
-                                            {@*
-                                                *@<span class="s:inline">@article.ArticleLikes.Count() reaction</span>
-                                            }
-                                            else
-                                            {@*
-                                                *@<span class="s:inline">@article.ArticleLikes.Count() reactions</span>
-                                            }
+                                            </svg>@*
+                                            *@<span class="inline">@article.ArticleLikes.Count() По нраву</span>
                                         </a>
                                         @*  Comments  *@
                                         <a class="blog-btn blog-btn--s blog-btn--ghost blog-btn--icon-left" asp-controller="Article" asp-action="Details" asp-route-id="@article.Id" asp-fragment="comments">
                                             <svg class="blog-icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24">
                                                 <path d="M10.5 5h3a6 6 0 110 12v2.625c-3.75-1.5-9-3.75-9-8.625a6 6 0 016-6zM12 15.5h1.5a4.501 4.501 0 001.722-8.657A4.5 4.5 0 0013.5 6.5h-3A4.5 4.5 0 006 11c0 2.707 1.846 4.475 6 6.36V15.5z"></path>
-                                            </svg>@if (article.Comments.Count == 0)
+                                            </svg>@*
+                                            *@@if (article.Comments.Count == 0)
                                             {@*
-                                                *@<span class="s:inline"> Add comment</span>
+                                                *@<span class="inline"> Добавить коммент</span>
                                             }
                                             else
-                                            {@if (article.ArticleLikes.Count() == 1)
-                                                {@*
-                                                    *@<span class="s:inline">@article.Comments.Count() comment</span>
-                                                }
-                                                else
-                                                {@*
-                                                    *@<span class="s:inline">@article.Comments.Count() comments</span>
-                                                }               }
+                                            {@*
+                                                *@<span class="inline">Комментов: @article.Comments.Count()</span>
+                                            }
                                         </a>
                                     </div>
                                     @*  Favourite  *@
                                     <div class="blog-article__save">
                                         @*  Min to read  *@
-                                        <small class="blog-article__tertiary fs-xs mr-2">@Math.Ceiling((double)article.Text.Length / 1500) min read</small>
+                                        <small class="blog-article__tertiary fs-xs mr-2">@Math.Ceiling((double)article.Text.Length / 1500) мин на чтение</small>
                                         @*  Favourite button  *@
                                         @if (article.Favourites.Any(x => x.ArticleId == article.Id && x.UserId.ToString() == UserManager.GetUserId(User)))
                                         {

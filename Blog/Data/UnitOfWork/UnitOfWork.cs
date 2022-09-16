@@ -5,7 +5,7 @@ namespace Blog.Data.UnitOfWork
 {
     public class UnitOfWork : IUnitOfWork
     {
-        private BlogDbContext _context;
+        private readonly BlogDbContext _context;
 
         private Dictionary<Type, object> _repositories;
 

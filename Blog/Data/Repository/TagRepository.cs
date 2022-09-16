@@ -20,11 +20,11 @@ namespace Blog.Data.Repository
         public async Task<Tag> GetTagById(Guid id)
         {
             var tags = Set.Include(tag => tag.Articles)
-                            .ThenInclude(article => article.Tags)
+                          .ThenInclude(article => article.Tags)
                           .Include(tag => tag.Articles)
-                            .ThenInclude(article => article.User);
+                          .ThenInclude(article => article.User);
 
-            return await tags.FirstOrDefaultAsync(t => t.Id == id); ;
+            return await tags.FirstOrDefaultAsync(tag => tag.Id == id); ;
         }
     }
 }

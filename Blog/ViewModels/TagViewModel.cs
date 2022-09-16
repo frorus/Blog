@@ -1,13 +1,14 @@
-﻿using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace Blog.ViewModels
 {
     public class TagViewModel
     {
-        [Required]
+        [Required(ErrorMessage = "Поле заголовка не должно быть пустым")]
+        [StringLength(100, ErrorMessage = "Поле должно иметь минимум {2} и максимум {1} символов.", MinimumLength = 3)]
         public string Title { get; set; }
-        //[ValidateNever]
+
+        [StringLength(250)]
         public string Description { get; set; }
     }
 }

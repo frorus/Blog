@@ -1,5 +1,4 @@
 ﻿using Blog.Models.DB;
-using Microsoft.EntityFrameworkCore;
 
 namespace Blog.Data.Repository
 {

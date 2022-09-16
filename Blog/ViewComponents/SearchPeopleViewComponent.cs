@@ -16,7 +16,7 @@ namespace Blog.ViewComponents
 
         public async Task<IViewComponentResult> InvokeAsync(string search)
         {
-            var users = await _userManager.Users.Where(x => (x.Name.ToLower().Contains(search.ToLower()) || 
+            var users = await _userManager.Users.Where(x => (x.Name.ToLower().Contains(search.ToLower()) ||
                                                              x.UserName.ToLower().Contains(search.ToLower()) ||
                                                              x.Bio.ToLower().Contains(search.ToLower()))).ToListAsync();
 

@@ -3,7 +3,6 @@ using Blog.Data.UnitOfWork;
 using Blog.Models.DB;
 using Blog.ViewModels;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Blog.Controllers
@@ -11,12 +10,10 @@ namespace Blog.Controllers
     public class TagController : Controller
     {
         private readonly IUnitOfWork _unitOfWork;
-        private readonly UserManager<ApplicationUser> _userManager;
 
-        public TagController(IUnitOfWork unitOfWork, UserManager<ApplicationUser> userManager)
+        public TagController(IUnitOfWork unitOfWork)
         {
             _unitOfWork = unitOfWork;
-            _userManager = userManager;
         }
 
         public async Task<IActionResult> Index()
@@ -40,6 +37,13 @@ namespace Blog.Controllers
         [Authorize]
         public async Task<IActionResult> Create(Tag model)
         {
+            var repository = await _unitOfWork.GetRepository<Tag>().GetAllAsync();
+
+            if (repository.Any(tag => tag.Title.ToLower() == model.Title.ToLower()))
+            {
+                ModelState.AddModelError("Title", "Такой тег уже существует");
+            }
+
             if (ModelState.IsValid)
             {
                 var tag = new Tag
@@ -50,11 +54,10 @@ namespace Blog.Controllers
 
                 await _unitOfWork.GetRepository<Tag>().Create(tag);
 
-                //TempData["success"] = "Category created successfully";
+                TempData["success"] = "Тег успешно добавлен";
+
                 return RedirectToAction("Index");
             }
-
-            ModelState.AddModelError("", "Failed to create");
 
             return View(model);
         }
@@ -90,11 +93,23 @@ namespace Blog.Controllers
         [Authorize]
         public async Task<IActionResult> Edit(Guid id, TagViewModel model)
         {
+            if (id == Guid.Empty)
+            {
+                return NotFound();
+            }
+
             var tagFromDb = await _unitOfWork.GetRepository<Tag>().GetByIdAsync(id);
 
             if (tagFromDb == null)
             {
                 return NotFound();
+            }
+
+            var repository = await _unitOfWork.GetRepository<Tag>().GetAllAsync();
+
+            if (tagFromDb.Title != model.Title && repository.Any(tag => tag.Title.ToLower() == model.Title.ToLower()))
+            {
+                ModelState.AddModelError("Title", "Такой тег уже существует");
             }
 
             if (ModelState.IsValid)
@@ -104,8 +119,13 @@ namespace Blog.Controllers
 
                 await _unitOfWork.GetRepository<Tag>().Update(tagFromDb);
 
-                //TempData["success"] = "Category updated successfully";
+                TempData["success"] = "Тег успешно обновлен";
+
                 return RedirectToAction("Index");
+            }
+            else
+            {
+                TempData["error"] = "Не удалось обновить тег";
             }
 
             return View(model);
@@ -162,6 +182,11 @@ namespace Blog.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeletePOST(Guid id)
         {
+            if (id == Guid.Empty)
+            {
+                return NotFound();
+            }
+
             var tagFromDb = await _unitOfWork.GetRepository<Tag>().GetByIdAsync(id);
 
             if (tagFromDb == null)
@@ -169,9 +194,18 @@ namespace Blog.Controllers
                 return NotFound();
             }
 
-            await _unitOfWork.GetRepository<Tag>().Delete(tagFromDb);
+            var deleteTask = _unitOfWork.GetRepository<Tag>().Delete(tagFromDb);
+            await deleteTask;
 
-            //TempData["success"] = "Category deleted successfully";
+            if (deleteTask.IsCompletedSuccessfully)
+            {
+                TempData["success"] = "Тег успешно удален";
+            }
+            else
+            {
+                TempData["error"] = "Не удалось удалить тег";
+            }
+
             return RedirectToAction("Index");
         }
     }

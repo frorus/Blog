@@ -2,62 +2,64 @@
 
 @{
     ViewData["Title"] = "Delete";
-	Layout = null;
+	Layout = "_LayoutNoHeaderNoFooter";
 }
 
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.2/font/bootstrap-icons.css">
-    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
-    <link rel="stylesheet" href="~/Blog.styles.css" asp-append-version="true" />
-</head>
-	<body class="pt-0">
-	    <div class="wrapper">
-			<main id="main-content">
-				<form id="article-form" class="blog-article-form" method="post">
-					<div class="blog-article-form__content blog-card">
-						<div class="blog-article__header__meta text-padding drop-area">
-							<div class="blog-article-form__title">
-								<textarea class="blog-textfield-textarea fs-3xl m:fs-4xl l:fs-5xl fw-bold s:fw-heavy lh-tight"
-									  type="text" id="article-form-title" autocomplete="off"
-									  data-gramm_editor="false" aria-label="Tag Title" autofocus="" style="color: gray;" 
-									  asp-for="Title" disabled></textarea>
-							</div>
-							<div class="relative">
-								<div class="border-none p-0 flex items-center cursor-text">
-									<ul class="list-none flex flex-wrap w-100">
-										@foreach(var item in Model.Tags){
-											<li class="w-max">
-												<div class="flex mr-1 mb-1 w-max">
-													<button class="c-btn p-1 cursor-text" type="button" style="color: grey" disabled>
-														#@item.Title
-													</button>
-												</div>
-											</li>
-										}
-									</ul>
-								</div>
-							</div>
-						</div>
-						<div class="blog-article-form__body drop-area text-padding h-100">
-							<div id="combobox-container" class="h-100">
-								<textarea class="blog-textfield-textarea ff-monospace fs-l h-100"
-									  type="text" id="article_body_markdown" autocomplete="off" style="color: gray;" 
-									  data-gramm_editor="false" asp-for="Text" disabled></textarea>
-							</div>
-						</div>
-					</div>
-					<div class="blog-article-form__footer">
-						<button class="c-btn blog-btn--danger mr-2 whitespace-nowrap" type="submit">Yes, delete</button>
-						<a class="c-link c-link--block mr-2 whitespace-nowrap" href='javascript:history.go(-1)'>Back to article</a>
-					</div>
-				</form>
-			</main>
-		</div>
-		<script src="~/js/site.js" asp-append-version="true"></script>
-	</body>
-</html>
+
+<div class="wrapper">
+    <main>
+        <form id="article-form" class="blog-article-form" method="post">
+            @*  Header  *@
+            <div class="blog-article-form__header">
+                @*  Logo  *@
+                <span class="blog-article-form__logo">
+                    <a class="site-logo" href="/">
+                        <img class="site-logo__img" src="~/img/logo.png">
+                    </a>
+                </span>
+                @*  Inscription  *@
+                <div class="blog-field__label flex items-center flex-1">
+                    <span class="inline-block mr-2 whitespace-nowrap">Удаление статьи</span>
+                </div>
+            </div>
+            @*  Title/text fields  *@
+            <div class="blog-article-form__content blog-card">
+                @*  Article title/tags  *@
+                <div class="blog-article__header__meta text-padding">
+                    @*  Title  *@
+                    <div class="blog-article-form__title">
+                        <textarea class="blog-textfield-textarea fs-5xl fw-heavy lh-tight" type="text" style="color: gray;" asp-for="Title" disabled></textarea>
+                    </div>
+                    @*  Tags  *@
+                    <div class="relative">
+                        <div class="border-none p-0 flex items-center">
+                            <ul class="list-none flex flex-wrap w-100">
+                                @foreach (var item in Model.Tags)
+                                {
+                                    <li class="w-max">
+                                        <div class="flex mr-1 mb-1 w-max">
+                                            <button class="c-btn p-1 cursor-text" type="button" style="color: grey" disabled>
+                                                #@item.Title
+                                            </button>
+                                        </div>
+                                    </li>
+                                }
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                @*  Article text  *@
+                <div class="blog-article-form__body text-padding">
+                    <div class="h-100">
+                        <textarea class="blog-textfield-textarea ff-monospace fs-l h-100" type="text" style="color: gray;" asp-for="Text" disabled></textarea>
+                    </div>
+                </div>
+            </div>
+            @*  Delete and previous page  *@
+            <div class="blog-article-form__footer">
+                <button class="c-btn blog-btn--danger mr-2 whitespace-nowrap" type="submit">Да, удалить</button>
+                <a class="c-link c-link--block mr-2 whitespace-nowrap" href='javascript:history.go(-1)'>На предыдущую страницу</a>
+            </div>
+        </form>
+    </main>
+</div>

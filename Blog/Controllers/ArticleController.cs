@@ -69,6 +69,19 @@ namespace Blog.Controllers
         public async Task<IActionResult> Create(ArticleViewModel model)
         {
             var userId = _userManager.GetUserId(this.User);
+            var tagsFromDb = await _unitOfWork.GetRepository<Tag>().GetAllAsync();
+            var selectedTags = model.Tags.Where(t => t.Selected).Select(t => t);
+
+            //Get tag titles in wrong model case
+            foreach (var tag in model.Tags)
+            {
+                tag.Text = tagsFromDb.Where(t => t.Id == Guid.Parse(tag.Value)).FirstOrDefault().Title;
+            }
+
+            if (selectedTags.Count() > 4)
+            {
+                ModelState.AddModelError("Tags", "Макс. число тегов - 4");
+            }
 
             if (ModelState.IsValid)
             {
@@ -80,21 +93,16 @@ namespace Blog.Controllers
                     User = await _userManager.FindByIdAsync(userId)
                 };
 
-                var selectedTags = model.Tags.Where(t => t.Selected).Select(t => t);
-
-                foreach (var t in selectedTags)
+                foreach (var selectedTag in selectedTags)
                 {
-                    var tag = await _unitOfWork.GetRepository<Tag>().GetByIdAsync(Guid.Parse(t.Value));
+                    var tag = await _unitOfWork.GetRepository<Tag>().GetByIdAsync(Guid.Parse(selectedTag.Value));
                     article.Tags.Add(tag);
                 }
 
                 await _unitOfWork.GetRepository<Article>().Create(article);
 
-                //TempData["success"] = "Category created successfully";
-                return RedirectToAction("Index");
+                return RedirectToAction("Details", new { id = article.Id });
             }
-
-            ModelState.AddModelError("", "Failed to create");
 
             return View(model);
         }
@@ -114,25 +122,26 @@ namespace Blog.Controllers
             var tagsFromDb = await _unitOfWork.GetRepository<Tag>().GetAllAsync();
             var selectedTags = new List<SelectListItem>();
 
+            if (articleFromDb == null || tagsFromDb == null)
+            {
+                return NotFound();
+            }
+
             foreach (var tag in tagsFromDb)
             {
                 selectedTags.Add(new SelectListItem(tag.Title, tag.Id.ToString()));
             }
 
+            //Pre-check article current tags
             foreach (var tag in selectedTags)
             {
                 foreach (var articleTag in articleFromDb.Tags)
                 {
-                    if(articleTag.Title == tag.Text)
+                    if (articleTag.Title == tag.Text)
                     {
                         tag.Selected = true;
                     }
                 }
-            }
-
-            if (articleFromDb == null)
-            {
-                return NotFound();
             }
 
             var articleModel = new ArticleViewModel
@@ -151,7 +160,10 @@ namespace Blog.Controllers
         [Authorize]
         public async Task<IActionResult> Edit(Guid id, ArticleViewModel model)
         {
-            //var articleFromDb = await _unitOfWork.GetRepository<Article>().GetByIdAsync(id);
+            if (id == Guid.Empty)
+            {
+                return NotFound();
+            }
 
             var repository = _unitOfWork.GetRepository<Article>() as ArticleRepository;
             var articleFromDb = await repository.GetArticleById(id);
@@ -161,33 +173,47 @@ namespace Blog.Controllers
                 return NotFound();
             }
 
-            //if (ModelState.IsValid)
-            //{
-            //    articleFromDb.Text = model.Text;
-            //    articleFromDb.Title = model.Title;
-
-            //    await _unitOfWork.GetRepository<Article>().Update(articleFromDb);
-            //    //TempData["success"] = "Category updated successfully";
-            //    return RedirectToAction("Index");
-            //}
-
-            articleFromDb.Text = model.Text;
-            articleFromDb.Title = model.Title;
-            articleFromDb.Tags.Clear();
-
+            var tagsFromDb = await _unitOfWork.GetRepository<Tag>().GetAllAsync();
             var selectedTags = model.Tags.Where(t => t.Selected).Select(t => t);
 
-            foreach (var t in selectedTags)
+            //Get tag titles in wrong model case
+            foreach (var tag in model.Tags)
             {
-                var tag = await _unitOfWork.GetRepository<Tag>().GetByIdAsync(Guid.Parse(t.Value));
-                articleFromDb.Tags.Add(tag);
+                tag.Text = tagsFromDb.Where(t => t.Id == Guid.Parse(tag.Value)).FirstOrDefault().Title;
             }
 
-            await _unitOfWork.GetRepository<Article>().Update(articleFromDb);
+            if (selectedTags.Count() > 4)
+            {
+                ModelState.AddModelError("Tags", "Макс. число тегов - 4");
+            }
 
-            return RedirectToAction("Details", new { id });
+            if (ModelState.IsValid)
+            {
+                articleFromDb.Text = model.Text;
+                articleFromDb.Title = model.Title;
+                articleFromDb.Tags.Clear();
+
+                foreach (var t in selectedTags)
+                {
+                    var tag = await _unitOfWork.GetRepository<Tag>().GetByIdAsync(Guid.Parse(t.Value));
+                    articleFromDb.Tags.Add(tag);
+                }
+
+                await _unitOfWork.GetRepository<Article>().Update(articleFromDb);
+
+                TempData["success"] = "Статья успешно обновлена";
+
+                return RedirectToAction("Details", new { id });
+            }
+            else
+            {
+                TempData["error"] = "Не удалось обновить статью";
+            }
+
+            return View(model);
         }
 
+        //Get articles details
         [HttpGet]
         public async Task<IActionResult> Details(Guid id)
         {
@@ -199,15 +225,16 @@ namespace Blog.Controllers
             var repository = _unitOfWork.GetRepository<Article>() as ArticleRepository;
             var articleFromDb = await repository.GetArticleById(id);
 
-            var userArticles = await repository.GetAllArticles().Where(article => article.UserId == articleFromDb.UserId)
-                                                                .OrderByDescending(article => article.Date)
-                                                                .Take(3)
-                                                                .ToListAsync();
-
             if (articleFromDb == null)
             {
                 return NotFound();
             }
+
+            //Get last 3 publications of article author
+            var userArticles = await repository.GetAllArticles().Where(article => article.UserId == articleFromDb.UserId)
+                                                                .OrderByDescending(article => article.Date)
+                                                                .Take(3)
+                                                                .ToListAsync();
 
             var article = new ArticleDetailsViewModel
             {
@@ -226,33 +253,6 @@ namespace Blog.Controllers
 
             return View(article);
         }
-
-
-        ////Edit article
-        //[HttpPost]
-        //[ValidateAntiForgeryToken]
-        //[Authorize]
-        //public async Task<IActionResult> Details(Guid id, ArticleViewModel model)
-        //{
-        //    var articleFromDb = await _unitOfWork.GetRepository<Article>().GetByIdAsync(id);
-
-        //    if (articleFromDb == null)
-        //    {
-        //        return NotFound();
-        //    }
-
-        //    if (ModelState.IsValid)
-        //    {
-        //        articleFromDb.Text = model.Text;
-        //        articleFromDb.Title = model.Title;
-
-        //        await _unitOfWork.GetRepository<Article>().Update(articleFromDb);
-        //        //TempData["success"] = "Category updated successfully";
-        //        return RedirectToAction("Index");
-        //    }
-
-        //    return View(model);
-        //}
 
         [HttpGet]
         [Authorize]
@@ -287,9 +287,18 @@ namespace Blog.Controllers
                 return NotFound();
             }
 
-            await _unitOfWork.GetRepository<Article>().Delete(articleFromDb);
+            var deleteTask = _unitOfWork.GetRepository<Article>().Delete(articleFromDb);
+            await deleteTask;
 
-            //TempData["success"] = "Category deleted successfully";
+            if (deleteTask.IsCompletedSuccessfully)
+            {
+                TempData["success"] = "Статья успешно удалена";
+            }
+            else
+            {
+                TempData["error"] = "Не удалось удалить статью";
+            }
+
             return RedirectToAction("Index");
         }
     }

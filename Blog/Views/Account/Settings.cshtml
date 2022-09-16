@@ -4,13 +4,15 @@
     ViewData["Title"] = "Settings";
 }
 
+<partial name="_Notification">
+
 <div class="wrapper">
     <main>
         <div class="blog-layout blog-layout--header-inside blog-layout--2-cols blog-layout--limited-l">
             @*  Title  *@
             <div class="blog-page-header">
-                <h1 class="blog-title" style="font-size: var(--fs-3xl);">
-                    Settings for
+                <h1 class="blog-title">
+                    Настройки для 
                     <a class="ml-1">&#64;@Model.Username</a>
                 </h1>
             </div>
@@ -23,14 +25,14 @@
                             <path d="M22 12c0 5.523-4.477 10-10 10S2 17.523 2 12 6.477 2 12 2s10 4.477 10 10z" fill="#FFCC4D"></path>
                             <path d="M7.842 15.123c.025.1.649 2.433 4.158 2.433 3.51 0 4.133-2.333 4.158-2.433a.277.277 0 00-.464-.265c-.011.01-1.086 1.03-3.695 1.03-2.607 0-3.683-1.02-3.692-1.03a.28.28 0 00-.452.087.278.278 0 00-.014.178zM10.056 9.5c0 1.074-.622 1.944-1.39 1.944-.767 0-1.388-.87-1.388-1.944 0-1.074.621-1.944 1.389-1.944.767 0 1.389.87 1.389 1.944zm6.666 0c0 1.074-.621 1.944-1.389 1.944-.767 0-1.389-.87-1.389-1.944 0-1.074.622-1.944 1.39-1.944.767 0 1.388.87 1.388 1.944z" fill="#664500"></path>
                         </svg>
-                        Profile
+                        Профиль
                     </a>
                     <a id="account-tab" class="blog-link blog-link--block" data-toggle="pill" href="#account" aria-controls="account" role="tab" aria-selected="false">
                         <svg class="blog-icon blog-icon--default" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" role="img">
                             <title>Account</title>
                             <path d="M14.728 9.999a9.75 9.75 0 00-1.6 1.345c-.07-2.358-.637-5.408-3.762-6.901-.618-3.364-7.83-1.655-7.183-1.329 1.285.65 1.97 2.305 2.796 3.175 1.474 1.552 3.113 1.647 3.928.433 1.927 1.252 2.054 3.627 1.995 6.166-.006.28-.013.542-.013.78v7.776c0 .614 2.223.614 2.223 0v-6.383c.3-.53 1.179-1.947 2.46-2.941.881.774 2.301.527 3.59-.83.829-.871 1.275-2.525 2.56-3.176.68-.342-7.11-2.218-6.993 1.885" fill="#77B255"></path>
                         </svg>
-                        Account
+                        Аккаунт
                     </a>
                 </div>
             </div>
@@ -40,25 +42,27 @@
                 <form id="profile" class="tab-pane fade active show" role="tabpanel" aria-labelledby="profile-tab" method="post" asp-controller="Account" asp-action="EditProfileSettings" enctype="multipart/form-data">
                     @*  User section  *@
                     <div class="blog-card blog-card--content-rows">
-                        <h2 class="blog-subtitle-1">User</h2>
+                        <h2 class="blog-subtitle-1">Пользователь</h2>
                         @*  Name field  *@
                         <div class="blog-field">
-                            <label class="blog-field__label" asp-for="Name">Name</label>
+                            <label class="blog-field__label" asp-for="Name">Имя</label>
                             <input class="blog-textfield" maxlength="30" placeholder="John Doe" value="@Model.Name" type="text" asp-for="Name">
                         </div>
                         @*  Email field  *@
                         <div class="blog-field">
                             <label class="blog-field__label" asp-for="Email">Email</label>
                             <input class="blog-textfield" maxlength="50" placeholder="john.doe@example.com" value="@Model.Email" type="text" asp-for="Email">
+                            <span class="blog-notice pl-2" asp-validation-for="Email"></span>
                         </div>
                         @*  Username field  *@
                         <div class="blog-field">
                             <label class="blog-field__label" asp-for="Username">Username</label>
-                            <input class="blog-textfield" maxlength="30" placeholder="johndoe" value="@Model.Username" type="text" asp-for="Username">
+                            <input class="blog-textfield" maxlength="15" placeholder="johndoe" value="@Model.Username" type="text" asp-for="Username">
+                            <span class="blog-notice pl-2" asp-validation-for="Username"></span>
                         </div>
                         @*  Upload image  *@
                         <div class="blog-field">
-                            <label class="blog-field__label" asp-for="ImagePath">Profile image</label>
+                            <label class="blog-field__label" asp-for="ImagePath">Аватар</label>
                             <div class="flex items-center">
                                 <span class="blog-avatar blog-avatar--xl mr-2">
                                     <img class="blog-avatar__image" alt="@Model.Username profile image" src="/img/avatars/@Model.ImagePath" loading="lazy">
@@ -69,11 +73,12 @@
                     </div>
                     @*  Basic section  *@
                     <div class="blog-card blog-card--content-rows">
-                        <h2 class="blog-subtitle-1">Basic</h2>
+                        <h2 class="blog-subtitle-1">Основное</h2>
                         @*  Website field  *@
                         <div class="blog-field">
-                            <label class="blog-field__label" asp-for="Website">Website URL</label>
+                            <label class="blog-field__label" asp-for="Website">Сайт URL</label>
                             <input class="blog-textfield" maxlength="100" placeholder="https://yoursite.com" value="@Model.Website" type="url" asp-for="Website" onkeyup="countChar(this)">
+                            <span class="blog-notice pl-2" asp-validation-for="Website"></span>
                             <p class="blog-field__description align-right">
                                 @if(Model.Website != null)
                                 {
@@ -87,8 +92,8 @@
                         </div>
                         @*  Location field  *@
                         <div class="blog-field">
-                            <label class="blog-field__label" asp-for="Location">Location</label>
-                            <input class="blog-textfield" maxlength="100" placeholder="Halifax, Nova Scotia" value="@Model.Location" type="text" asp-for="Location" onkeyup="countChar(this)">
+                            <label class="blog-field__label" asp-for="Location">Локация</label>
+                            <input class="blog-textfield" maxlength="100" placeholder="Саратов, Россия" value="@Model.Location" type="text" asp-for="Location" onkeyup="countChar(this)">
                             <p class="blog-field__description align-right">
                                 @if(Model.Location != null)
                                 {
@@ -102,8 +107,8 @@
                         </div>
                         @*  Bio field  *@
                         <div class="blog-field">
-                            <label class="blog-field__label" asp-for="Bio">Bio</label>
-                            <textarea class="blog-textfield" maxlength="200" placeholder="A short bio..." asp-for="Bio" onkeyup="countChar(this)">@Model.Bio</textarea>
+                            <label class="blog-field__label" asp-for="Bio">О себе</label>
+                            <textarea class="blog-textfield" maxlength="200" placeholder="Короткая биография..." asp-for="Bio" onkeyup="countChar(this)">@Model.Bio</textarea>
                             <p class="blog-field__description align-right">
                                 @if(Model.Bio != null)
                                 {
@@ -118,14 +123,14 @@
                     </div>
                     @*  Coding section  *@
                     <div class="blog-card blog-card--content-rows">
-                        <h2 class="blog-subtitle-1">Coding</h2>
+                        <h2 class="blog-subtitle-1">Кодинг</h2>
                         @*  Learning field  *@
                         <div class="blog-field">
-                            <label class="blog-field__label" asp-for="Learning">Currently learning</label>
+                            <label class="blog-field__label" asp-for="Learning">Обучаюсь</label>
                             <p class="blog-field__description">
-                                What are you learning right now? What are the new tools and languages you're picking up right now?
+                                Что изучаете сейчас? Какие инструменты и ЯП планируете изучать?
                             </p>
-                            <textarea class="blog-textfield" maxlength="200" asp-for="Learning" onkeyup="countChar(this)">@Model.Learning</textarea>
+                            <textarea class="blog-textfield" maxlength="200" placeholder="Любые языки, фреймворки и т.д." asp-for="Learning" onkeyup="countChar(this)">@Model.Learning</textarea>
                             <p class="blog-field__description align-right">
                                 @if(Model.Learning != null)
                                 {
@@ -139,11 +144,11 @@
                         </div>
                         @*  Skills/Languages field  *@
                         <div class="blog-field">
-                            <label class="blog-field__label" asp-for="Skills">Skills/Languages</label>
+                            <label class="blog-field__label" asp-for="Skills">Навыки/Языки</label>
                             <p class="blog-field__description">
-                                What tools and languages are you most experienced with? Are you specialized or more of a generalist?
+                                С какими инструментами и языками Вы наиболее знакомы? Вы узко специализированы или более универсальны?
                             </p>
-                            <textarea class="blog-textfield" maxlength="200" placeholder="Any languages, frameworks, etc. to highlight?" asp-for="Skills" onkeyup="countChar(this)">@Model.Skills</textarea>
+                            <textarea class="blog-textfield" maxlength="200" placeholder="Любые языки, фреймворки и т.д." asp-for="Skills" onkeyup="countChar(this)">@Model.Skills</textarea>
                             <p class="blog-field__description align-right">
                                 @if(Model.Skills != null)
                                 {
@@ -158,11 +163,11 @@
                     </div>
                     @*  Work section  *@
                     <div class="blog-card blog-card--content-rows">
-                        <h2 class="blog-subtitle-1">Work</h2>
+                        <h2 class="blog-subtitle-1">Работа</h2>
                         @*  Work field  *@
                         <div class="blog-field">
-                            <label class="blog-field__label" asp-for="Work">Work</label>
-                            <input class="blog-textfield" maxlength="100" placeholder="What do you do? Example: CEO at ACME Inc." value="@Model.Work" type="text" asp-for="Work" onkeyup="countChar(this)">
+                            <label class="blog-field__label" asp-for="Work">Работа</label>
+                            <input class="blog-textfield" maxlength="100" placeholder="Какая у Вас должность?" value="@Model.Work" type="text" asp-for="Work" onkeyup="countChar(this)">
                             <p class="blog-field__description align-right">
                                 @if(Model.Work != null)
                                 {
@@ -176,8 +181,8 @@
                         </div>
                         @*  Education field  *@
                         <div class="blog-field">
-                            <label class="blog-field__label" asp-for="Education">Education</label>
-                            <input class="blog-textfield" maxlength="100" placeholder="Where did you go to school?" value="@Model.Education" type="text" asp-for="Education" onkeyup="countChar(this)">
+                            <label class="blog-field__label" asp-for="Education">Образование</label>
+                            <input class="blog-textfield" maxlength="100" placeholder="В какую школу/университет ходили?" value="@Model.Education" type="text" asp-for="Education" onkeyup="countChar(this)">
                             <p class="blog-field__description align-right">
                                 @if(Model.Education != null)
                                 {
@@ -192,7 +197,7 @@
                     </div>
                     @*  Save button  *@
                     <div class="blog-card blog-card--content-rows">
-                        <button class="blog-btn" type="submit">Save Profile Information</button>
+                        <button class="blog-btn" type="submit">Сохранить информацию профиля</button>
                     </div>
                 </form>
                 @*  Account settings  *@
@@ -201,3 +206,7 @@
         </div>
     </main>
 </div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

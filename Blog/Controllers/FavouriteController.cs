@@ -22,8 +22,17 @@ namespace Blog.Controllers
         [Authorize]
         public async Task<IActionResult> AddToFavourite(string id)
         {
+            if (String.IsNullOrEmpty(id))
+            {
+                return NotFound();
+            }
+
             var userId = _userManager.GetUserId(this.User);
-            //var articleFromDb = await _unitOfWork.GetRepository<Article>().GetByIdAsync(Guid.Parse(id));
+
+            if (String.IsNullOrEmpty(userId))
+            {
+                return NotFound();
+            }
 
             var favourite = new Favourite
             {
@@ -31,7 +40,13 @@ namespace Blog.Controllers
                 ArticleId = Guid.Parse(id)
             };
 
-            await _unitOfWork.GetRepository<Favourite>().Create(favourite);
+            var addFavTask = _unitOfWork.GetRepository<Favourite>().Create(favourite);
+            await addFavTask;
+
+            if (!addFavTask.IsCompletedSuccessfully)
+            {
+                TempData["error"] = "Упс! Что-то пошло не так";
+            }
 
             return RedirectToAction("Details", "Article", new { id = id });
         }
@@ -41,8 +56,25 @@ namespace Blog.Controllers
         [Authorize]
         public async Task<IActionResult> DeleteFromFavourite(string id)
         {
+            if (String.IsNullOrEmpty(id))
+            {
+                return NotFound();
+            }
+
             var userId = _userManager.GetUserId(this.User);
+
+            if (String.IsNullOrEmpty(userId))
+            {
+                return NotFound();
+            }
+
             var articleFromDb = await _unitOfWork.GetRepository<Article>().GetByIdAsync(Guid.Parse(id));
+
+            if (articleFromDb == null)
+            {
+                return NotFound();
+            }
+
             var favouriteFromDb = articleFromDb.Favourites.FirstOrDefault(x => x.UserId == Guid.Parse(userId));
 
             if (favouriteFromDb == null)
@@ -50,9 +82,14 @@ namespace Blog.Controllers
                 return NotFound();
             }
 
-            await _unitOfWork.GetRepository<Favourite>().Delete(favouriteFromDb);
+            var deleteFavTask = _unitOfWork.GetRepository<Favourite>().Delete(favouriteFromDb);
+            await deleteFavTask;
 
-            //TempData["success"] = "Category deleted successfully";
+            if (!deleteFavTask.IsCompletedSuccessfully)
+            {
+                TempData["error"] = "Упс! Что-то пошло не так";
+            }
+
             return RedirectToAction("Details", "Article", new { id = id });
         }
     }

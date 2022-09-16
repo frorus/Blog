@@ -6,36 +6,47 @@
 }
 
 <div class="wrapper">
-	<main id="main-content">
+	<main>
 		<form id="article-form" class="blog-article-form" method="post">
+			@*  Header  *@
+            <div class="blog-article-form__header">
+                @*  Logo  *@
+                <span class="blog-article-form__logo">
+                    <a class="site-logo" href="/">
+                        <img class="site-logo__img" src="~/img/logo.png">
+                    </a>
+                </span>
+                @*  Inscription  *@
+                <div class="blog-field__label flex items-center flex-1">
+                    <span class="inline-block mr-2 whitespace-nowrap">Редактировать тег</span>
+                </div>
+            </div>
+			@*  Errors and title/description fields  *@
 			<div class="blog-article-form__content blog-card">
+				@*  Validation errors  *@
+                <span class="blog-notice pl-9 fw-bold" asp-validation-for="@Model.Title"></span>
+				@*  Tag title  *@
 				<div class="blog-article__header__meta text-padding drop-area">
 					<div class="blog-article-form__title">
-						<textarea class="blog-textfield-textarea fs-3xl m:fs-4xl l:fs-5xl fw-bold s:fw-heavy lh-tight"
-								  type="text" id="article-form-title" placeholder="Update title #@Model.Title here..." autocomplete="off"
-								  data-gramm_editor="false" aria-label="Tag Title" autofocus="" style="min-height: 62px; max-height: 62px;"
-								  asp-for="Title"></textarea>
+						<textarea class="blog-textfield-textarea fs-5xl fw-heavy lh-tight" type="text" placeholder="Редактировать название #@Model.Title здесь..." asp-for="Title"></textarea>
 					</div>
 				</div>
-				<div class="blog-article-form__body drop-area text-padding">
-					<div id="combobox-container" class="h-100" style="min-height: 108px;">
-						<textarea class="blog-textfield-textarea ff-monospace fs-l h-100"
-								  type="text" id="article_body_markdown" placeholder="Update description here..." autocomplete="off"
-								  data-gramm_editor="false" style="min-height: 27px;" asp-for="Description"></textarea>
+				@*  Tag description  *@
+				<div class="blog-article-form__body text-padding">
+					<div class="h-100">
+						<textarea class="blog-textfield-textarea ff-monospace fs-l h-100" type="text" placeholder="Редактировать описание здесь..." asp-for="Description"></textarea>
 					</div>
 				</div>
 			</div>
+			@*  Save changes and previous page  *@
 			<div class="blog-article-form__footer">
-				<button class="c-btn c-btn--primary mr-2 whitespace-nowrap" type="submit">Save changes</button>
-				<a class="c-link c-link--block mr-2 whitespace-nowrap" asp-controller="Tag" asp-action="Index">Back to tag list</a>
+				<button class="c-btn c-btn--primary mr-2 whitespace-nowrap" type="submit">Сохранить</button>
+				<a class="c-link c-link--block mr-2 whitespace-nowrap" asp-controller="Tag" asp-action="Index">На страницу тегов</a>
 			</div>
 		</form>
 	</main>
 </div>
 
-@section Scripts{
-	@{
-		<partial name="_ValidationScriptsPartial" />
-	}
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
 }
-

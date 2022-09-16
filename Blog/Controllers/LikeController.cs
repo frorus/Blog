@@ -22,8 +22,17 @@ namespace Blog.Controllers
         [Authorize]
         public async Task<IActionResult> AddLikeToArticle(string id)
         {
+            if (String.IsNullOrEmpty(id))
+            {
+                return NotFound();
+            }
+
             var userId = _userManager.GetUserId(this.User);
-            //var articleFromDb = await _unitOfWork.GetRepository<Article>().GetByIdAsync(Guid.Parse(id));
+
+            if (String.IsNullOrEmpty(userId))
+            {
+                return NotFound();
+            }
 
             var like = new ArticleLike
             {
@@ -31,7 +40,13 @@ namespace Blog.Controllers
                 ArticleId = Guid.Parse(id),
             };
 
-            await _unitOfWork.GetRepository<ArticleLike>().Create(like);
+            var addLikeTask = _unitOfWork.GetRepository<ArticleLike>().Create(like);
+            await addLikeTask;
+
+            if (!addLikeTask.IsCompletedSuccessfully)
+            {
+                TempData["error"] = "Упс! Что-то пошло не так";
+            }
 
             return RedirectToAction("Details", "Article", new { id });
         }
@@ -41,8 +56,25 @@ namespace Blog.Controllers
         [Authorize]
         public async Task<IActionResult> DeleteLikeFromArticle(string id)
         {
+            if (String.IsNullOrEmpty(id))
+            {
+                return NotFound();
+            }
+
             var userId = _userManager.GetUserId(this.User);
+
+            if (String.IsNullOrEmpty(userId))
+            {
+                return NotFound();
+            }
+
             var articleFromDb = await _unitOfWork.GetRepository<Article>().GetByIdAsync(Guid.Parse(id));
+
+            if (articleFromDb == null)
+            {
+                return NotFound();
+            }
+
             var likeFromDb = articleFromDb.ArticleLikes.FirstOrDefault(x => x.UserId == Guid.Parse(userId));
 
             if (likeFromDb == null)
@@ -50,9 +82,14 @@ namespace Blog.Controllers
                 return NotFound();
             }
 
-            await _unitOfWork.GetRepository<ArticleLike>().Delete(likeFromDb);
+            var deleteLikeTask = _unitOfWork.GetRepository<ArticleLike>().Delete(likeFromDb);
+            await deleteLikeTask;
 
-            //TempData["success"] = "Category deleted successfully";
+            if (!deleteLikeTask.IsCompletedSuccessfully)
+            {
+                TempData["error"] = "Упс! Что-то пошло не так";
+            }
+
             return RedirectToAction("Details", "Article", new { id });
         }
 
@@ -61,15 +98,38 @@ namespace Blog.Controllers
         [Authorize]
         public async Task<IActionResult> AddLikeToComment(string id)
         {
+            if (String.IsNullOrEmpty(id))
+            {
+                return NotFound();
+            }
+
             var userId = _userManager.GetUserId(this.User);
+
+            if (String.IsNullOrEmpty(userId))
+            {
+                return NotFound();
+            }
+
             var commentFromDb = await _unitOfWork.GetRepository<Comment>().GetByIdAsync(Guid.Parse(id));
+
+            if (commentFromDb == null)
+            {
+                return NotFound();
+            }
+
             var like = new CommentLike
             {
                 UserId = Guid.Parse(userId),
                 CommentId = Guid.Parse(id),
             };
 
-            await _unitOfWork.GetRepository<CommentLike>().Create(like);
+            var addCommentLikeTask = _unitOfWork.GetRepository<CommentLike>().Create(like);
+            await addCommentLikeTask;
+
+            if (!addCommentLikeTask.IsCompletedSuccessfully)
+            {
+                TempData["error"] = "Упс! Что-то пошло не так";
+            }
 
             return RedirectToAction("Details", "Article", new { id = commentFromDb.ArticleId });
         }
@@ -79,8 +139,25 @@ namespace Blog.Controllers
         [Authorize]
         public async Task<IActionResult> DeleteLikeFromComment(string id)
         {
+            if (String.IsNullOrEmpty(id))
+            {
+                return NotFound();
+            }
+
             var userId = _userManager.GetUserId(this.User);
+
+            if (String.IsNullOrEmpty(userId))
+            {
+                return NotFound();
+            }
+
             var commentFromDb = await _unitOfWork.GetRepository<Comment>().GetByIdAsync(Guid.Parse(id));
+
+            if (commentFromDb == null)
+            {
+                return NotFound();
+            }
+
             var likeFromDb = commentFromDb.CommentLikes.FirstOrDefault(x => x.UserId == Guid.Parse(userId));
 
             if (likeFromDb == null)
@@ -88,9 +165,14 @@ namespace Blog.Controllers
                 return NotFound();
             }
 
-            await _unitOfWork.GetRepository<CommentLike>().Delete(likeFromDb);
+            var deleteCommentLikeTask = _unitOfWork.GetRepository<CommentLike>().Delete(likeFromDb);
+            await deleteCommentLikeTask;
 
-            //TempData["success"] = "Category deleted successfully";
+            if (!deleteCommentLikeTask.IsCompletedSuccessfully)
+            {
+                TempData["error"] = "Упс! Что-то пошло не так";
+            }
+
             return RedirectToAction("Details", "Article", new { id = commentFromDb.ArticleId });
         }
     }

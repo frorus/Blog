@@ -6,9 +6,9 @@ function fixTextareaSize(textarea) {
 
 //Resize textarea by content
 ~function () {
-    var tx = document.getElementsByTagName('textarea');
+    let tx = document.getElementsByTagName('textarea');
 
-    for (var i = 0; i < tx.length; i++) {
+    for (let i = 0; i < tx.length; i++) {
         tx[i].addEventListener("input", function (e) { fixTextareaSize(e.target) });
         fixTextareaSize(tx[i])
     }
@@ -24,17 +24,17 @@ $('.modal').on('shown.bs.modal', function () {
 
 //Move the cursor to the end of the text in modal windows
 $('.modal').on('shown.bs.modal', function () {
-    var data = $('#edit-textarea').val();
+    let data = $('#edit-textarea').val();
     $('#edit-textarea').focus().val('').val(data);
 })
 
 //Edit modal windows
 $(function () {
-    var Elem = $('#EditCommentModalWindow');
+    let Elem = $('#CommentModalWindow');
     $('button[data-toggle="myModal"]').click(function (event) {
 
-        var url = $(this).data('url');
-        var decoderUrl = decodeURIComponent(url);
+        let url = $(this).data('url');
+        let decoderUrl = decodeURIComponent(url);
         $.get(decoderUrl).done(function (data) {
             Elem.html(data);
             Elem.find('.modal').modal('show');
@@ -43,9 +43,9 @@ $(function () {
 
     Elem.on('click', '[data-save="modal"]', function (event) {
         event.preventDefault();
-        var form = $(this).parents('.modal').find('form');
-        var actionUrl = form.attr('action');
-        var sendData = form.serialize();
+        let form = $(this).parents('.modal').find('form');
+        let actionUrl = form.attr('action');
+        let sendData = form.serialize();
         $.post(actionUrl, sendData).done(function (data) {
             Elem.find('.modal').modal('hide');
         })
@@ -56,7 +56,7 @@ $(function () {
 $(function () {
     $(document).on("click", ".like", function (event) { 
         event.preventDefault();
-        var id = $(this).val();
+        let id = $(this).val();
         $.ajax({
             type: "POST",
             url: "/Like/AddLikeToArticle",
@@ -79,7 +79,7 @@ $(function () {
 $(function () {
     $(document).on("click", ".unlike", function (event) {
         event.preventDefault();
-        var id = $(this).val();
+        let id = $(this).val();
         $.ajax({
             type: "POST",
             url: "/Like/DeleteLikeFromArticle",
@@ -102,7 +102,7 @@ $(function () {
 $(function () {
     $(document).on("click", ".like-comment", function (event) {
         event.preventDefault();
-        var id = $(this).val();
+        let id = $(this).val();
         $.ajax({
             type: "POST",
             url: "/Like/AddLikeToComment",
@@ -125,7 +125,7 @@ $(function () {
 $(function () {
     $(document).on("click", ".unlike-comment", function (event) {
         event.preventDefault();
-        var id = $(this).val();
+        let id = $(this).val();
         $.ajax({
             type: "POST",
             url: "/Like/DeleteLikeFromComment",
@@ -148,7 +148,7 @@ $(function () {
 $(function () {
     $(document).on("click", ".favourite", function (event) {
         event.preventDefault();
-        var id = $(this).val();
+        let id = $(this).val();
         $.ajax({
             type: "POST",
             url: "/Favourite/Add",
@@ -171,7 +171,7 @@ $(function () {
 $(function () {
     $(document).on("click", ".unfavourite", function (event) {
         event.preventDefault();
-        var id = $(this).val();
+        let id = $(this).val();
         $.ajax({
             type: "POST",
             url: "/Favourite/Delete",
@@ -198,8 +198,8 @@ $(document).ready(function () {
 $(function () {
     $(document).on("click", ".reading-list", function (event) {
         event.preventDefault();
-        var id = $(this).val();
-        var params = {
+        let id = $(this).val();
+        let params = {
             type: "POST",
             data: { "id": id },
             context: this,

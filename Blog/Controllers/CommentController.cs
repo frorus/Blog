@@ -1,12 +1,9 @@
-﻿using Blog.Data.Repository;
-using Blog.Data.UnitOfWork;
+﻿using Blog.Data.UnitOfWork;
 using Blog.Models.DB;
 using Blog.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.ModelBinding;
-using System;
 
 namespace Blog.Controllers
 {
@@ -28,13 +25,24 @@ namespace Blog.Controllers
         public async Task<IActionResult> Create(CommentViewModel model)
         {
             var userId = _userManager.GetUserId(this.User);
+
+            if (String.IsNullOrEmpty(userId))
+            {
+                return NotFound();
+            }
+
             var articleFromDb = await _unitOfWork.GetRepository<Article>().GetByIdAsync(model.ArticleId);
+
+            if (articleFromDb == null)
+            {
+                return NotFound();
+            }
 
             if (ModelState.IsValid)
             {
                 var comment = new Comment
                 {
-                    Content = model.Content!,
+                    Content = model.Content,
                     UserId = Guid.Parse(userId),
                     User = await _userManager.FindByIdAsync(userId),
                     ArticleId = model.ArticleId,
@@ -43,10 +51,12 @@ namespace Blog.Controllers
 
                 await _unitOfWork.GetRepository<Comment>().Create(comment);
 
-                // TempData["success"] = "Category created successfully";
+                TempData["success"] = "Комментарий успешно добавлен";
             }
-
-            //ModelState.AddModelError("", "Failed to create");
+            else
+            {
+                TempData["error"] = "Не удалось добавить комментарий";
+            }
 
             return RedirectToAction("Details", "Article", new { id = model.ArticleId });
         }
@@ -55,12 +65,17 @@ namespace Blog.Controllers
         [Authorize]
         public async Task<IActionResult> Edit(Guid id)
         {
-			if (id == Guid.Empty)
-			{
-				return NotFound();
-			}
+            if (id == Guid.Empty)
+            {
+                return NotFound();
+            }
 
-			var commentFromDb = await _unitOfWork.GetRepository<Comment>().GetByIdAsync(id);
+            var commentFromDb = await _unitOfWork.GetRepository<Comment>().GetByIdAsync(id);
+
+            if (commentFromDb == null)
+            {
+                return NotFound();
+            }
 
             var model = new CommentEditViewModel
             {
@@ -68,7 +83,7 @@ namespace Blog.Controllers
                 Content = commentFromDb.Content,
             };
 
-            return PartialView("_CommentEditPartial", model);
+            return PartialView("~/Views/Shared/Comment/_CommentEditPartial.cshtml", model);
         }
 
         [HttpPost]
@@ -76,9 +91,6 @@ namespace Blog.Controllers
         [Authorize]
         public async Task<IActionResult> Edit(CommentEditViewModel model)
         {
-            //var repository = _unitOfWork.GetRepository<Comment>() as ArticleRepository;
-            //var articleFromDb = await repository.GetArticleById(id);
-
             var commentFromDb = await _unitOfWork.GetRepository<Comment>().GetByIdAsync(model.Id);
 
             if (commentFromDb == null)
@@ -86,19 +98,18 @@ namespace Blog.Controllers
                 return NotFound();
             }
 
-            //if (ModelState.IsValid)
-            //{
-            //    articleFromDb.Text = model.Text;
-            //    articleFromDb.Title = model.Title;
+            if (ModelState.IsValid)
+            {
+                commentFromDb.Content = model.Content;
 
-            //    await _unitOfWork.GetRepository<Article>().Update(articleFromDb);
-            //    //TempData["success"] = "Category updated successfully";
-            //    return RedirectToAction("Index");
-            //}
+                await _unitOfWork.GetRepository<Comment>().Update(commentFromDb);
 
-            commentFromDb.Content = model.Content!;
-
-            await _unitOfWork.GetRepository<Comment>().Update(commentFromDb);
+                TempData["success"] = "Комментарий успешно обновлен";
+            }
+            else
+            {
+                TempData["error"] = "Не удалось обновить комментарий";
+            }
 
             return RedirectToAction("Details", "Article", new { id = commentFromDb.ArticleId });
         }
@@ -113,13 +124,18 @@ namespace Blog.Controllers
 
             var commentFromDb = await _unitOfWork.GetRepository<Comment>().GetByIdAsync(id);
 
+            if (commentFromDb == null)
+            {
+                return NotFound();
+            }
+
             var model = new CommentEditViewModel
             {
                 Id = commentFromDb.Id,
                 Content = commentFromDb.Content,
             };
 
-            return PartialView("_CommentDeletePartial", model);
+            return PartialView("~/Views/Shared/Comment/_CommentDeletePartial.cshtml", model);
         }
 
         [HttpPost, ActionName("Delete")]
@@ -133,9 +149,18 @@ namespace Blog.Controllers
                 return NotFound();
             }
 
-            await _unitOfWork.GetRepository<Comment>().Delete(commentFromDb);
+            var deleteTask = _unitOfWork.GetRepository<Comment>().Delete(commentFromDb);
+            await deleteTask;
 
-            //TempData["success"] = "Category deleted successfully";
+            if (deleteTask.IsCompletedSuccessfully)
+            {
+                TempData["success"] = "Комментарий успешно удален";
+            }
+            else
+            {
+                TempData["error"] = "Не удалось удалить комментарий";
+            }
+
             return RedirectToAction("Details", "Article", new { id = commentFromDb.ArticleId });
         }
     }

@@ -98,7 +98,6 @@ namespace Blog.Controllers
         [HttpGet]
         public async Task<int> GetUserReadingListCount(Guid id)
         {
-
             var repository = _unitOfWork.GetRepository<Article>() as ArticleRepository;
             var readingList = await repository.GetAllArticles().Where(article => article.Favourites.Any(favourite => favourite.UserId == id)).ToListAsync();
 

@@ -15,7 +15,7 @@ namespace Blog.Data
 
         public BlogDbContext(DbContextOptions<BlogDbContext> options) : base(options)
         {
-            Database.EnsureCreated();
+
         }
 
         protected override void OnModelCreating(ModelBuilder builder)

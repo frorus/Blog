@@ -6,28 +6,40 @@
 }
 
 <div class="wrapper">
-	<main id="main-content">
+	<main>
 		<form id="article-form" class="blog-article-form" method="post">
+			@*  Header  *@
+            <div class="blog-article-form__header">
+                @*  Logo  *@
+                <span class="blog-article-form__logo">
+                    <a class="site-logo" href="/">
+                        <img class="site-logo__img" src="~/img/logo.png">
+                    </a>
+                </span>
+                @*  Inscription  *@
+                <div class="blog-field__label flex items-center flex-1">
+                    <span class="inline-block mr-2 whitespace-nowrap">Удалить тег</span>
+                </div>
+            </div>
+			@*  Title/description fields  *@
 			<div class="blog-article-form__content blog-card">
-				<div class="blog-article__header__meta text-padding drop-area">
+				@*  Tag title  *@
+				<div class="blog-article__header__meta text-padding">
 					<div class="blog-article-form__title">
-						<textarea class="blog-textfield-textarea fs-3xl m:fs-4xl l:fs-5xl fw-bold s:fw-heavy lh-tight"
-								  type="text" id="article-form-title" placeholder="Update title #@Model.Title here..." autocomplete="off"
-								  data-gramm_editor="false" aria-label="Tag Title" autofocus="" style="min-height: 62px; max-height: 62px; color: gray;"
-								  asp-for="Title" disabled></textarea>
+						<textarea class="blog-textfield-textarea fs-5xl fw-heavy lh-tight" type="text" style="color: gray;" asp-for="Title" disabled></textarea>
 					</div>
 				</div>
-				<div class="blog-article-form__body drop-area text-padding">
-					<div id="combobox-container" class="h-100" style="min-height: 108px;">
-						<textarea class="blog-textfield-textarea ff-monospace fs-l h-100"
-								  type="text" id="article_body_markdown" placeholder="Update description here..." autocomplete="off"
-								  data-gramm_editor="false" style="min-height: 27px; color: gray;" asp-for="Description" disabled></textarea>
+				@*  Tag description  *@
+				<div class="blog-article-form__body text-padding">
+					<div class="h-100">
+						<textarea class="blog-textfield-textarea ff-monospace fs-l h-100" type="text" style="color: gray;" asp-for="Description" disabled></textarea>
 					</div>
 				</div>
 			</div>
+			@*  Delete and previous page  *@
 			<div class="blog-article-form__footer">
-				<button class="c-btn blog-btn--danger mr-2 whitespace-nowrap" type="submit">Yes, delete</button>
-				<a class="c-link c-link--block mr-2 whitespace-nowrap" asp-controller="Tag" asp-action="Index">Back to tag list</a>
+				<button class="c-btn blog-btn--danger mr-2 whitespace-nowrap" type="submit">Да, удалить</button>
+				<a class="c-link c-link--block mr-2 whitespace-nowrap" asp-controller="Tag" asp-action="Index">На страницу тегов</a>
 			</div>
 		</form>
 	</main>
